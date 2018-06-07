@@ -74,7 +74,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 - Click a file to quickly preview it
 - Press `Cmd + Shift + N` to quickly navigate and preview a file
 
-![files](https://i.imgur.com/gXPw73X.gif)
+![files](https://i.imgur.com/yuyleHe.gif)
 
 ### Run scripts
 - See a list of all the scripts and run them with a press of a button
