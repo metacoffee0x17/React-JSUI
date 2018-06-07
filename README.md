@@ -107,7 +107,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 - Automatically detect a `plopfile.js` and quickly generate files from existing templates.
 - If `plopfile.js` is not present, or your not familiar with [plop](https://github.com/amwmedia/plop) run the `Plop` plugin and it will generate the needed files for you
 
-![](https://i.imgur.com/pm9ugjK.gif)
+![](https://i.imgur.com/nJQsQwE.gif)
 
 
 
