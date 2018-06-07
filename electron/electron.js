@@ -17,7 +17,7 @@ const initAutoUpdate = require('update-electron-app');
 
 /* ======================= DEBUG ======================= */
 
-require('electron-debug')({ enabled: true });
+require('electron-debug')();
 unhandled();
 
 /* ======================= AUTO UPDATE ==================== */
