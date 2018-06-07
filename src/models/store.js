@@ -132,7 +132,12 @@ export default types
           `This will also remove all the projects in the group. It won't delete anything on disk!`
         );
         if (confirmed) {
-          self.projects = self.projects.filter(p => (p.group ? p.group.id !== groupId : true));
+          self.projects = self.projects.filter(p => {
+            if (groupId === 'other') {
+              return p.group !== null;
+            }
+            return p.group.id !== groupId;
+          });
           self.groups = self.groups.filter(g => g.id !== groupId);
         }
       }),
@@ -140,7 +145,6 @@ export default types
         const commandExists = yield ipcc.callMain('command-exists', cli);
 
         if (!commandExists) {
-
           self.home.clearActiveGenerator();
 
           const { value } = yield Swal({

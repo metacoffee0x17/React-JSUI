@@ -1,4 +1,4 @@
-const buildMenu = ({ config: { appName }, methods: { resetCache, openPreferences } }) => {
+const buildMenu = ({ config: { appName }, methods: { resetCache, editCache, openPreferences } }) => {
   return [
     {
       label: appName,
@@ -14,6 +14,12 @@ const buildMenu = ({ config: { appName }, methods: { resetCache, openPreferences
           label: 'Reset app cache',
           click() {
             resetCache();
+          }
+        },
+        {
+          label: 'Edit app cache',
+          click() {
+            editCache();
           }
         },
         { type: 'separator' },

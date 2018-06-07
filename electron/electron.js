@@ -85,6 +85,10 @@ const resetCache = () => {
   mainWindow.webContents.reload();
 };
 
+const editCache = () => {
+  ElectronStore.openInEditor();
+};
+
 const createMenu = () => {
   const menuTemplate = buildMenu({
     config: {
@@ -92,7 +96,8 @@ const createMenu = () => {
     },
     methods: {
       openPreferences,
-      resetCache
+      resetCache,
+      editCache
     }
   });
 

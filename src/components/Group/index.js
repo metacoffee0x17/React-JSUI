@@ -9,7 +9,7 @@ import {
   faTrash,
   faMinusSquare,
   faPlusSquare,
-  faFolderOpen
+  faPlus
 } from '@fortawesome/fontawesome-free-solid';
 
 //styles
@@ -37,7 +37,7 @@ class Group extends Component {
             <A.Horizontal spaceAll={15}>
               <A.ActionIcon
                 onClick={() => store.openFolder(group.id)}
-                icon={faFolderOpen}
+                icon={faPlus}
                 tip="Import project here"
               />
               <A.ActionIcon

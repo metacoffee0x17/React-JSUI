@@ -4,12 +4,7 @@ import routes from 'config/routes';
 
 //IconWithTips
 import {
-  faHome,
-  faBomb,
-  faObjectGroup,
-  faFolderOpen,
-  faCogs,
-  faCog
+  faHome
 } from '@fortawesome/fontawesome-free-solid';
 
 //styles

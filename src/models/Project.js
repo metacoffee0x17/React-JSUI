@@ -1,7 +1,6 @@
 import { PROJECT_TYPES } from 'config/enums';
 import { types, getRoot, flow } from 'mobx-state-tree';
 import ipcc from 'ipcc/renderer';
-import { bashCommands } from 'config/bash-commands';
 import { prompt, confirmDelete } from 'config/swal';
 import { toast } from 'config/swal';
 import routes from 'config/routes';
@@ -27,7 +26,7 @@ import getAllItems from 'utils/file-utils/get-all-items';
 //native
 const fs = window.require('fs');
 const path = window.require('path');
-const { exec } = window.require('child_process');
+const { spawn } = window.require('child_process');
 const parseGitConfig = window.require('electron').remote.require('parse-git-config');
 const nodePlop = window.require('electron').remote.require('node-plop');
 
@@ -59,9 +58,8 @@ export default types
     return {
       edit: async () => {
         const store = getRoot(self);
-        exec(`${store.settings.editor} ${self.path}`);
+        spawn(store.settings.editor, [self.path]);
       },
-
       setReady: ready => {
         self.ready = ready;
         if (ready === true) {
@@ -69,7 +67,7 @@ export default types
         }
       },
       openDir: () => {
-        exec(`open ${self.path}`);
+        spawn('open', [self.path]);
       },
       build: () => {
         self.runScript('build');
@@ -206,18 +204,18 @@ export default types
         });
         return prom;
       },
-      deleteDependencies: () => {
+      /*deleteDependencies: () => {
         exec(bashCommands.deleteDependencies, { cwd: self.path });
       },
       installDependencies: () => {
         exec(bashCommands.installDependencies, { cwd: self.path });
       },
       reinstallDependencies: () => {
-        /* execMultiple(
+        /!* execMultiple(
           [bashCommands.deleteDependencies, bashCommands.installDependencies],
           self.path
-        );*/
-      },
+        );*!/
+      },*/
       start: () => {
         const store = getRoot(self);
         store.router.openPage(routes.project, { id: self.id });
@@ -226,9 +224,6 @@ export default types
       goToOrigin: () => {
         const shell = window.require('electron').shell;
         shell.openExternal(self.origin);
-      },
-      editCode: () => {
-        exec(`code ${self.path}`);
       },
       previewFile: () => {
         const store = getRoot(self);

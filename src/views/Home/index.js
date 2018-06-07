@@ -4,7 +4,7 @@ import generators from 'generators';
 import routes from 'config/routes';
 
 //icons
-import { faBomb, faObjectGroup, faFolderOpen, faCogs, faCog } from '@fortawesome/fontawesome-free-solid';
+import { faBomb, faObjectGroup, faPlus, faCogs, faCog } from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -60,8 +60,8 @@ class Home extends Component {
         >
           {hasProjects && (
             <Fragment>
-              <IconWithTip onClick={() => store.openFolder()} icon={faFolderOpen} tip="Import project" />
-              <IconWithTip onClick={store.createGroup} icon={faObjectGroup} tip="Create group" />
+              <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
+              <IconWithTip onClick={store.createGroup} icon={faObjectGroup} tip="Create a group" />
               <IconWithTip onClick={home.generateDialogOpen.setTrue} icon={faCogs} tip="Generate an app" />
             </Fragment>
           )}
