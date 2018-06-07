@@ -3,9 +3,11 @@
 🛠 A tool for visually organizing, creating, and managing JavaScript projects.   
 It doesn't matter if it's frontend or a backend app, or what framework it's using. If it has a `package.json`, it belongs here.
 
+[⬇️ Download latest version](https://github.com/kitze/JSUI/releases/latest)
+
 --- 
 
-🙋🏻‍♂️ Made by [Kitze](https://twitter.com/thekitze)  
+🙌️ Made by [Kitze](https://twitter.com/thekitze)  
 🏫️ Supported by [React Academy](https://reactacademy.io)
 
 ---
@@ -24,8 +26,6 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 - Generate new files
 
 ![JSUI](https://i.imgur.com/tDHfoRV.png)
-
-<center style="font-size:30px">[⬇️ Download latest version](https://github.com/kitze/JSUI/releases/latest)</center>
 
 
 ## Organize
@@ -53,7 +53,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 - Supports React, Vue, Angular, Gatsby, React Native, Expo, etc.
 - Configure advanced options for each generator
 
-![generate project](https://i.imgur.com/Bxdh1oA.gif)
+![generate project](https://i.imgur.com/mCIkz1t.gif)
 
 ## Kill a port
 
