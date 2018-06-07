@@ -38,6 +38,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 - Open the project in Finder
 - Open the project in your editor of choice (configurable in Settings)
 - Quick preview of package.json
+- Open the github/bitbucket/gitlab page for the project
 - Start the project
 - Remove the project from the dashboard
 
