@@ -228,7 +228,7 @@ class ProjectView extends Component {
                 <ListOfBlocks
                   list={project.generatorList}
                   onPick={generator => {
-                    project.generate(generator);
+                    project.generate(generator.name);
                     this.generatorsDialogOpen.setFalse();
                   }}
                 />

@@ -12,6 +12,7 @@ import omitBy from 'lodash/omitBy';
 import omit from 'lodash/omit';
 import { getProjectType } from 'project-utils/get-project-type';
 import uuid from 'uuid';
+// import nodePlop from 'node-plop';
 
 //models
 import Process from './Process';
@@ -116,15 +117,26 @@ export default types
         self.processes.add(createdProcess);
         return prom;
       },
-      generate: flow(function*(genName) {
+      generate: flow(function*(generatorName) {
         const { value: name } = yield prompt('Name');
         if (name) {
-          plop
-            .getGenerator(genName)
-            .runActions({ name })
-            .then(function(results) {
-              console.log('results', results);
+          try {
+            yield ipcc.callMain('run-plop-generator', {
+              generatorName,
+              actions: { name },
+              projectPath: self.path
             });
+            toast({
+              title: `Successfully generated "${name}"!`,
+              type: 'success'
+            });
+            self.readContents();
+          } catch (err) {
+            toast({
+              title: `Couldn't generate file. Please try again.`,
+              type: 'error'
+            });
+          }
         }
       }),
       showPluginSuccess(name) {

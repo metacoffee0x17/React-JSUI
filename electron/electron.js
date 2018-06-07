@@ -7,6 +7,7 @@ const ipc = require('electron-better-ipc');
 const logger = require('electron-timber');
 const { app, dialog, Menu, BrowserWindow } = electron;
 const { sync } = require('command-exists');
+const nodePlop = require('node-plop');
 
 /* ================= LOCAL MODULES ===================== */
 
@@ -17,7 +18,7 @@ const initAutoUpdate = require('update-electron-app');
 
 /* ======================= DEBUG ======================= */
 
-require('electron-debug')();
+require('electron-debug')({ enabled: true, showDevTools: false });
 unhandled();
 
 /* ======================= AUTO UPDATE ==================== */
@@ -61,10 +62,17 @@ const onOpenDialog = async () => {
 
 const setupListeners = () => {
   ipc.answerRenderer('open-dialog', onOpenDialog);
+
   ipc.answerRenderer('apply-plugin-actions', applyPlugin);
+
   ipc.answerRenderer('command-exists', async command => {
     const result = await sync(command);
     return !!result;
+  });
+
+  ipc.answerRenderer('run-plop-generator', async ({ generatorName, actions, projectPath }) => {
+    const plop = nodePlop(path.join(projectPath, 'plopfile.js'));
+    return plop.getGenerator(generatorName).runActions(actions);
   });
 };
 
