@@ -1,6 +1,4 @@
 import emotion from 'react-emotion';
-import { InputClasses } from 'styles/material-ui-overrides';
-import withProps from 'recompose/withProps';
 
 export const Settings = emotion.div({
   color: 'rgba(0,0,0,0.5)'
