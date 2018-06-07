@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import routes from 'config/routes';
 import { Switch } from '@material-ui/core';
 import { Input } from 'styles/material-ui-overrides';
 
 import * as S from './styles';
 import * as A from 'styles/shared-components';
 
-//components
-import Header from 'components/Header';
-
 @inject('store')
 @observer
 class Settings extends Component {
   render() {
-    const { store } = this.props;
-    const { router, settings } = store;
+    const { store, onSave } = this.props;
+    const { settings } = store;
 
     return (
       <S.Settings>
-        <Header />
-
         <S.Content>
           <S.Title> Settings </S.Title>
 
@@ -56,7 +50,7 @@ class Settings extends Component {
             <S.Option.Description>It might slow down with bigger projects</S.Option.Description>
           </S.Option.Wrap>
 
-          <A.Button disabled={!settings.valid} onClick={() => router.openPage(routes.home)}>
+          <A.Button disabled={!settings.valid} onClick={onSave}>
             Save
           </A.Button>
         </S.Content>

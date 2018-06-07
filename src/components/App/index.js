@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import ipcc from 'ipcc/renderer';
 
 //styles
 import * as S from './styles';
@@ -10,20 +11,21 @@ import PopupSelector from 'components/PopupSelector';
 import Dialog from 'components/Dialog';
 import Home from 'views/Home';
 
-import { action, observable } from 'mobx';
 import keydown from 'react-keydown';
 import routes from 'config/routes';
+import Boolean from 'models/Boolean';
+import Settings from 'views/Settings';
 
 @inject('store')
 @observer
 class App extends Component {
-  @observable searchOpened = false;
-  @action setSearchOpen = v => (this.searchOpened = v);
+  searchOpened = Boolean.create();
+  settingsOpened = Boolean.create();
 
   @keydown(['cmd+shift+p'])
   submit() {
     if (this.props.store.hasProjects) {
-      this.setSearchOpen(true);
+      this.searchOpened.setTrue();
     }
   }
 
@@ -32,10 +34,17 @@ class App extends Component {
     this.props.store.router.openPage(routes.home);
   }
 
+  componentDidMount() {
+    ipcc.answerMain('open-settings', () => {
+      this.settingsOpened.setTrue();
+    });
+  }
+
   render() {
     const { store, overrides } = this.props;
     const { projects, router } = store;
-    const { searchOpened } = overrides || this;
+    const { searchOpened, settingsOpened } = overrides || this;
+
     const mappedItems = projects.map(({ name, id, path }) => ({ name, id, path }));
     const showHomePage = !router.page || router.page === 'home';
 
@@ -43,7 +52,7 @@ class App extends Component {
       <S.App>
         {showHomePage ? <Home /> : router.extra ? router.extra.component : null}
 
-        {searchOpened && (
+        {searchOpened.value === true && (
           <PopupSelector
             renderItem={({ name, path }) => (
               <Horizontal centerV spaceBetween flex={1}>
@@ -55,8 +64,14 @@ class App extends Component {
             closeOnChoose={true}
             items={mappedItems}
             onChoose={project => store.router.openPage(routes.project, { id: project.id })}
-            onEsc={() => this.setSearchOpen(false)}
+            onEsc={this.searchOpened.setFalse}
           />
+        )}
+
+        {this.settingsOpened.value === true && (
+          <Dialog onClose={this.settingsOpened.setFalse}>
+            <Settings onSave={this.settingsOpened.setFalse} />
+          </Dialog>
         )}
 
         {store.openedFile && (

@@ -35,14 +35,6 @@ class Home extends Component {
     store.createGroup();
   }
 
-  @keydown(['cmd+,'])
-  openSettings() {
-    const {
-      store: { router }
-    } = this.props;
-    router.openPage(routes.settings);
-  }
-
   render() {
     const { store } = this.props;
     const { router, home } = store;

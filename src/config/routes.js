@@ -18,13 +18,6 @@ const routes = {
     extra: {
       component: <ProjectView />
     }
-  },
-  settings: {
-    id: 'settings',
-    path: '/settings',
-    extra: {
-      component: <Settings />
-    }
   }
 };
 
