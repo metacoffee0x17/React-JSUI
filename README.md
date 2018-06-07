@@ -49,7 +49,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 
 ---
 
-##Project dashboard
+## Project dashboard
 
 ![project dashboard](https://i.imgur.com/UPJOmcC.png)
 ### Files
