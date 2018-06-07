@@ -209,7 +209,7 @@ export default types
       start: () => {
         const store = getRoot(self);
         store.router.openPage(routes.project, { id: self.id });
-        return self.runScript('start');
+        return self.runScript(self.startScriptName || 'start');
       },
       goToOrigin: () => {
         const shell = window.require('electron').shell;
@@ -258,6 +258,7 @@ export default types
         try {
           self.packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
           self.type = getProjectType(self.packageJson);
+          self.startScriptName = ['start', 'dev', 'develop'].find(s => self.packageJson.scripts[s]);
 
           //origin
           const gitConfigPath = path.join(self.path, '.git/config');
