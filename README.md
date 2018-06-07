@@ -1,22 +1,38 @@
 # JSUI
 
-Made by [Kitze](https://twitter.com/thekitze)
-
-A tool for visually organizing, creating, and managing JavaScript projects.   
+🛠 A tool for visually organizing, creating, and managing JavaScript projects.   
 It doesn't matter if it's frontend or a backend app, or what framework it's using. If it has a `package.json`, it belongs here.
 
+--- 
 
-# Features
+🙋🏻‍♂️ Made by [Kitze](https://twitter.com/thekitze)  
+🏫️ Supported by [React Academy](https://reactacademy.io)
 
 ---
 
+# Features
+- Organize and group apps
+- Generate new apps
+- Search apps
+- Quick actions
+- Kill a port
+- Project dashboard
+- Search project files
+- Run scripts
+- Manage dependencies
+- Apply plugins
+- Generate new files
+
+![JSUI](https://i.imgur.com/tDHfoRV.png)
+
+<center style="font-size:30px">[⬇️ Download latest version](https://github.com/kitze/JSUI/releases/latest)</center>
+
+
 ## Organize
-- Import existing projects from your computer
+- Import existing projects
 - Manage and organize projects in groups
 - Collapse, rename, or delete groups
 - Mark a project with a red border if it's not using Git yet
-
-![JSUI](https://i.imgur.com/tDHfoRV.png)
 
 ## Quick actions
 - Open the project in Finder
@@ -89,6 +105,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 	
 ## Generate files
 - Automatically detect a `plopfile.js` and quickly generate files from existing templates.
+- If `plopfile.js` is not present, or your not familiar with [plop](https://github.com/amwmedia/plop) run the `Plop` plugin and it will generate the needed files for you
 
 ![](https://i.imgur.com/pm9ugjK.gif)
 
