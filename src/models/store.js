@@ -84,16 +84,23 @@ export default types
         if (!self.groups.find(g => g.id === 'other')) {
           self.groups.push({ id: 'other', name: 'Others', projects: [] });
         }
+
+        if (!project.group) {
+          let othersGroup = self.groups.find(g => g.id === 'other');
+          project.setGroup(othersGroup);
+        }
+
         self.projects.push(project);
       },
       openFolder: flow(function*(groupId) {
         const folderName = yield ipcc.callMain('open-dialog');
         const splitted = folderName.split('/');
+        const group = groupId && typeof groupId !== 'object' && self.groups.find(g => g.id === groupId);
 
         let createdProject = Project.create({
           name: splitted[splitted.length - 1],
           path: folderName,
-          ...(groupId && typeof groupId !== 'object' && { group: groupId })
+          ...(group ? {group} : {})
         });
 
         self.addNewProject(createdProject);
@@ -134,7 +141,7 @@ export default types
         if (confirmed) {
           self.projects = self.projects.filter(p => {
             if (groupId === 'other') {
-              return p.group !== null;
+              return p.group !== null && p.group.id !== 'other';
             }
             return p.group.id !== groupId;
           });

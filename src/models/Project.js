@@ -93,6 +93,9 @@ export default types
       upgradeDependency: flow(function*(name) {
         self.runScript('upgrade', [`${name}@latest`]);
       }),
+      setGroup(group) {
+        self.group = group;
+      },
       moveDependency: flow(function*(name, version, isDev) {
         const packageJson = self.packageJson;
         const keys = isDev ? ['devDependencies', 'dependencies'] : ['dependencies', 'devDependencies'];
