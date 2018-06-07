@@ -101,7 +101,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 
 > Note: plugins will be separated from the repo soon so anyone can publish their own plugin	
 
-![plugins](https://i.imgur.com/sgiFoWi.gif)
+![plugins](https://i.imgur.com/83OaMMM.gif)
 	
 ## Generate files
 - Automatically detect a `plopfile.js` and quickly generate files from existing templates.
