@@ -110,10 +110,8 @@
     "directories": {
       "buildResources": "assets"
     },
-    "build": {
-      "publish": {
-        "provider": "github"
-      }
+    "publish": {
+      "provider": "github"
     }
   },
   "scripts": {
