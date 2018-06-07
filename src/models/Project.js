@@ -28,6 +28,7 @@ const fs = window.require('fs');
 const path = window.require('path');
 const { spawn } = window.require('child_process');
 const parseGitConfig = window.require('electron').remote.require('parse-git-config');
+const which = window.require('electron').remote.require('which');
 const nodePlop = window.require('electron').remote.require('node-plop');
 
 const Generator = types.model({
@@ -58,7 +59,16 @@ export default types
     return {
       edit: async () => {
         const store = getRoot(self);
-        spawn(store.settings.editor, [self.path]);
+        const editorExists = await ipcc.callMain('command-exists', store.settings.editor);
+        if (editorExists) {
+          const editor = which.sync(store.settings.editor);
+          spawn(editor, ['.'], { cwd: self.path });
+        } else {
+          toast({
+            type: 'error',
+            title: `The cli "${store.settings.editor}" couldn't be found. Please make sure it's installed.`
+          });
+        }
       },
       setReady: ready => {
         self.ready = ready;
