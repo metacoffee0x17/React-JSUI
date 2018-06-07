@@ -2,7 +2,6 @@
 
 Made by [Kitze](https://twitter.com/thekitze)
 
---
 A tool for visually organizing, creating, and managing JavaScript projects.   
 It doesn't matter if it's frontend or a backend app, or what framework it's using. If it has a `package.json`, it belongs here.
 
