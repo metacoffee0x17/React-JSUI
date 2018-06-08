@@ -32,6 +32,8 @@ const parseGitConfig = window.require('electron').remote.require('parse-git-conf
 const which = window.require('electron').remote.require('which');
 const nodePlop = window.require('electron').remote.require('node-plop');
 
+const PACKAGE_REGISTRY_URL = 'https://www.npmjs.com/package/';
+
 const Generator = types.model({
   name: types.string,
   description: types.string
@@ -237,6 +239,10 @@ export default types
         const store = getRoot(self);
         store.router.openPage(routes.project, { id: self.id });
         return self.runScript(self.startScriptName || 'start');
+      },
+      goToDependencyPage: dependencyName => {
+        const shell = window.require('electron').shell;
+        shell.openExternal(`${PACKAGE_REGISTRY_URL}${dependencyName}`);
       },
       goToOrigin: () => {
         const shell = window.require('electron').shell;
