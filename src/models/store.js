@@ -1,4 +1,4 @@
-import { types, flow } from 'mobx-state-tree';
+import { types, flow, getRoot } from 'mobx-state-tree';
 
 //swal
 import Swal from 'sweetalert2';
@@ -13,6 +13,7 @@ import Group from './Group';
 import Project from './Project';
 import Process from './Process';
 import File from './File';
+import Actions from './actions';
 
 //stores
 import SettingsView from 'models/views/settings-view';
@@ -24,7 +25,7 @@ import { RouterStore } from 'rttr';
 import ipcc from 'ipcc/renderer';
 import Processes from 'models/Processes';
 import Boolean from 'models/Boolean';
-import { createModel } from 'utils/mst-utils';
+import { createModel, whatever } from 'utils/mst-utils';
 
 //native
 const fkill = window.require('electron').remote.require('fkill');
@@ -41,12 +42,15 @@ export default types
     home: types.optional(HomeView, {}),
     processes: types.optional(Processes, Processes.create()),
     addingProjectToGroup: types.maybe(types.reference(Project)),
+    activeGenerator: whatever(null),
     //booleans
     settingsOpened: createModel(Boolean),
     searchOpened: createModel(Boolean),
     actionsOpened: createModel(Boolean),
     cssConverterDialogOpen: createModel(Boolean),
-    babelReplDialogOpen: createModel(Boolean)
+    babelReplDialogOpen: createModel(Boolean),
+    actions: createModel(Actions),
+    generateDialogOpen: createModel(Boolean)
   })
   .actions(self => {
     return {
@@ -199,7 +203,20 @@ export default types
         } else {
           self.projects = self.projects.filter(p => p.path !== newProject.path);
         }
-      })
+      }),
+      setActiveGenerator: generator => {
+        self.generateDialogOpen.setFalse();
+        self.activeGenerator = generator;
+      },
+      clearActiveGenerator: () => {
+        self.activeGenerator = null;
+      },
+      runCliGenerator: formValues => {
+        const store = getRoot(self);
+        const command = self.activeGenerator.getForProcess(formValues);
+        store.createProject(command);
+        self.clearActiveGenerator();
+      }
     };
   })
   .views(self => ({

@@ -1,17 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
-import generators from 'generators';
 
 //icons
-import {
-  faBomb,
-  faBold,
-  faObjectGroup,
-  faAdjust,
-  faPlus,
-  faCogs,
-  faCog
-} from '@fortawesome/fontawesome-free-solid';
+import { faObjectGroup, faPlus, faCogs } from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -21,9 +12,6 @@ import * as A from 'styles/shared-components';
 import Group from 'components/Group';
 import Header from 'components/Header';
 import IconWithTip from 'components/IconWithTip';
-import ListOfBlocks from 'components/ListOfBlocks';
-import Dialog from 'components/Dialog';
-import CliGenerator from 'components/CliGenerator';
 import Processes from 'components/Processes';
 import keydown from 'react-keydown';
 
@@ -54,7 +42,7 @@ class Home extends Component {
             <Fragment>
               <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
               <IconWithTip onClick={store.createGroup} icon={faObjectGroup} tip="Create a group" />
-              <IconWithTip onClick={home.generateDialogOpen.setTrue} icon={faCogs} tip="Generate an app" />
+              <IconWithTip onClick={store.generateDialogOpen.setTrue} icon={faCogs} tip="Generate an app" />
             </Fragment>
           )}
         </Header>
@@ -65,7 +53,7 @@ class Home extends Component {
               <S.Title>You don't have any projects. Add your first one?</S.Title>
               <A.Horizontal spaceAll={15}>
                 <A.Button onClick={store.openFolder}> Import a project </A.Button>
-                <A.Button onClick={home.generateDialogOpen.setTrue}> Generate a project </A.Button>
+                <A.Button onClick={store.generateDialogOpen.setTrue}> Generate a project </A.Button>
               </A.Horizontal>
             </S.Empty>
           )}
@@ -83,26 +71,6 @@ class Home extends Component {
             </S.GroupList>
           )}
         </A.Mid>
-
-        {home.activeGenerator && (
-          <Dialog onClose={home.clearActiveGenerator}>
-            <CliGenerator
-              onCancel={home.clearActiveGenerator}
-              initialValues={home.activeGenerator.initialValues}
-              onSubmit={home.runCliGenerator}
-              generator={home.activeGenerator}
-            />
-          </Dialog>
-        )}
-
-        {home.generateDialogOpen.value === true && (
-          <Dialog onClose={home.generateDialogOpen.setFalse}>
-            <A.DialogContent>
-              <h3> Generate a project </h3>
-              <ListOfBlocks onPick={home.setActiveGenerator} list={generators} />
-            </A.DialogContent>
-          </Dialog>
-        )}
 
         {store.processes.hasProcesses && <Processes processes={store.processes} />}
       </S.Home>
