@@ -1,6 +1,10 @@
 {
   "name": "jsui",
-  "author": "kitze",
+  "author": {
+    "name": "kitze",
+    "email": "kristijan.mkd@gmail.com",
+    "url": "https://kitze.io/"
+  },
   "description": "A powerful UI toolkit for managing JavaScript apps",
   "repository": "https://github.com/kitze/jsui",
   "version": "0.0.8",
@@ -104,6 +108,13 @@
     ],
     "mac": {
       "icon": "icons/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "icons/icon.png"
     },
     "extraMetadata": {
       "main": "build/electron.js"
