@@ -34,14 +34,15 @@ export const Content = emotion.div(
     width: '60%',
     ...marginVertical(30)
   },
-  ({ autoHeight }) => ({
+  ({ autoHeight, styles } = {}) => ({
     ...(!autoHeight && {
       height: '100%',
       maxHeight: 700,
       maxWidth: 700,
       backgroundColor: '#2b334c',
       boxShadow: `0px 0px 60px 11px ${colors.purple2}`
-    })
+    }),
+    ...styles
   })
 );
 
@@ -65,13 +66,13 @@ class Dialog extends Component {
   };
 
   renderContent() {
-    const { id, onClose, isMobile, autoHeight, children, className } = this.props;
+    const { id, onClose, maxWidth, isMobile, autoHeight, children, className, styles = {} } = this.props;
     const { height } = this.state;
 
     return (
-      <Wrapper id={id} isMobile={isMobile} className={className}>
-        {!isMobile && <Background onClick={onClose} />}
-        <Content autoHeight={autoHeight} height={height}>
+      <Wrapper styles={styles.wrapper} id={id} isMobile={isMobile} className={className}>
+        {!isMobile && <Background styles={styles.background} onClick={onClose} />}
+        <Content styles={styles.content} autoHeight={autoHeight} height={height}>
           {children}
         </Content>
       </Wrapper>

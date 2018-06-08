@@ -11,6 +11,11 @@ export const Title = emotion.div({
   color: 'white'
 });
 
+export const BabelWebview = emotion.div({
+  width: '100%',
+  height: '100%'
+});
+
 export const Empty = emotion.div({
   ...flex.vertical,
   ...flex.centerVertical,

@@ -36,12 +36,17 @@ export default types
     groups: types.optional(types.array(Group), []),
     projects: types.optional(types.array(Project), []),
     router: types.optional(RouterStore, {}),
-    settingsOpened: createModel(Boolean),
     openedFile: types.maybe(File),
     settings: types.optional(SettingsView, {}),
     home: types.optional(HomeView, {}),
     processes: types.optional(Processes, Processes.create()),
-    addingProjectToGroup: types.maybe(types.reference(Project))
+    addingProjectToGroup: types.maybe(types.reference(Project)),
+    //booleans
+    settingsOpened: createModel(Boolean),
+    searchOpened: createModel(Boolean),
+    actionsOpened: createModel(Boolean),
+    cssConverterDialogOpen: createModel(Boolean),
+    babelReplDialogOpen: createModel(Boolean)
   })
   .actions(self => {
     return {

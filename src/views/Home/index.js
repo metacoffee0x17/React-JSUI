@@ -3,7 +3,15 @@ import { inject, observer } from 'mobx-react';
 import generators from 'generators';
 
 //icons
-import { faBomb, faObjectGroup, faPlus, faCogs, faCog } from '@fortawesome/fontawesome-free-solid';
+import {
+  faBomb,
+  faBold,
+  faObjectGroup,
+  faAdjust,
+  faPlus,
+  faCogs,
+  faCog
+} from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -41,14 +49,7 @@ class Home extends Component {
 
     return (
       <S.Home>
-        <Header
-          renderRight={
-            <A.Horizontal spaceAll={20}>
-              <IconWithTip onClick={store.killProcess} icon={faBomb} tip="Kill a port" />
-              <IconWithTip onClick={store.settingsOpened.setTrue} tip="Settings" icon={faCog} />
-            </A.Horizontal>
-          }
-        >
+        <Header>
           {hasProjects && (
             <Fragment>
               <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
