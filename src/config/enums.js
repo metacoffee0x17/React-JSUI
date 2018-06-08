@@ -4,7 +4,9 @@ export const PROJECT_TYPES = {
   REACT_WEB: 'React',
   UNKNOWN: 'Unknown',
   GATSBY: 'Gatsby',
-  PRISMA: 'Prisma'
+  PRISMA: 'Prisma',
+  EXPRESS: 'Express',
+  GRAPHQL: 'GraphQL'
 };
 
 export const PROCESS_STATUS = {

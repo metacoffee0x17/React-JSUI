@@ -1,6 +1,7 @@
 import { PROJECT_TYPES } from 'config/enums';
 
 const hasModule = (entries, mod) => entries.find(([name]) => name === mod);
+const hasModuleThatContains = (entries, mod) => entries.find(([name]) => name.includes(mod));
 
 export const getProjectType = packageJson => {
   if (!packageJson) {
@@ -30,9 +31,21 @@ export const getProjectType = packageJson => {
       }
     },
     {
+      type: PROJECT_TYPES.EXPRESS,
+      check: entries => {
+        return hasModule(entries, 'express');
+      }
+    },
+    {
       type: PROJECT_TYPES.PRISMA,
       check: entries => {
         return hasModule(entries, 'prisma-cli');
+      }
+    },
+    {
+      type: PROJECT_TYPES.GRAPHQL,
+      check: entries => {
+        return hasModuleThatContains(entries, 'graphql');
       }
     },
     {

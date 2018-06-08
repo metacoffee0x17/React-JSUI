@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Tooltip } from 'react-tippy';
 
 //emotion
 import * as S from './styles';
@@ -27,7 +28,9 @@ class ProcessTab extends Component {
     return (
       <S.ProcessTab>
         {status !== PROCESS_STATUS.NONE && <S.Status status={status} />}
-        <S.Title> {title} </S.Title>
+        <S.Title>
+          <Tooltip title={title}>{title}</Tooltip>
+        </S.Title>
         <S.CloseCircle onClick={this.onClick}>
           <S.CloseIcon icon={faTimes} />
         </S.CloseCircle>
