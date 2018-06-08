@@ -4,11 +4,10 @@
 It doesn't matter if it's frontend or a backend app, or what framework it's using. If it has a `package.json`, it belongs here.
 
 [⬇️ Download latest version](https://github.com/kitze/JSUI/releases/latest)  
+---
+
 [💸 Support on Open Collective](https://opencollective.com/jsui)  
 [🐦 Follow updates on Twitter](https://twitter.com/jsui_app)  
-
---- 
-
 🙌️ Made by [Kitze](https://twitter.com/thekitze)  
 🏫️ Supported by [React Academy](https://reactacademy.io)
 
