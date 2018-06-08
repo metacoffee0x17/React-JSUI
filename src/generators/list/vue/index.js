@@ -41,7 +41,7 @@ const DEFAULT_OPTION = '--default';
 
 export default {
   name: CLI_NAME,
-  description: 'Generates a Vue project',
+  description: 'Generate a Vue project',
   cli: CLI_NAME,
   initialValues: {
     [ARGUMENTS.PACKAGE_MANAGER.key]: 'yarn'

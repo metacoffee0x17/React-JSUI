@@ -16,7 +16,7 @@ const ARGUMENTS = {
 
 export default {
   name: CLI_NAME,
-  description: 'Generates a React Native project using Expo',
+  description: 'Generate a React Native project using Expo',
   cli: CLI_NAME,
   options: [ARGUMENTS.VERBOSE],
   create: ({ name, ...rest }) => {

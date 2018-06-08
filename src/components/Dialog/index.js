@@ -66,11 +66,11 @@ class Dialog extends Component {
   };
 
   renderContent() {
-    const { id, onClose, maxWidth, isMobile, autoHeight, children, className, styles = {} } = this.props;
+    const { id, onClose, key, isMobile, autoHeight, children, className, styles = {} } = this.props;
     const { height } = this.state;
 
     return (
-      <Wrapper styles={styles.wrapper} id={id} isMobile={isMobile} className={className}>
+      <Wrapper key={key} styles={styles.wrapper} id={id} isMobile={isMobile} className={className}>
         {!isMobile && <Background styles={styles.background} onClick={onClose} />}
         <Content styles={styles.content} autoHeight={autoHeight} height={height}>
           {children}
