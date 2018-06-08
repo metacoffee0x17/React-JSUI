@@ -71,6 +71,9 @@ export default types
           });
         }
       },
+      setName: name => {
+        self.name = name;
+      },
       setReady: ready => {
         self.ready = ready;
         if (ready === true) {

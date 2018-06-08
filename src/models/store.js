@@ -136,6 +136,16 @@ export default types
           self.projects = self.projects.filter(p => p.id !== projectId);
         }
       }),
+      renameProject: flow(function*(projectId, projectName) {
+        const project = self.projects.find(({ id }) => id === projectId);
+        if (project === undefined) return;
+        const { value: name } = yield prompt('Rename project', undefined, {
+          inputValue: projectName
+        });
+        if (name) {
+          project.setName(name);
+        }
+      }),
       renameGroup: flow(function*(groupName, groupId) {
         const { value: name } = yield prompt('Rename group', undefined, {
           inputValue: groupName
