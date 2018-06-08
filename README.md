@@ -3,9 +3,9 @@
 🛠 A tool for visually organizing, creating, and managing JavaScript projects.   
 It doesn't matter if it's frontend or a backend app, or what framework it's using. If it has a `package.json`, it belongs here.
 
-[⬇️ Download latest version](https://github.com/kitze/JSUI/releases/latest)
-[💸 Support on Open Collective](https://opencollective.com/jsui)
-[💸 Follow updates on Twitter](https://twitter.com/jsui_app)
+[⬇️ Download latest version](https://github.com/kitze/JSUI/releases/latest)  
+[💸 Support on Open Collective](https://opencollective.com/jsui)  
+[🐦 Follow updates on Twitter](https://twitter.com/jsui_app)  
 
 --- 
 
