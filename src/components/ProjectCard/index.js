@@ -14,6 +14,7 @@ import {
   faFolder,
   faExternalLinkAlt,
   faPlay,
+  faEdit,
   faCode,
   faEye,
   faRecycle,
@@ -59,6 +60,11 @@ class Project extends Component {
           {ready && (
             <React.Fragment>
               <A.ActionIcon tip="package.json" icon={faEye} onClick={project.previewFile} />
+              <A.ActionIcon
+                tip="Rename"
+                icon={faEdit}
+                onClick={() => store.renameProject(project.id, project.name)}
+              />
               {project.startScriptName && <A.ActionIcon tip="Start" icon={faPlay} onClick={project.start} />}
               {/* <A.ActionIcon
                 tip="Reinstall dependencies"
