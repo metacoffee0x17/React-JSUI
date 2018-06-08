@@ -23,6 +23,8 @@ import { RouterStore } from 'rttr';
 //electron
 import ipcc from 'ipcc/renderer';
 import Processes from 'models/Processes';
+import Boolean from 'models/Boolean';
+import { createModel } from 'utils/mst-utils';
 
 //native
 const fkill = window.require('electron').remote.require('fkill');
@@ -34,6 +36,7 @@ export default types
     groups: types.optional(types.array(Group), []),
     projects: types.optional(types.array(Project), []),
     router: types.optional(RouterStore, {}),
+    settingsOpened: createModel(Boolean),
     openedFile: types.maybe(File),
     settings: types.optional(SettingsView, {}),
     home: types.optional(HomeView, {}),
@@ -100,7 +103,7 @@ export default types
         let createdProject = Project.create({
           name: splitted[splitted.length - 1],
           path: folderName,
-          ...(group ? {group} : {})
+          ...(group ? { group } : {})
         });
 
         self.addNewProject(createdProject);

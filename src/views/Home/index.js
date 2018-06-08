@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
 import generators from 'generators';
-import routes from 'config/routes';
 
 //icons
 import { faBomb, faObjectGroup, faPlus, faCogs, faCog } from '@fortawesome/fontawesome-free-solid';
@@ -37,7 +36,7 @@ class Home extends Component {
 
   render() {
     const { store } = this.props;
-    const { router, home } = store;
+    const { home } = store;
     const { groupsWithProjects, hasProjects, collapsed } = store;
 
     return (
@@ -46,7 +45,7 @@ class Home extends Component {
           renderRight={
             <A.Horizontal spaceAll={20}>
               <IconWithTip onClick={store.killProcess} icon={faBomb} tip="Kill a port" />
-              <IconWithTip onClick={() => router.openPage(routes.settings)} tip="Settings" icon={faCog} />
+              <IconWithTip onClick={store.settingsOpened.setTrue} tip="Settings" icon={faCog} />
             </A.Horizontal>
           }
         >

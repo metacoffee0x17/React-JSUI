@@ -20,7 +20,6 @@ import Settings from 'views/Settings';
 @observer
 class App extends Component {
   searchOpened = Boolean.create();
-  settingsOpened = Boolean.create();
 
   @keydown(['cmd+shift+p'])
   submit() {
@@ -36,14 +35,14 @@ class App extends Component {
 
   componentDidMount() {
     ipcc.answerMain('open-settings', () => {
-      this.settingsOpened.setTrue();
+      this.props.store.settingsOpened.setTrue();
     });
   }
 
   render() {
     const { store, overrides } = this.props;
-    const { projects, router } = store;
-    const { searchOpened, settingsOpened } = overrides || this;
+    const { projects, router, settingsOpened } = store;
+    const { searchOpened } = overrides || this;
 
     const mappedItems = projects.map(({ name, id, path }) => ({ name, id, path }));
     const showHomePage = !router.page || router.page === 'home';
@@ -68,9 +67,9 @@ class App extends Component {
           />
         )}
 
-        {this.settingsOpened.value === true && (
-          <Dialog onClose={this.settingsOpened.setFalse}>
-            <Settings onSave={this.settingsOpened.setFalse} />
+        {settingsOpened.value === true && (
+          <Dialog onClose={settingsOpened.setFalse}>
+            <Settings onSave={settingsOpened.setFalse} />
           </Dialog>
         )}
 
