@@ -150,6 +150,9 @@ class ProjectView extends Component {
                           onDependencyClicked={(packageName, packageVersion) => {
                             project.goToDependencyPage(packageName, packageVersion);
                           }}
+                          onDependencyClicked={(packageName, packageVersion) => {
+                            project.goToDependencyPage(packageName, packageVersion);
+                          }}
                     </Vertical>
 
                     {/* Dev dependencies list */}
