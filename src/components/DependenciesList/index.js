@@ -17,8 +17,14 @@ const IconButton = ({ tip, icon, onClick }) => (
 
 class DependenciesList extends Component {
   render() {
-    const { list = {}, isDev, onUpgrade, onMove, onDelete } = this.props;
-
+    const {
+      list = {},
+      isDev,
+      onUpgrade,
+      onMove,
+      onDelete,
+      onDependencyClicked = (name, version) => {}
+    } = this.props;
     return (
       <S.DependenciesList>
         <Vertical spaceAll={3}>
@@ -27,7 +33,11 @@ class DependenciesList extends Component {
               typeof name === 'string' &&
               typeof version === 'string' && (
                 <S.Dependency.Wrap>
-                  <S.Dependency.Name>
+                  <S.Dependency.Name
+                    onClick={() => {
+                      onDependencyClicked(name, version);
+                    }}
+                  >
                     {name} {version}
                   </S.Dependency.Name>
                   <S.Icons spaceAll={5}>

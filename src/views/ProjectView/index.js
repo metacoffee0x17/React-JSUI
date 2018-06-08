@@ -166,6 +166,9 @@ class ProjectView extends Component {
                         <DependenciesList
                           {...dependenciesListProps}
                           list={project.packageJson.dependencies}
+                          onDependencyClicked={(packageName, packageVersion) => {
+                            project.goToDependencyPage(packageName, packageVersion);
+                          }}
                         />
                       )}
                     </Vertical>
