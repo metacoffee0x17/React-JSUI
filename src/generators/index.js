@@ -4,5 +4,6 @@ import createReactNativeApp from './list/create-react-native-app';
 import gatsby from './list/gatsby';
 import vue from './list/vue';
 import angular from './list/angular';
+import graphql from './list/graphql';
 
-export default [createReactApp, vue, createReactNativeApp, reactNative, gatsby, angular];
+export default [createReactApp, vue, createReactNativeApp, reactNative, gatsby, angular, graphql];

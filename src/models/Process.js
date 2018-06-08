@@ -54,7 +54,7 @@ export default types
         });
 
         try {
-          process = childProcess.spawn(self.command, toJS(self.argz), { cwd: self.path, ...extra });
+          process = childProcess.spawn(self.command, toJS(self.argz), { cwd: self.path, shell:true, ...extra });
 
           readline
             .createInterface({

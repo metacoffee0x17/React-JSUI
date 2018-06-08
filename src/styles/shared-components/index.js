@@ -8,6 +8,12 @@ import { Horizontal as $Horizontal, Vertical as $Vertical } from 'styles/flex-co
 export const Horizontal = $Horizontal;
 export const Vertical = $Vertical;
 
+export const DialogContent = emotion.div({
+  padding: 15,
+  ...flex.vertical,
+  flex: 1
+});
+
 export const SmallButton = emotion.div({
   ...flex.horizontal,
   ...flex.centerHorizontalH,
@@ -26,7 +32,7 @@ export const SmallButton = emotion.div({
 
 export const TopFlex = emotion.div({
   ...flex.vertical,
-    flex: 1
+  flex: 1
 });
 
 export const Mid = emotion.div({

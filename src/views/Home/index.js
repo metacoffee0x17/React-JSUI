@@ -96,10 +96,10 @@ class Home extends Component {
 
         {home.generateDialogOpen.value === true && (
           <Dialog onClose={home.generateDialogOpen.setFalse}>
-            <A.Padding>
+            <A.DialogContent>
               <h3> Generate a project </h3>
               <ListOfBlocks onPick={home.setActiveGenerator} list={generators} />
-            </A.Padding>
+            </A.DialogContent>
           </Dialog>
         )}
 
