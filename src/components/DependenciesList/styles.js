@@ -8,7 +8,8 @@ export const DependenciesList = emotion.div({});
 
 export const Icons = emotion(Horizontal)({
   marginLeft: 15,
-  opacity: 0,
+  display: 'none',
+  opacity: 1,
   transition: 'all 100ms linear'
 });
 
@@ -24,9 +25,12 @@ export const Dependency = {
     padding: `2px 5px`,
     borderRadius: 3,
     transition: 'all 100ms linear',
+    minWidth: 300,
+    minHeight: 30,
     '&:hover': {
       backgroundColor: whiteish(0.05),
       [Icons]: {
+        display: 'flex',
         opacity: 1
       }
     }

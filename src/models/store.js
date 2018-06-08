@@ -26,6 +26,7 @@ import ipcc from 'ipcc/renderer';
 import Processes from 'models/Processes';
 import Boolean from 'models/Boolean';
 import { createModel, whatever } from 'utils/mst-utils';
+import { PACKAGE_REGISTRY_URL } from 'config/urls';
 
 //native
 const fkill = window.require('electron').remote.require('fkill');
@@ -226,6 +227,10 @@ export default types
         const command = self.activeGenerator.getForProcess(formValues);
         store.createProject(command);
         self.clearActiveGenerator();
+      },
+      goToDependencyPage: dependencyName => {
+        const shell = window.require('electron').shell;
+        shell.openExternal(`${PACKAGE_REGISTRY_URL}${dependencyName}`);
       }
     };
   })

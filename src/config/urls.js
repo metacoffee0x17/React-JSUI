@@ -1,0 +1,1 @@
+export const PACKAGE_REGISTRY_URL = 'https://www.npmjs.com/package/';
