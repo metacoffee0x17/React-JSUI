@@ -10,6 +10,7 @@ import get from 'lodash/get';
 import omitBy from 'lodash/omitBy';
 import omit from 'lodash/omit';
 import { getProjectType } from 'project-utils/get-project-type';
+import { getHttpsGitURL } from 'utils/string-utils';
 import uuid from 'uuid';
 // import nodePlop from 'node-plop';
 
@@ -286,8 +287,9 @@ export default types
             cwd: 'foo',
             path: gitConfigPath
           });
-          let url = get(gitConfig, 'remote "origin".url') || '';
-          self.origin = url.replace('.git', '');
+          const url = get(gitConfig, 'remote "origin".url') || '';
+          const gitRepoURL = getHttpsGitURL(url);
+          self.origin = gitRepoURL;
         } catch (err) {
           console.error(err);
           self.type = PROJECT_TYPES.UNKNOWN;
