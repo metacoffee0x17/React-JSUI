@@ -50,6 +50,19 @@ class Settings extends Component {
             <S.Option.Description>It might slow down with bigger projects</S.Option.Description>
           </S.Option.Wrap>
 
+          <S.Option.Wrap>
+            <A.Horizontal centerV>
+              <S.Option.Title>Highlight projects without a repo</S.Option.Title>
+              <Switch
+                checked={settings.highlightProjectsWithoutRepo}
+                value={settings.highlightProjectsWithoutRepo}
+                onChange={(e, checked) => {
+                  settings.setHighlightProjectsWithoutRepo(checked);
+                }}
+              />
+            </A.Horizontal>
+          </S.Option.Wrap>
+
           <A.Button disabled={!settings.valid} onClick={onSave}>
             Save
           </A.Button>
