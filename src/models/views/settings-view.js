@@ -8,7 +8,8 @@ export default types
   .model('SettingsStore', {
     editor: 'code',
     projectsPath: types.optional(types.string, homepath),
-    indexFiles: types.optional(types.boolean, false)
+    indexFiles: types.optional(types.boolean, false),
+    highlightProjectsWithoutRepo: types.optional(types.boolean, false)
   })
   .actions(self => ({
     changeEditor: editor => {
@@ -19,6 +20,9 @@ export default types
     },
     setIndexFiles: value => {
       self.indexFiles = value;
+    },
+    setHighlightProjectsWithoutRepo: value => {
+      self.highlightProjectsWithoutRepo = value;
     },
     afterCreate() {
       if (isEmptyString(self.projectsPath)) {
