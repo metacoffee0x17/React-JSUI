@@ -16,7 +16,8 @@ export default types
     code: types.maybe(types.number),
     path: '',
     command: '',
-    argz: types.optional(types.array(types.string), [])
+    argz: types.optional(types.array(types.string), []),
+    chunkedOutput: types.optional(types.array(types.string), [])
   })
   .actions(self => {
     let process;
@@ -32,6 +33,7 @@ export default types
       onOutput: data => {
         let newOutput = self.output + '\n' + data.toString();
         self.output = newOutput.trim();
+        self.chunkedOutput.push(data.toString().trim());
       },
       clearOutput: () => {
         self.output = '';
