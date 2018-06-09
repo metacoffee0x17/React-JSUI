@@ -43,11 +43,12 @@ class Project extends Component {
 
   render() {
     const { project, store, showMove } = this.props;
+    const { settings } = store;
     const { type, ready } = project;
     const hasProjectType = type && type !== PROJECT_TYPES.UNKNOWN;
 
     return (
-      <S.ProjectCard markRed={!project.origin}>
+      <S.ProjectCard markRed={settings.highlightProjectsWithoutRepo && !project.origin}>
         <Vertical>
           <S.Name onClick={this.onClick}>{project.name}</S.Name>
           <Horizontal spaceAll={5}>{hasProjectType && <S.Tag> {project.type} </S.Tag>}</Horizontal>
