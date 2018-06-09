@@ -34,7 +34,7 @@ const argumentsOrder = [
 
 export default {
   name: CLI_NAME,
-  description: 'Generates a GraphQL server',
+  description: 'Generate a GraphQL server',
   initialValues: {
     [ARGUMENTS.BOILERPLATE.key]: 'node-minimal'
   },

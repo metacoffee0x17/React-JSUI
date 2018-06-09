@@ -28,7 +28,7 @@ const argumentsOrder = [DEFAULT_FIELDS.NAME, DEFAULT_FIELDS.PATH, ARGUMENTS.STAR
 
 export default {
   name: CLI_NAME,
-  description: 'Generates a Gatsby project',
+  description: 'Generate a Gatsby project',
   initialValues: {
     [ARGUMENTS.STARTER.key]: 'https://github.com/gatsbyjs/gatsby-starter-default'
   },

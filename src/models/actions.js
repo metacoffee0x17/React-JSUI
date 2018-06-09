@@ -2,6 +2,15 @@ import { types, getRoot } from 'mobx-state-tree';
 import routes from 'config/routes';
 import { createModel } from 'utils/mst-utils';
 import Boolean from 'models/Boolean';
+import generators from 'generators';
+
+const generatorsActions = generators.map(g => ({
+  name: `${g.description} (${g.name})`,
+  command: store => {
+    store.router.openPage(routes.home);
+    store.setActiveGenerator(g);
+  }
+}));
 
 export const actionsList = [
   {
@@ -14,7 +23,10 @@ export const actionsList = [
   },
   {
     name: 'Generate a new project',
-    command: store => store.generateDialogOpen.setTrue()
+    command: store => {
+      store.router.openPage(routes.home);
+      store.generateDialogOpen.setTrue();
+    }
   },
   {
     name: 'Create a project group',
@@ -31,7 +43,8 @@ export const actionsList = [
   {
     name: 'Go Home',
     command: store => store.router.openPage(routes.home)
-  }
+  },
+  ...generatorsActions
 ];
 
 export default types

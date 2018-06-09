@@ -1,5 +1,5 @@
 import { compactJoin, processArguments } from '../../utils';
-import compact  from 'lodash/compact';
+import compact from 'lodash/compact';
 
 const CLI_NAME = 'ng';
 const CLI_INSTALL_NAME = ' @angular/cli';
@@ -9,7 +9,7 @@ const ARGUMENTS = {};
 
 export default {
   name: CLI_NAME,
-  description: 'Generates an Angular project',
+  description: 'Generate an Angular project',
   cli: CLI_NAME,
   title: CLI_INSTALL_NAME,
   options: [],

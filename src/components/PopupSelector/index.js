@@ -100,12 +100,12 @@ class PopupSelector extends Component {
   };
 
   render() {
-    const { inPortal, showSearch, renderItem, onEsc, overrides } = this.props;
+    const {key, inPortal, showSearch, renderItem, onEsc, overrides } = this.props;
     const { highlightedItem, foundItems: items } = overrides || this;
 
     return (
       <S.PopupSelector>
-        <Dialog onClose={onEsc} onEsc={onEsc} autoHeight={true} inPortal={inPortal}>
+        <Dialog key={key} onClose={onEsc} onEsc={onEsc} autoHeight={true} inPortal={inPortal}>
           <S.Search>
             {showSearch && (
               <S.Input

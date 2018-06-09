@@ -16,7 +16,7 @@ const applyPlugin = require('./apply-plugin');
 const { CALLS } = require('./enums');
 const initAutoUpdate = require('update-electron-app');
 
-/* ======================= DEBUG ======================= */
+/* ======================= DEV ======================= */
 
 require('electron-debug')({ enabled: true, showDevTools: false });
 unhandled();

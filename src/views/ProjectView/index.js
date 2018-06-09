@@ -146,7 +146,12 @@ class ProjectView extends Component {
                           </A.SmallButton>
                         </Tooltip>
                       </Horizontal>
-                      {get(project, 'packageJson.dependencies') && <DependenciesList {...dependenciesListProps} list={project.packageJson.dependencies} />}
+                      {get(project, 'packageJson.dependencies') && (
+                        <DependenciesList 
+                          {...dependenciesListProps} 
+                          list={project.packageJson.dependencies}
+                        />)
+                      }
                     </Vertical>
 
                     {/* Dev dependencies list */}

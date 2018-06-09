@@ -183,7 +183,8 @@ export default types
           removeScripts = [],
           addDependencies = [],
           addDevDependencies = [],
-          removeDependencies = []
+          removeDependencies = [],
+          merge = {}
         } = packageModify;
 
         const { scripts, ...rest } = self.packageJson;
@@ -193,12 +194,15 @@ export default types
           scripts: {
             ...omitBy(scripts, removeScripts),
             ...addScripts
-          }
+          },
+          ...merge
         };
 
         const pkgPath = path.join(self.path, 'package.json');
 
         fs.writeFileSync(pkgPath, JSON.stringify(newPackageJson, null, 2));
+
+        self.readProjectInfo();
 
         if (removeDependencies.length > 0) {
           yield self.addProcess('yarn', ['remove', ...removeDependencies]);

@@ -36,7 +36,7 @@ const argumentsOrder = getDefaultOrder(ARGUMENTS);
 
 export default {
   name: CLI_NAME,
-  description: 'Generates a vanilla React app',
+  description: 'Generate a vanilla React app',
   cli: CLI_NAME,
   options: [
     {

@@ -8,7 +8,6 @@ const applyPlugin = async ({ actions, pluginName, dir, projectPath }) =>
   Promise.all(
     actions.map(async action => {
       if (action.name === 'copy') {
-        logger.log('copying');
         try {
           let copyFromDir = path.join(__dirname, 'plugins', dir, action.fileOrFolder);
           let copyToDir = path.join(projectPath, action.copyToDir);

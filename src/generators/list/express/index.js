@@ -44,7 +44,7 @@ const argumentsOrder = getDefaultOrder(ARGUMENTS);
 
 export default {
   name: CLI_NAME,
-  description: 'Generates an Express server',
+  description: 'Generate an Express server',
   initialValues: {
     [ARGUMENTS.CSS.key]: 'css',
     [ARGUMENTS.VIEW.key]: 'jade'

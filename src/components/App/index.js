@@ -67,6 +67,7 @@ class App extends Component {
 
         {actions.opened.value === true && (
           <PopupSelector
+            key="actions"
             renderItem={({ name }) => (
               <Horizontal centerV spaceBetween flex={1}>
                 <div>{name}</div>
@@ -82,6 +83,7 @@ class App extends Component {
 
         {searchOpened.value === true && (
           <PopupSelector
+            key="search-projects"
             renderItem={({ name, path }) => (
               <Horizontal centerV spaceBetween flex={1}>
                 <div>{name}</div>
@@ -97,13 +99,13 @@ class App extends Component {
         )}
 
         {settingsOpened.value === true && (
-          <Dialog onClose={settingsOpened.setFalse}>
+          <Dialog key="settings" onClose={settingsOpened.setFalse}>
             <Settings onSave={settingsOpened.setFalse} />
           </Dialog>
         )}
 
         {store.openedFile && (
-          <Dialog onClose={store.closeFile} onEsc={store.closeFile}>
+          <Dialog key="opened-file" onClose={store.closeFile} onEsc={store.closeFile}>
             <S.Editor
               value={store.openedFile.content}
               options={{ mode: 'javascript', theme: 'material', lineNumbers: true }}
@@ -112,13 +114,14 @@ class App extends Component {
         )}
 
         {cssConverterDialogOpen.value === true && (
-          <Dialog onClose={cssConverterDialogOpen.setFalse}>
+          <Dialog key="css-to-js" onClose={cssConverterDialogOpen.setFalse}>
             <CssToJsConverter onDone={cssConverterDialogOpen.setFalse} />
           </Dialog>
         )}
 
         {babelReplDialogOpen.value === true && (
           <Dialog
+            key="babel-repl"
             styles={{ content: { maxWidth: 900, width: '80%' } }}
             onClose={babelReplDialogOpen.setFalse}
           >
@@ -126,19 +129,24 @@ class App extends Component {
           </Dialog>
         )}
 
-        {store.activeGenerator && (
-          <Dialog onClose={store.clearActiveGenerator}>
-            <CliGenerator
-              onCancel={store.clearActiveGenerator}
-              initialValues={store.activeGenerator.initialValues}
-              onSubmit={store.runCliGenerator}
-              generator={store.activeGenerator}
-            />
-          </Dialog>
-        )}
+        {store.activeGenerator !== null &&
+          store.activeGenerator !== undefined && (
+            <Dialog
+              key="active-generator"
+              onClose={store.clearActiveGenerator}
+            >
+              <CliGenerator
+                onCancel={store.clearActiveGenerator}
+                initialValues={store.activeGenerator.initialValues}
+                onSubmit={store.runCliGenerator}
+                generator={store.activeGenerator}
+              />
+
+            </Dialog>
+          )}
 
         {store.generateDialogOpen.value === true && (
-          <Dialog onClose={store.generateDialogOpen.setFalse}>
+          <Dialog key="generate-dialog" onClose={store.generateDialogOpen.setFalse}>
             <A.DialogContent>
               <h3> Generate a project </h3>
               <ListOfBlocks onPick={store.setActiveGenerator} list={generators} />

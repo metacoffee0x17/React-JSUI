@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import { Tooltip } from 'react-tippy';
-
-import { faTrash, faUpload, faArrowsAlt } from '@fortawesome/fontawesome-free-solid';
+import { observer, inject } from 'mobx-react';
+import { faTrash, faUpload, faArrowsAlt, faGlobe } from '@fortawesome/fontawesome-free-solid';
 
 //emotion
 import * as S from './styles';
-import { Horizontal, Vertical } from 'styles/flex-components';
+import { Vertical } from 'styles/flex-components';
 
 const IconButton = ({ tip, icon, onClick }) => (
-  <Tooltip title={tip}>
+  <Tooltip delay={300} title={tip}>
     <S.SmallIcon.Button onClick={onClick}>
       <S.SmallIcon.Icon icon={icon} />
     </S.SmallIcon.Button>
   </Tooltip>
 );
 
+@inject('store')
+@observer
 class DependenciesList extends Component {
   render() {
-    const { list = {}, isDev, onUpgrade, onMove, onDelete } = this.props;
+    const { list = {}, isDev, onUpgrade, onMove, onDelete, store } = this.props;
 
     return (
       <S.DependenciesList>
@@ -31,6 +33,11 @@ class DependenciesList extends Component {
                     {name} {version}
                   </S.Dependency.Name>
                   <S.Icons spaceAll={5}>
+                    <IconButton
+                      icon={faGlobe}
+                      tip={`Open npm page`}
+                      onClick={() => store.goToDependencyPage(name)}
+                    />
                     <IconButton
                       icon={faTrash}
                       tip={`Delete ${name}`}
