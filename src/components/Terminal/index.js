@@ -15,9 +15,10 @@ class Terminal extends Component {
           {({ height, width }) => {
             return (
               <List
+                style={{outline: 'none'}}
                 height={height}
                 rowCount={chunkedOutput.length}
-                rowHeight={30}
+                rowHeight={20}
                 rowRenderer={({ index, style }) => <div style={style}>{chunkedOutput[index]}</div>}
                 scrollToIndex={chunkedOutput.length - 1}
                 width={width}
