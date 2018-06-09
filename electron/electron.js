@@ -54,8 +54,8 @@ const createWindow = () => {
   });
 };
 
-const onOpenDialog = async () => {
-  const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] }));
+const onOpenDialog = async options => {
+  const dialogAsync = pify(dialog.showOpenDialog(mainWindow, options || { properties: ['openDirectory'] }));
   const chosenFolders = await dialogAsync;
   return chosenFolders[0];
 };

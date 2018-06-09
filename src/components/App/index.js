@@ -22,6 +22,7 @@ import BabelRepl from 'components/BabelRepl';
 import Settings from 'views/Settings';
 import ListOfBlocks from 'components/ListOfBlocks';
 import CliGenerator from 'components/CliGenerator';
+import ImportWorkspace from 'components/ImportWorkspace';
 
 @inject('store')
 @observer
@@ -131,17 +132,13 @@ class App extends Component {
 
         {store.activeGenerator !== null &&
           store.activeGenerator !== undefined && (
-            <Dialog
-              key="active-generator"
-              onClose={store.clearActiveGenerator}
-            >
+            <Dialog key="active-generator" onClose={store.clearActiveGenerator}>
               <CliGenerator
                 onCancel={store.clearActiveGenerator}
                 initialValues={store.activeGenerator.initialValues}
                 onSubmit={store.runCliGenerator}
                 generator={store.activeGenerator}
               />
-
             </Dialog>
           )}
 
@@ -151,6 +148,12 @@ class App extends Component {
               <h3> Generate a project </h3>
               <ListOfBlocks onPick={store.setActiveGenerator} list={generators} />
             </A.DialogContent>
+          </Dialog>
+        )}
+
+        {!!store.importingWorkspace && (
+          <Dialog key="import-workspace" onClose={store.generateDialogOpen.setFalse}>
+            <ImportWorkspace onCancel={store.cancelImportingWorkspace} onSubmit={store.importWorkspace} workspace={store.importingWorkspace} />
           </Dialog>
         )}
       </S.App>

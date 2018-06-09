@@ -13,3 +13,8 @@ export const getHttpsGitURL = url => {
   }
   return url;
 };
+
+export const getLastFromString = (str, separator) => {
+  const splitted = str.split(separator);
+  return splitted[splitted.length - 1];
+};

@@ -44,6 +44,10 @@ export const actionsList = [
     name: 'Go Home',
     command: store => store.router.openPage(routes.home)
   },
+  {
+    name: 'Import a VS Code workspace',
+    command: store => store.openCodeWorkspace()
+  },
   ...generatorsActions
 ];
 

@@ -1,32 +1,30 @@
-import { types, flow, getRoot } from 'mobx-state-tree';
-
+import { flow, getRoot, types } from 'mobx-state-tree';
 //swal
 import Swal from 'sweetalert2';
+import { toast } from 'config/swal';
 import { confirmDelete, prompt } from 'config/swal';
-
 //utils
 import groupBy from 'lodash/groupBy';
 import compact from 'lodash/compact';
-
 //models
 import Group from './Group';
 import Project from './Project';
 import Process from './Process';
 import File from './File';
 import Actions from './actions';
-
 //stores
 import SettingsView from 'models/views/settings-view';
 import HomeView from 'models/views/home-view';
 
 import { RouterStore } from 'rttr';
-
 //electron
 import ipcc from 'ipcc/renderer';
 import Processes from 'models/Processes';
 import Boolean from 'models/Boolean';
 import { createModel, whatever } from 'utils/mst-utils';
 import { PACKAGE_REGISTRY_URL } from 'config/urls';
+import { IMPORT_WORKSPACE_TYPES } from 'config/enums';
+import { getLastFromString } from 'utils/string-utils';
 
 //native
 const fkill = window.require('electron').remote.require('fkill');
@@ -44,6 +42,8 @@ export default types
     processes: types.optional(Processes, Processes.create()),
     addingProjectToGroup: types.maybe(types.reference(Project)),
     activeGenerator: whatever(null),
+    importingWorkspace: whatever(null),
+
     //booleans
     settingsOpened: createModel(Boolean),
     searchOpened: createModel(Boolean),
@@ -94,7 +94,7 @@ export default types
         self.addingProjectToGroup = null;
       },
       addNewProject: project => {
-        if (!self.groups.find(g => g.id === 'other')) {
+        if (self.groups.length === 0) {
           self.groups.push({ id: 'other', name: 'Others', projects: [] });
         }
 
@@ -104,6 +104,53 @@ export default types
         }
 
         self.projects.push(project);
+      },
+      openCodeWorkspace: flow(function*() {
+        const workspacePath = yield ipcc.callMain('open-dialog', {
+          properties: ['openFile'],
+          filters: [{ name: 'Custom File Type', extensions: ['code-workspace'] }]
+        });
+        if (workspacePath) {
+          self.importingWorkspace = JSON.parse(fs.readFileSync(workspacePath, 'utf8'));
+        }
+      }),
+      importWorkspace: flow(function*({ type, groupName }) {
+        switch (type) {
+          case IMPORT_WORKSPACE_TYPES.SEPARATELY: {
+            self.importingWorkspace.folders.forEach(folder => {
+              const project = Project.create({
+                name: getLastFromString(folder.path, '/'),
+                path: folder.path
+              });
+              self.addNewProject(project);
+            });
+            break;
+          }
+          case IMPORT_WORKSPACE_TYPES.GROUP: {
+            const group = Group.create({ name: groupName });
+            self.groups.push(group);
+
+            self.importingWorkspace.folders.forEach(folder => {
+              const project = Project.create({
+                name: getLastFromString(folder.path, '/'),
+                path: folder.path,
+                group: group
+              });
+              self.addNewProject(project);
+            });
+            break;
+          }
+        }
+
+        self.importingWorkspace = false;
+
+        toast({
+          type: 'success',
+          title: 'Successfully added the workspace!'
+        });
+      }),
+      cancelImportingWorkspace: () => {
+        self.importingWorkspace = null;
       },
       openFolder: flow(function*(groupId) {
         const folderName = yield ipcc.callMain('open-dialog');
@@ -133,6 +180,7 @@ export default types
           'Are you sure?',
           `This will only remove the project from the dashboard, it won't delete any files on disk.`
         );
+
         if (confirmed) {
           self.projects = self.projects.filter(p => p.id !== projectId);
         }
@@ -163,10 +211,10 @@ export default types
         );
         if (confirmed) {
           self.projects = self.projects.filter(p => {
-            if (groupId === 'other') {
+            if (groupId === 'other' || groupId === null) {
               return p.group !== null && p.group.id !== 'other';
             }
-            return p.group.id !== groupId;
+            return p.group ? p.group.id !== groupId : true;
           });
           self.groups = self.groups.filter(g => g.id !== groupId);
         }

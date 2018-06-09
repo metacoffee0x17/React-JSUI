@@ -9,6 +9,12 @@ export const PROJECT_TYPES = {
   GRAPHQL: 'GraphQL'
 };
 
+export const IMPORT_WORKSPACE_TYPES = {
+  WORKSPACE: "as-a-single-workspace",
+  SEPARATELY: "separately",
+  GROUP: "separately-in-group"
+};
+
 export const PROCESS_STATUS = {
   RUNNING: 'running',
   ERROR: 'error',

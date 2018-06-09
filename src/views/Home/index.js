@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
 
 //icons
-import { faObjectGroup, faPlus, faCogs } from '@fortawesome/fontawesome-free-solid';
+import { faObjectGroup, faBoxOpen, faPlus, faCogs } from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -41,6 +41,7 @@ class Home extends Component {
           {hasProjects && (
             <Fragment>
               <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
+              <IconWithTip onClick={store.openCodeWorkspace} icon={faBoxOpen} tip="Import a VS Code workspace" />
               <IconWithTip onClick={store.createGroup} icon={faObjectGroup} tip="Create a group" />
               <IconWithTip onClick={store.generateDialogOpen.setTrue} icon={faCogs} tip="Generate an app" />
             </Fragment>
