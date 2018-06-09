@@ -10,7 +10,6 @@ export const Terminal = emotion.div({
   transition: 'all 200ms linear',
   transform: 'translate(0)',
   ...flex.vertical,
-  overflowY: 'auto',
   whiteSpace: 'pre',
   padding: 10,
   lineHeight: '17px',

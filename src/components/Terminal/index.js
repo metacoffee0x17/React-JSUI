@@ -1,33 +1,32 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-
+import { List, AutoSizer } from 'react-virtualized';
 //emotion
 import * as S from './styles';
 
-import { reaction } from 'mobx';
-
 @observer
 class Terminal extends Component {
-  outputRef = React.createRef();
-
-  componentDidMount() {
-    this.disposeReaction = reaction(
-      () => this.props.process.output || this.props.process.running,
-      () => {
-        if (this.outputRef.current) {
-          this.outputRef.current.scrollTop = 999999;
-        }
-      }
-    );
-  }
-
-  componentWillUnmount() {
-    this.disposeReaction();
-  }
-
   render() {
     const { process } = this.props;
-    return <S.Terminal innerRef={this.outputRef}>{process.output}</S.Terminal>;
+    const chunkedOutput = process.chunkedOutput.toJSON();
+    return (
+      <S.Terminal>
+        <AutoSizer>
+          {({ height, width }) => {
+            return (
+              <List
+                height={height}
+                rowCount={chunkedOutput.length}
+                rowHeight={30}
+                rowRenderer={({ index, style }) => <div style={style}>{chunkedOutput[index]}</div>}
+                scrollToIndex={chunkedOutput.length - 1}
+                width={width}
+              />
+            );
+          }}
+        </AutoSizer>
+      </S.Terminal>
+    );
   }
 }
 
