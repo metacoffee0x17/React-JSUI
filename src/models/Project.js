@@ -12,6 +12,7 @@ import omit from 'lodash/omit';
 import { getProjectType } from 'project-utils/get-project-type';
 import { getHttpsGitURL } from 'utils/string-utils';
 import uuid from 'uuid';
+import gitBranch from 'utils/git-branch';
 // import nodePlop from 'node-plop';
 
 //models
@@ -48,6 +49,7 @@ export default types
     //frozen
     packageJson: types.frozen,
     gitConfig: types.frozen,
+    gitBranch: types.frozen,
     contents: types.frozen,
     allItems: types.optional(types.frozen, []),
     processes: types.optional(Processes, Processes.create()),
@@ -300,6 +302,12 @@ export default types
         } catch (err) {
           console.error(err);
           self.type = PROJECT_TYPES.UNKNOWN;
+        }
+
+        try {
+          self.gitBranch = gitBranch(self.path);
+        } catch (err) {
+          console.error(err);
         }
       },
       afterCreate() {
