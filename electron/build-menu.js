@@ -1,6 +1,9 @@
 const { SHORTCUTS } = require('./enums');
 
-const buildMenu = ({ config: { appName }, methods: { resetCache, editCache, callShortcut } }) => {
+const buildMenu = ({
+  config: { appName },
+  methods: { resetCache, editCache, importConfig, exportConfig, callShortcut }
+}) => {
   return [
     {
       label: appName,
@@ -25,6 +28,21 @@ const buildMenu = ({ config: { appName }, methods: { resetCache, editCache, call
           accelerator: 'CmdOrCtrl+Shift+P',
           click: () => callShortcut(SHORTCUTS.OPEN_PROJECTS)
         },
+        { type: 'separator' },
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services', submenu: [] },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideothers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    },
+    {
+      label: 'Settings',
+      submenu: [
         {
           label: 'Reset app cache',
           click() {
@@ -38,15 +56,18 @@ const buildMenu = ({ config: { appName }, methods: { resetCache, editCache, call
           }
         },
         { type: 'separator' },
-        { role: 'about' },
-        { type: 'separator' },
-        { role: 'services', submenu: [] },
-        { type: 'separator' },
-        { role: 'hide' },
-        { role: 'hideothers' },
-        { role: 'unhide' },
-        { type: 'separator' },
-        { role: 'quit' }
+        {
+          label: 'Import config',
+          click() {
+            importConfig();
+          }
+        },
+        {
+          label: 'Export config',
+          click() {
+            exportConfig();
+          }
+        }
       ]
     },
     {

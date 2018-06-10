@@ -8,6 +8,8 @@ const logger = require('electron-timber');
 const { app, dialog, Menu, BrowserWindow } = electron;
 const { sync } = require('command-exists');
 const nodePlop = require('node-plop');
+const fs = require('fs');
+const format = require('date-fns/format');
 
 /* ================= LOCAL MODULES ===================== */
 
@@ -87,12 +89,32 @@ const editCache = () => {
   ElectronStore.openInEditor();
 };
 
+const importConfig = async () => {
+  const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openFile'] }));
+  const chosenFiles = await dialogAsync;
+  ElectronStore.store = JSON.parse(fs.readFileSync(chosenFiles[0], 'utf-8'));
+  mainWindow.webContents.reload();
+};
+
+const exportConfig = async () => {
+  const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] }));
+  const chosenFolders = await dialogAsync;
+  const date = format(new Date(), 'MM-DD-YYYY HH[:]mm');
+
+  fs.writeFileSync(
+    path.join(chosenFolders[0], `jsui-config (${date}).json`),
+    JSON.stringify(ElectronStore.store)
+  );
+};
+
 const createMenu = () => {
   const menuTemplate = buildMenu({
     config: {
       appName: app.getName()
     },
     methods: {
+      importConfig,
+      exportConfig,
       resetCache,
       editCache,
       callShortcut
