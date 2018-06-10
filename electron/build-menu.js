@@ -1,4 +1,6 @@
-const buildMenu = ({ config: { appName }, methods: { resetCache, editCache, openPreferences } }) => {
+const { SHORTCUTS } = require('./enums');
+
+const buildMenu = ({ config: { appName }, methods: { resetCache, editCache, callShortcut } }) => {
   return [
     {
       label: appName,
@@ -6,9 +8,22 @@ const buildMenu = ({ config: { appName }, methods: { resetCache, editCache, open
         {
           label: 'Preferences',
           accelerator: 'CmdOrCtrl+,',
-          click: () => {
-            openPreferences();
-          }
+          click: () => callShortcut(SHORTCUTS.OPEN_SETTINGS)
+        },
+        {
+          label: 'Actions',
+          accelerator: 'CmdOrCtrl+Shift+A',
+          click: () => callShortcut(SHORTCUTS.OPEN_ACTIONS)
+        },
+        {
+          label: 'Go Home',
+          accelerator: 'CmdOrCtrl+Shift+H',
+          click: () => callShortcut(SHORTCUTS.GO_HOME)
+        },
+        {
+          label: 'Search projects',
+          accelerator: 'CmdOrCtrl+Shift+P',
+          click: () => callShortcut(SHORTCUTS.OPEN_PROJECTS)
         },
         {
           label: 'Reset app cache',

@@ -13,7 +13,7 @@ const nodePlop = require('node-plop');
 
 const buildMenu = require('./build-menu');
 const applyPlugin = require('./apply-plugin');
-const { CALLS } = require('./enums');
+const { CALLS, SHORTCUTS } = require('./enums');
 const initAutoUpdate = require('update-electron-app');
 
 /* ======================= DEV ======================= */
@@ -76,9 +76,7 @@ const setupListeners = () => {
   });
 };
 
-const openPreferences = () => {
-  ipc.callRenderer(mainWindow, CALLS.OPEN_SETTINGS);
-};
+const callShortcut = shortcut => ipc.callRenderer(mainWindow, CALLS.SHORTCUT, shortcut);
 
 const resetCache = () => {
   ElectronStore.clear();
@@ -95,9 +93,9 @@ const createMenu = () => {
       appName: app.getName()
     },
     methods: {
-      openPreferences,
       resetCache,
-      editCache
+      editCache,
+      callShortcut
     }
   });
 
