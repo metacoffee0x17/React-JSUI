@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
 
 //icons
-import { faObjectGroup, faBoxOpen, faPlus, faCogs } from '@fortawesome/fontawesome-free-solid';
+import { faObjectGroup, faFolderOpen, faBoxOpen, faPlus, faCogs } from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -33,7 +33,7 @@ class Home extends Component {
 
   render() {
     const { store } = this.props;
-    const { home } = store;
+    const { showWelcomeScreen } = store;
     const { groupsWithProjects, hasProjects, collapsed } = store;
 
     return (
@@ -42,37 +42,48 @@ class Home extends Component {
           {hasProjects && (
             <Fragment>
               <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
-              <IconWithTip onClick={store.openCodeWorkspace} icon={faBoxOpen} tip="Import a VS Code workspace" />
+              <IconWithTip
+                onClick={store.openCodeWorkspace}
+                icon={faBoxOpen}
+                tip="Import a VS Code workspace"
+              />
+              <IconWithTip
+                onClick={store.bulkImport}
+                icon={faFolderOpen}
+                tip="Bulk import projects from folder"
+              />
               <IconWithTip onClick={store.createGroup} icon={faObjectGroup} tip="Create a group" />
               <IconWithTip onClick={store.generateDialogOpen.setTrue} icon={faCogs} tip="Generate an app" />
             </Fragment>
           )}
         </Header>
 
-        <A.Mid>
-          {!hasProjects && (
-            <S.Empty>
-              <S.Title>You don't have any projects. Add your first one?</S.Title>
-              <A.Horizontal spaceAll={15}>
-                <A.Button onClick={store.openFolder}> Import a project </A.Button>
-                <A.Button onClick={store.generateDialogOpen.setTrue}> Generate a project </A.Button>
-              </A.Horizontal>
-            </S.Empty>
-          )}
+        {showWelcomeScreen && (
+          <S.Empty>
+            <S.Title>You don't have any projects. Add your first one?</S.Title>
+            <A.Horizontal spaceAll={15}>
+              <A.Button onClick={store.openFolder}> Import a project </A.Button>
+              <A.Button onClick={store.generateDialogOpen.setTrue}> Generate a project </A.Button>
+            </A.Horizontal>
+          </S.Empty>
+        )}
 
-          {groupsWithProjects && (
-            <S.GroupList>
-              {groupsWithProjects.map(group => (
-                <Group
-                  onClick={() => collapsed && store.pickGroupForProject(group)}
-                  collapsed={collapsed}
-                  group={group}
-                  key={group.id}
-                />
-              ))}
-            </S.GroupList>
-          )}
-        </A.Mid>
+        {!showWelcomeScreen && (
+          <A.Horizontal>
+            <A.Mid>
+              <S.GroupList>
+                {groupsWithProjects.map(group => (
+                  <Group
+                    onClick={() => collapsed && store.pickGroupForProject(group)}
+                    collapsed={collapsed}
+                    group={group}
+                    key={group.id}
+                  />
+                ))}
+              </S.GroupList>
+            </A.Mid>
+          </A.Horizontal>
+        )}
 
         {store.processes.hasProcesses && <Processes processes={store.processes} />}
       </S.Home>

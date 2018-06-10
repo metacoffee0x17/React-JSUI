@@ -3,9 +3,10 @@ import { flow, getRoot, types } from 'mobx-state-tree';
 import Swal from 'sweetalert2';
 import { toast } from 'config/swal';
 import { confirmDelete, prompt } from 'config/swal';
+
 //utils
-import groupBy from 'lodash/groupBy';
-import compact from 'lodash/compact';
+import { compact, uniqBy, pick, countBy, groupBy, orderBy } from 'lodash';
+
 //models
 import Group from './Group';
 import Project from './Project';
@@ -29,6 +30,7 @@ import { getLastFromString } from 'utils/string-utils';
 //native
 const fkill = window.require('electron').remote.require('fkill');
 const fs = window.require('fs');
+const path = window.require('path');
 
 export default types
   .model('Store', {
@@ -78,7 +80,39 @@ export default types
         self.addingProjectToGroup = project;
       },
       bulkImport: flow(function*() {
+        const ignored = ['node_modules'];
         const folderName = yield ipcc.callMain('open-dialog');
+
+        let entries = fs.readdirSync(folderName);
+
+        const foldersWithPackageJson = entries.filter(entry => {
+          if (ignored.includes(entry)) {
+            return false;
+          }
+          let folderPath = path.join(folderName, entry);
+          let isFolder = fs.lstatSync(folderPath).isDirectory();
+          if (isFolder) {
+            const packageJsonExists = fs.existsSync(path.join(folderName, entry, 'package.json'));
+            if (packageJsonExists) {
+              return true;
+            }
+          }
+        });
+
+        if (foldersWithPackageJson.length > 1) {
+          let groupName = getLastFromString(folderName, '/');
+          const group = Group.create({ name: groupName });
+          self.groups.push(group);
+          foldersWithPackageJson.forEach(folder => {
+            let folderPath = path.join(folderName, folder);
+            const newProject = Project.create({
+              name: getLastFromString(folderPath, '/'),
+              path: folderPath,
+              group
+            });
+            self.addNewProject(newProject);
+          });
+        }
       }),
       closeFile: () => {
         self.openedFile = null;
@@ -286,8 +320,32 @@ export default types
     get collapsed() {
       return !!self.addingProjectToGroup;
     },
+    get filteredProjects() {
+      return self.projects;
+    },
+    get currentDependencies() {
+      let allDependencies = self.filteredProjects.reduce((accum, project) => {
+        let dependencies =
+          project.packageJson && project.packageJson.dependencies
+            ? Object.entries({
+                ...project.packageJson.dependencies,
+                ...project.packageJson.devDependencies
+              }).map(([a]) => a)
+            : [];
+        accum = [...accum, ...dependencies];
+        return accum;
+      }, []);
+
+      const grouped = Object.entries(countBy(allDependencies)).map(([name, count]) => ({ name, count }));
+      const unique = uniqBy(grouped, a => a.name);
+      const sorted = orderBy(unique, ['count'], ['desc']);
+      return sorted;
+    },
     get hasProjects() {
       return self.groupsWithProjects && self.groupsWithProjects.length > 0;
+    },
+    get showWelcomeScreen() {
+      return self.projects.length === 0 && self.groups.length === 0;
     },
     get allProjects() {
       const projectsFromGroups = self.groups.reduce((accum, group) => {

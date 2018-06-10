@@ -1,8 +1,9 @@
 import emotion from 'react-emotion';
 import flex from 'styles/flex';
+import { Vertical } from 'styles/flex-components';
 import { whiteish } from 'styles/mixins';
 
-export const Group = emotion.div(
+export const Group = emotion(Vertical)(
   {
     backgroundColor: whiteish(0.05),
     borderRadius: 5,

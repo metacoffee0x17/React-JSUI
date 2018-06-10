@@ -10016,6 +10016,10 @@ style-loader@^0.20.3:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
 
+styles-debugger@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/styles-debugger/-/styles-debugger-1.0.0.tgz#29e88605bf8b44e97f337c51ecc14fb6470664e2"
+
 stylis-rule-sheet@^0.0.10:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stylis-rule-sheet/-/stylis-rule-sheet-0.0.10.tgz#44e64a2b076643f4b52e5ff71efc04d8c3c4a430"

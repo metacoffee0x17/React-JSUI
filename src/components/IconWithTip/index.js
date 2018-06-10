@@ -13,13 +13,13 @@ class IconWithTip extends Component {
   };
 
   render() {
-    const { icon, tip, position, ...rest } = this.props;
+    const { icon, delay = 300, tip, position, ...rest } = this.props;
 
     return (
       <ConditionalWrap
         condition={tip}
         wrap={children => (
-          <Tooltip title={tip} position={position}>
+          <Tooltip delay={delay} title={tip} position={position}>
             {children}
           </Tooltip>
         )}
