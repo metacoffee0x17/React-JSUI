@@ -92,19 +92,22 @@ const editCache = () => {
 const importConfig = async () => {
   const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openFile'] }));
   const chosenFiles = await dialogAsync;
-  ElectronStore.store = JSON.parse(fs.readFileSync(chosenFiles[0], 'utf-8'));
-  mainWindow.webContents.reload();
+  if (chosenFiles && chosenFiles.length > 0) {
+    ElectronStore.store = JSON.parse(fs.readFileSync(chosenFiles[0], 'utf-8'));
+    mainWindow.webContents.reload();
+  }
 };
 
 const exportConfig = async () => {
   const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] }));
   const chosenFolders = await dialogAsync;
-  const date = format(new Date(), 'MM-DD-YYYY HH[:]mm');
-
-  fs.writeFileSync(
-    path.join(chosenFolders[0], `jsui-config (${date}).json`),
-    JSON.stringify(ElectronStore.store)
-  );
+  if (chosenFolders && chosenFolders.length > 0) {
+    const date = format(new Date(), 'MM-DD-YYYY HH[:]mm');
+    fs.writeFileSync(
+      path.join(chosenFolders[0], `jsui-config (${date}).json`),
+      JSON.stringify(ElectronStore.store)
+    );
+  }
 };
 
 const createMenu = () => {

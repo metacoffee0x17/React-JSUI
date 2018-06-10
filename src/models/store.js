@@ -83,6 +83,10 @@ export default types
         const ignored = ['node_modules'];
         const folderName = yield ipcc.callMain('open-dialog');
 
+        if (!folderName) {
+          return null;
+        }
+
         let entries = fs.readdirSync(folderName);
 
         const foldersWithPackageJson = entries.filter(entry => {
