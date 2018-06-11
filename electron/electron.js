@@ -47,7 +47,7 @@ let mainWindow;
 /* ======================= METHODS ======================= */
 
 const createWindow = () => {
-  mainWindow = new BrowserWindow({ width: 1200, height: 800 });
+  mainWindow = new BrowserWindow({ width: 1200, height: 800, backgroundColor: '#3e495e' });
 
   mainWindow.loadURL(appUrl);
 
