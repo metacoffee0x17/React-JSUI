@@ -84,7 +84,11 @@ export default types
         }
       },
       openDir: () => {
-        spawn('open', [self.path]);
+        if (process.platform === 'darwin') { 
+          spawn('open', [self.path]);
+        } else if (process.platform === 'win32') {
+          spawn('explorer', [self.path]);
+        }
       },
       build: () => {
         self.runScript('build');
