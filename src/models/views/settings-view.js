@@ -11,7 +11,7 @@ export default types
     indexFiles: types.optional(types.boolean, false),
     highlightProjectsWithoutRepo: types.optional(types.boolean, false),
     showHomeSidebar: types.optional(types.boolean, true),
-    horizontalLayout: types.optional(types.boolean, true)
+    horizontalLayout: types.optional(types.boolean, false)
   })
   .actions(self => ({
     changeEditor: editor => {
