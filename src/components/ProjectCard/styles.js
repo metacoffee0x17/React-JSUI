@@ -16,13 +16,19 @@ export const ProjectCard = emotion.div(
     minHeight: 100,
     padding: 15,
     marginBottom: 15,
-    marginRight: 15,
     color: 'white',
     maxWidth: 330
   },
-  ({ markRed }) => ({
+  ({ markRed, horizontal }) => ({
     ...(markRed && {
       border: '1px solid #ea9797'
+    }),
+    ...(horizontal && {
+      width: '100%',
+      flex: 1
+    }),
+    ...(!horizontal && {
+      marginRight: 15
     })
   })
 );

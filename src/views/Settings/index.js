@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 
 import * as S from './styles';
 import * as A from 'styles/shared-components';
+import { bindSwitchToMST } from 'utils/bind-utils';
 
 @inject('store')
 @observer
@@ -36,24 +37,22 @@ class Settings extends Component {
 
           <A.Horizontal centerV>
             <S.Switch
-              checked={settings.highlightProjectsWithoutRepo}
-              value={settings.highlightProjectsWithoutRepo}
-              onChange={(e, checked) => {
-                settings.setHighlightProjectsWithoutRepo(checked);
-              }}
+              {...bindSwitchToMST(
+                settings.highlightProjectsWithoutRepo,
+                settings.setHighlightProjectsWithoutRepo
+              )}
             />
             <S.Option.Title>Highlight projects without a repo</S.Option.Title>
           </A.Horizontal>
 
           <A.Horizontal centerV>
-            <S.Switch
-              checked={settings.showHomeSidebar}
-              value={settings.showHomeSidebar}
-              onChange={(e, checked) => {
-                settings.setShowHomeSidebar(checked);
-              }}
-            />
+            <S.Switch {...bindSwitchToMST(settings.showHomeSidebar, settings.setShowHomeSidebar)} />
             <S.Option.Title>Show filters sidebar</S.Option.Title>
+          </A.Horizontal>
+
+          <A.Horizontal centerV>
+            <S.Switch {...bindSwitchToMST(settings.horizontalLayout, settings.setHorizontalLayout)} />
+            <S.Option.Title>Horizontal layout</S.Option.Title>
           </A.Horizontal>
 
           <A.Horizontal centerV>

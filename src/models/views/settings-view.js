@@ -10,7 +10,8 @@ export default types
     projectsPath: types.optional(types.string, homepath),
     indexFiles: types.optional(types.boolean, false),
     highlightProjectsWithoutRepo: types.optional(types.boolean, false),
-    showHomeSidebar: types.optional(types.boolean, true)
+    showHomeSidebar: types.optional(types.boolean, true),
+    horizontalLayout: types.optional(types.boolean, true)
   })
   .actions(self => ({
     changeEditor: editor => {
@@ -18,6 +19,9 @@ export default types
     },
     setShowHomeSidebar: value => {
       self.showHomeSidebar = value;
+    },
+    setHorizontalLayout: value => {
+      self.horizontalLayout = value;
     },
     changePath: projectsPath => {
       self.projectsPath = projectsPath;

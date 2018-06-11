@@ -34,8 +34,8 @@ class Home extends Component {
 
   render() {
     const { store } = this.props;
-    const { showWelcomeScreen, settings } = store;
-    const { groupsWithProjects, collapsed } = store;
+    const { showWelcomeScreen, settings, groupsWithProjects, collapsed } = store;
+    const { horizontalLayout } = settings;
 
     return (
       <S.Home>
@@ -73,9 +73,10 @@ class Home extends Component {
           <A.Horizontal>
             {settings.showHomeSidebar && <FilterProjectsSidebar />}
             <A.Mid>
-              <S.GroupList>
+              <S.GroupList horizontal={horizontalLayout}>
                 {groupsWithProjects.map(group => (
                   <Group
+                    horizontal={horizontalLayout}
                     hideIfEmpty={store.projectFilters.searchText.hasValue}
                     onClick={() => collapsed && store.pickGroupForProject(group)}
                     collapsed={collapsed}

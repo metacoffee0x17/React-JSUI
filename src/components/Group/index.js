@@ -19,16 +19,17 @@ class Group extends Component {
   collapsed = Boolean.create();
 
   render() {
-    const { group, hideIfEmpty, collapsed, onClick, store } = this.props;
+    const { group, hideIfEmpty, collapsed, onClick, store, horizontal } = this.props;
     const hasProjects = group.projects.length > 0;
     const showProjects = hasProjects && collapsed === false && this.collapsed.value === false;
     const hide = hideIfEmpty && !hasProjects;
+    const showCollapse = hasProjects && !collapsed && !horizontal;
 
     return (
       <S.Group hide={hide} spaceAll={10} collapsed={collapsed} onClick={onClick}>
         <A.Horizontal centerV spaceBetween>
           <A.Horizontal spaceAll={10}>
-            {hasProjects && (
+            {showCollapse && (
               <A.ActionIcon
                 delay={700}
                 onClick={this.collapsed.toggle}
@@ -59,7 +60,12 @@ class Group extends Component {
         {showProjects && (
           <S.ProjectList>
             {group.projects.map(project => (
-              <ProjectCard showMove={store.canMoveProject} project={project} key={project.name} />
+              <ProjectCard
+                horizontal={horizontal}
+                showMove={store.canMoveProject}
+                project={project}
+                key={project.name}
+              />
             ))}
           </S.ProjectList>
         )}

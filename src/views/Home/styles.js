@@ -1,5 +1,6 @@
 import flex from 'styles/flex';
 import emotion from 'react-emotion';
+import { Group } from 'components/Group/styles';
 
 export const Home = emotion.div({
   ...flex.vertical,
@@ -22,6 +23,9 @@ export const Empty = emotion.div({
   flex: 1
 });
 
-export const GroupList = emotion.div({
-  // ...flex.horizontal
-});
+export const GroupList = emotion.div({}, ({ horizontal }) => ({
+  ...(horizontal && flex.horizontal),
+  [`> ${Group}`]: {
+    marginRight: 15
+  }
+}));
