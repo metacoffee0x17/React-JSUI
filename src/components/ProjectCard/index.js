@@ -75,7 +75,7 @@ class Project extends Component {
               <A.ActionIcon tip="Delete dependencies" icon={faTrash} onClick={project.deleteDependencies} />
               <A.ActionIcon tip="Install dependencies" icon={faPlug} onClick={project.installDependencies} />*/}
               {project.origin && (
-                <A.ActionIcon tip="Git source" icon={faExternalLinkAlt} onClick={project.goToOrigin} />
+                <A.ActionIcon tip={project.origin} icon={faExternalLinkAlt} onClick={project.goToOrigin} />
               )}
               <A.ActionIcon
                 icon={faTrash}
