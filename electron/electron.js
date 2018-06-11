@@ -90,23 +90,31 @@ const editCache = () => {
 };
 
 const importConfig = async () => {
-  const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openFile'] }));
-  const chosenFiles = await dialogAsync;
-  if (chosenFiles && chosenFiles.length > 0) {
-    ElectronStore.store = JSON.parse(fs.readFileSync(chosenFiles[0], 'utf-8'));
-    mainWindow.webContents.reload();
+  try {
+    const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openFile'] }));
+    const chosenFiles = await dialogAsync;
+    if (chosenFiles) {
+      ElectronStore.store = JSON.parse(fs.readFileSync(chosenFiles[0], 'utf-8'));
+      mainWindow.webContents.reload();
+    }
+  } catch (err) {
+    logger.log(err);
   }
 };
 
 const exportConfig = async () => {
-  const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] }));
-  const chosenFolders = await dialogAsync;
-  if (chosenFolders && chosenFolders.length > 0) {
-    const date = format(new Date(), 'MM-DD-YYYY HH[:]mm');
-    fs.writeFileSync(
-      path.join(chosenFolders[0], `jsui-config (${date}).json`),
-      JSON.stringify(ElectronStore.store)
-    );
+  try {
+    const dialogAsync = pify(dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] }));
+    const chosenFolders = await dialogAsync;
+    if (chosenFolders) {
+      const date = format(new Date(), 'MM-DD-YYYY HH[:]mm');
+      fs.writeFileSync(
+        path.join(chosenFolders[0], `jsui-config (${date}).json`),
+        JSON.stringify(ElectronStore.store)
+      );
+    }
+  } catch (err) {
+    logger.log(err);
   }
 };
 
