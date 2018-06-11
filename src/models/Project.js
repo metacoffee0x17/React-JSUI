@@ -84,11 +84,8 @@ export default types
         }
       },
       openDir: () => {
-        if (process.platform === 'darwin') { 
-          spawn('open', [self.path]);
-        } else if (process.platform === 'win32') {
-          spawn('explorer', [self.path]);
-        }
+        const shell = window.require('electron').shell;
+        shell.openExternal(self.path);
       },
       build: () => {
         self.runScript('build');
