@@ -112,4 +112,21 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 ![](https://i.imgur.com/nJQsQwE.gif)
 
 
+## Environment / Build Setup:
+```
+# clone repo
+git clone https://github.com/kitze/JSUI.git
+
+# install yarn (assuming you don't already have Yarn installed)
+npm install -g yarn
+
+# install dependencies
+yarn install #or npm install
+
+# start app in dev mode
+yarn start #or npm start
+
+# build electron packages
+yarn build-react-copy-electron && electron-builder
+```
 
