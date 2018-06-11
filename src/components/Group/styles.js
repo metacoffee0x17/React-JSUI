@@ -2,6 +2,7 @@ import emotion from 'react-emotion';
 import flex from 'styles/flex';
 import { Vertical } from 'styles/flex-components';
 import { noSelect, whiteish } from 'styles/mixins';
+import { debug } from 'config/debug';
 
 export const Group = emotion(Vertical)(
   {
@@ -12,7 +13,7 @@ export const Group = emotion(Vertical)(
     color: 'white',
     transition: 'all 150ms linear'
   },
-  ({ collapsed, hide }) => ({
+  ({ collapsed, hide, horizontal }) => ({
     ...(collapsed && {
       cursor: 'pointer',
       '&:hover': {
@@ -21,14 +22,34 @@ export const Group = emotion(Vertical)(
     }),
     ...(hide && {
       display: 'none'
+    }),
+    ...(horizontal && {
+      marginRight: 15,
+      flex: 1,
+      width: 300,
+      ...debug()
     })
   })
 );
 
-export const ProjectList = emotion.div({
-  ...flex.horizontal,
-  ...flex.wrap
-});
+export const ProjectList = emotion.div(
+  {
+    ...flex.horizontal,
+    ...flex.wrap
+  },
+  ({ horizontal }) => ({
+    ...(horizontal && {
+      ...flex.vertical,
+      alignItems: 'flex-start',
+      flex: 1,
+      height: '100%',
+      maxHeight: '100%',
+      overflowY: 'auto',
+      flexWrap: 'initial',
+      width: '100%'
+    })
+  })
+);
 
 export const Name = emotion.div({
   fontWeight: 'bold',

@@ -23,6 +23,9 @@ export default types
     setHorizontalLayout: value => {
       self.horizontalLayout = value;
     },
+    toggleHorizontalLayout: () => {
+      self.horizontalLayout = !self.horizontalLayout;
+    },
     changePath: projectsPath => {
       self.projectsPath = projectsPath;
     },

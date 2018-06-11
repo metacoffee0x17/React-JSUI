@@ -24,8 +24,7 @@ export const ProjectCard = emotion.div(
       border: '1px solid #ea9797'
     }),
     ...(horizontal && {
-      width: '100%',
-      flex: 1
+      width: '100%'
     }),
     ...(!horizontal && {
       marginRight: 15
@@ -56,5 +55,7 @@ export const Tag = emotion.div({
   padding: '3px 5px',
   borderRadius: 3,
   fontSize: 12,
-  color: 'white'
+  color: 'white',
+  flexShrink: 0,
+  minHeight: 19
 });

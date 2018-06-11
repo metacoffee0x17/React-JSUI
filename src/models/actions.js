@@ -52,6 +52,10 @@ export const actionsList = [
     name: 'Toggle home sidebar',
     command: store => store.settings.toggleHomeSidebar()
   },
+  {
+    name: 'Toggle horizontal layout',
+    command: store => store.settings.toggleHorizontalLayout()
+  },
   ...generatorsActions
 ];
 

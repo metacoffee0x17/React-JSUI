@@ -26,7 +26,7 @@ class Group extends Component {
     const showCollapse = hasProjects && !collapsed && !horizontal;
 
     return (
-      <S.Group hide={hide} spaceAll={10} collapsed={collapsed} onClick={onClick}>
+      <S.Group hide={hide} horizontal={horizontal} spaceAll={10} collapsed={collapsed} onClick={onClick}>
         <A.Horizontal centerV spaceBetween>
           <A.Horizontal spaceAll={10}>
             {showCollapse && (
@@ -58,7 +58,7 @@ class Group extends Component {
         </A.Horizontal>
 
         {showProjects && (
-          <S.ProjectList>
+          <S.ProjectList horizontal={horizontal}>
             {group.projects.map(project => (
               <ProjectCard
                 horizontal={horizontal}
