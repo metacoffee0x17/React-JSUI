@@ -1,4 +1,17 @@
-import emotion from 'react-emotion';
+import emotion, { css } from 'react-emotion';
+
+import { Switch as $Switch } from '@material-ui/core';
+import withProps from 'recompose/withProps';
+
+export const Switch = withProps({
+  classes: {
+    root: css({
+      position: 'relative',
+      left: -10,
+      marginRight: -10
+    })
+  }
+})($Switch);
 
 export const Settings = emotion.div({
   color: 'rgba(0,0,0,0.5)'
@@ -16,9 +29,6 @@ export const Title = emotion.div({
 });
 
 export const Option = {
-  Wrap: emotion.div({
-    marginBottom: 30
-  }),
   Title: emotion.div({
     marginBottom: 5,
     color: 'white',

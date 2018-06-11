@@ -1,11 +1,11 @@
-import { PROJECT_TYPES } from 'config/enums';
+import { PROJECT_TAGS } from 'config/enums';
 
 const hasModule = (entries, mod) => entries.find(([name]) => name === mod);
 const hasModuleThatContains = (entries, mod) => entries.find(([name]) => name.includes(mod));
 
 export const getProjectType = packageJson => {
   if (!packageJson) {
-    return PROJECT_TYPES.UNKNOWN;
+    return PROJECT_TAGS.UNKNOWN;
   }
 
   const { dependencies = {}, devDependencies = {} } = packageJson;
@@ -13,43 +13,43 @@ export const getProjectType = packageJson => {
 
   const types = [
     {
-      type: PROJECT_TYPES.ELECTRON,
+      type: PROJECT_TAGS.ELECTRON,
       check: entries => {
         return hasModule(entries, 'electron');
       }
     },
     {
-      type: PROJECT_TYPES.REACT_NATIVE,
+      type: PROJECT_TAGS.REACT_NATIVE,
       check: entries => {
         return hasModule(entries, 'react-native');
       }
     },
     {
-      type: PROJECT_TYPES.GATSBY,
+      type: PROJECT_TAGS.GATSBY,
       check: entries => {
         return hasModule(entries, 'gatsby');
       }
     },
     {
-      type: PROJECT_TYPES.EXPRESS,
+      type: PROJECT_TAGS.EXPRESS,
       check: entries => {
         return hasModule(entries, 'express');
       }
     },
     {
-      type: PROJECT_TYPES.PRISMA,
+      type: PROJECT_TAGS.PRISMA,
       check: entries => {
         return hasModule(entries, 'prisma-cli');
       }
     },
     {
-      type: PROJECT_TYPES.GRAPHQL,
+      type: PROJECT_TAGS.GRAPHQL,
       check: entries => {
         return hasModuleThatContains(entries, 'graphql');
       }
     },
     {
-      type: PROJECT_TYPES.REACT_WEB,
+      type: PROJECT_TAGS.REACT_WEB,
       check: entries => {
         let hasReact = hasModule(entries, 'react');
         let hasReactDom = hasModule(entries, 'react-dom');
@@ -59,5 +59,5 @@ export const getProjectType = packageJson => {
   ];
 
   let foundType = types.find(type => type.check(entries));
-  return foundType ? foundType.type : PROJECT_TYPES.UNKNOWN;
+  return foundType ? foundType.type : PROJECT_TAGS.UNKNOWN;
 };

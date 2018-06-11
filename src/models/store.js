@@ -1,4 +1,6 @@
 import { flow, getRoot, types } from 'mobx-state-tree';
+import get from 'lodash/get';
+
 //swal
 import Swal from 'sweetalert2';
 import { toast } from 'config/swal';
@@ -13,6 +15,7 @@ import Project from './Project';
 import Process from './Process';
 import File from './File';
 import Actions from './actions';
+
 //stores
 import SettingsView from 'models/views/settings-view';
 import HomeView from 'models/views/home-view';
@@ -24,8 +27,9 @@ import Processes from 'models/Processes';
 import Boolean from 'models/Boolean';
 import { createModel, whatever } from 'utils/mst-utils';
 import { PACKAGE_REGISTRY_URL } from 'config/urls';
-import { IMPORT_WORKSPACE_TYPES } from 'config/enums';
-import { getLastFromString } from 'utils/string-utils';
+import { IMPORT_WORKSPACE_TYPES, PROJECT_PRIVACY, PROJECT_REPO } from 'config/enums';
+import { getLastFromString, includesLowercase } from 'utils/string-utils';
+import ProjectFilters from 'models/ProjectFilters';
 
 //native
 const fkill = window.require('electron').remote.require('fkill');
@@ -41,10 +45,11 @@ export default types
     openedFile: types.maybe(File),
     settings: types.optional(SettingsView, {}),
     home: types.optional(HomeView, {}),
-    processes: types.optional(Processes, Processes.create()),
     addingProjectToGroup: types.maybe(types.reference(Project)),
     activeGenerator: whatever(null),
     importingWorkspace: whatever(null),
+    projectFilters: createModel(ProjectFilters),
+    processes: createModel(Processes),
 
     //booleans
     settingsOpened: createModel(Boolean),
@@ -324,16 +329,44 @@ export default types
     get collapsed() {
       return !!self.addingProjectToGroup;
     },
+    get filteredGroups() {
+      return self.groups.filter(group => !self.projectFilters.hiddenGroups.items.includes(group.id));
+    },
+    get hasProjects() {
+      return self.projects.length > 0;
+    },
     get filteredProjects() {
-      return self.projects;
+      const { searchText, hiddenRepoTypes, hiddenPrivacyTypes, selectedDependencies } = self.projectFilters;
+      return self.projects.filter(project => {
+        const rules = [
+          includesLowercase(project.name, searchText.value),
+          hiddenRepoTypes.items.every(repoType => {
+            if (repoType === PROJECT_REPO.NO_REPO) {
+              return !!project.origin;
+            }
+            return project.origin ? !project.origin.includes(repoType.toLowerCase()) : true;
+          }),
+          selectedDependencies.items.every(dependency => {
+            return (
+              project.packageJson &&
+              project.packageJson.dependencies &&
+              !!project.packageJson.dependencies[dependency]
+            );
+          }),
+          hiddenPrivacyTypes.items.every(privacyType => {
+            const isPrivate = get(project, 'packageJson.private');
+            return isPrivate !== (privacyType === PROJECT_PRIVACY.PRIVATE);
+          })
+        ];
+        return rules.every(r => r === true);
+      });
     },
     get currentDependencies() {
       let allDependencies = self.filteredProjects.reduce((accum, project) => {
         let dependencies =
           project.packageJson && project.packageJson.dependencies
             ? Object.entries({
-                ...project.packageJson.dependencies,
-                ...project.packageJson.devDependencies
+                ...project.packageJson.dependencies
               }).map(([a]) => a)
             : [];
         accum = [...accum, ...dependencies];
@@ -342,11 +375,8 @@ export default types
 
       const grouped = Object.entries(countBy(allDependencies)).map(([name, count]) => ({ name, count }));
       const unique = uniqBy(grouped, a => a.name);
-      const sorted = orderBy(unique, ['count'], ['desc']);
+      const sorted = orderBy(unique, ['count', 'name'], ['desc', 'asc']);
       return sorted;
-    },
-    get hasProjects() {
-      return self.groupsWithProjects && self.groupsWithProjects.length > 0;
     },
     get showWelcomeScreen() {
       return self.projects.length === 0 && self.groups.length === 0;
@@ -367,9 +397,9 @@ export default types
       return self.groups.length > 1;
     },
     get groupsWithProjects() {
-      const grouped = groupBy(self.projects, p => (p.group ? p.group.id : 'other'));
+      const grouped = groupBy(self.filteredProjects, p => (p.group ? p.group.id : 'other'));
       return compact(
-        [...self.groups].map(group => {
+        [...self.filteredGroups].map(group => {
           if (!group) {
             return null;
           }

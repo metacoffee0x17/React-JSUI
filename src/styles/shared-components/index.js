@@ -1,6 +1,6 @@
 import emotion from 'react-emotion';
 import flex from 'styles/flex';
-import { fixedHeight, whiteish } from 'styles/mixins';
+import { fixedHeight, fixedWidth, whiteish } from 'styles/mixins';
 import IconWithTip from 'components/IconWithTip';
 
 import { Horizontal as $Horizontal, Vertical as $Vertical } from 'styles/flex-components';
@@ -50,7 +50,8 @@ export const Button = require('./Button').default;
 export const spaceUnit = 5;
 
 export const Space = emotion.div(({ size = 1 } = {}) => ({
-  ...fixedHeight(spaceUnit * size)
+  ...fixedHeight(spaceUnit * size),
+  ...fixedWidth(spaceUnit * size)
 }));
 
 export const ActionIcon = emotion(IconWithTip)({
@@ -92,3 +93,23 @@ export const Block = {
     fontWeight: 100
   })
 };
+
+export const TextInput = emotion.input({
+  outline: 'none',
+  padding: '7px',
+  borderRadius: 3,
+  minHeight: 35,
+  height: 35,
+  fontSize: 16,
+  transition: 'all 150ms linear',
+  color: 'white',
+  border: `1px solid ${whiteish(0.15)}`,
+  backgroundColor: whiteish(0.1),
+  '&::placeholder': {
+    color: 'rgba(255, 255, 255, 0.5)'
+  },
+  '&:focus': {
+    backgroundColor: whiteish(0.17),
+    border: `1px solid rgba(255, 255, 255, ${whiteish(0.2)})`
+  }
+});

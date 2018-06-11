@@ -48,6 +48,10 @@ export const actionsList = [
     name: 'Import a VS Code workspace',
     command: store => store.openCodeWorkspace()
   },
+  {
+    name: 'Toggle home sidebar',
+    command: store => store.settings.toggleHomeSidebar()
+  },
   ...generatorsActions
 ];
 

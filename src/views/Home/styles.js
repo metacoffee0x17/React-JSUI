@@ -22,4 +22,6 @@ export const Empty = emotion.div({
   flex: 1
 });
 
-export const GroupList = emotion.div({});
+export const GroupList = emotion.div({
+  // ...flex.horizontal
+});

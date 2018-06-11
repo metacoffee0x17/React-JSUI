@@ -1,4 +1,4 @@
-export const PROJECT_TYPES = {
+export const PROJECT_TAGS = {
   REACT_NATIVE: 'React Native',
   ELECTRON: 'Electron',
   REACT_WEB: 'React',
@@ -9,10 +9,22 @@ export const PROJECT_TYPES = {
   GRAPHQL: 'GraphQL'
 };
 
+export const PROJECT_REPO = {
+  GITHUB: 'GitHub',
+  BITBUCKET: 'Bitbucket',
+  GITLAB: 'GitLab',
+  NO_REPO: 'No repo'
+};
+
+export const PROJECT_PRIVACY = {
+  PRIVATE: 'Private',
+  PUBLIC: 'Public',
+};
+
 export const IMPORT_WORKSPACE_TYPES = {
-  WORKSPACE: "as-a-single-workspace",
-  SEPARATELY: "separately",
-  GROUP: "separately-in-group"
+  WORKSPACE: 'as-a-single-workspace',
+  SEPARATELY: 'separately',
+  GROUP: 'separately-in-group'
 };
 
 export const PROCESS_STATUS = {

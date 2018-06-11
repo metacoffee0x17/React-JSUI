@@ -1,9 +1,10 @@
-import { PROJECT_TYPES } from 'config/enums';
+import { PROJECT_TAGS } from 'config/enums';
 import { types, getRoot, flow } from 'mobx-state-tree';
 import ipcc from 'ipcc/renderer';
 import { prompt, confirmDelete } from 'config/swal';
 import { toast } from 'config/swal';
 import routes from 'config/routes';
+import axios from 'axios';
 
 //utils
 import get from 'lodash/get';
@@ -273,6 +274,10 @@ export default types
           }
         }
       },
+      fetchGithubInfo: flow(function*(gitRepo) {
+        const result = yield axios.get('https://api.github.com/repos/kitze/jsui');
+        console.log('result, result', result);
+      }),
       readProjectInfo: () => {
         const packageJsonPath = path.join(self.path, 'package.json');
 
@@ -301,7 +306,7 @@ export default types
           self.origin = gitRepoURL;
         } catch (err) {
           console.error(err);
-          self.type = PROJECT_TYPES.UNKNOWN;
+          self.type = PROJECT_TAGS.UNKNOWN;
         }
 
         try {

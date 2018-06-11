@@ -23,7 +23,7 @@ import {
   faArrowsAlt
 } from '@fortawesome/fontawesome-free-solid';
 
-import { PROJECT_TYPES } from 'config/enums';
+import { PROJECT_TAGS } from 'config/enums';
 
 @inject('store')
 @observer
@@ -45,7 +45,7 @@ class Project extends Component {
     const { project, store, showMove } = this.props;
     const { settings } = store;
     const { type, ready } = project;
-    const hasProjectType = type && type !== PROJECT_TYPES.UNKNOWN;
+    const hasProjectType = type && type !== PROJECT_TAGS.UNKNOWN;
 
     return (
       <S.ProjectCard markRed={settings.highlightProjectsWithoutRepo && !project.origin}>

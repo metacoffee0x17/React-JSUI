@@ -15,6 +15,7 @@ import IconWithTip from 'components/IconWithTip';
 import Processes from 'components/Processes';
 
 import keydown from 'react-keydown';
+import FilterProjectsSidebar from 'components/FilterProjectsSidebar';
 
 @inject('store')
 @observer
@@ -33,13 +34,13 @@ class Home extends Component {
 
   render() {
     const { store } = this.props;
-    const { showWelcomeScreen } = store;
-    const { groupsWithProjects, hasProjects, collapsed } = store;
+    const { showWelcomeScreen, settings } = store;
+    const { groupsWithProjects, collapsed } = store;
 
     return (
       <S.Home>
         <Header>
-          {hasProjects && (
+          {!showWelcomeScreen && (
             <Fragment>
               <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
               <IconWithTip
@@ -70,10 +71,12 @@ class Home extends Component {
 
         {!showWelcomeScreen && (
           <A.Horizontal>
+            {settings.showHomeSidebar && <FilterProjectsSidebar />}
             <A.Mid>
               <S.GroupList>
                 {groupsWithProjects.map(group => (
                   <Group
+                    hideIfEmpty={store.projectFilters.searchText.hasValue}
                     onClick={() => collapsed && store.pickGroupForProject(group)}
                     collapsed={collapsed}
                     group={group}

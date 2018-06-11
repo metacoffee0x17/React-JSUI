@@ -7,6 +7,7 @@ import * as S from './styles';
 import Dialog from 'components/Dialog';
 import keydown, { Keys } from 'react-keydown';
 import { cycleValueAround } from 'utils';
+import { includesLowercase } from 'utils/string-utils';
 
 @observer
 class PopupSelector extends Component {
@@ -18,7 +19,7 @@ class PopupSelector extends Component {
 
   @computed
   get foundItems() {
-    return this.props.items.filter(item => item.name.toLowerCase().includes(this.search.toLowerCase()));
+    return this.props.items.filter(item => includesLowercase(item.name, this.search));
   }
 
   @action
@@ -100,7 +101,7 @@ class PopupSelector extends Component {
   };
 
   render() {
-    const {key, inPortal, showSearch, renderItem, onEsc, overrides } = this.props;
+    const { key, inPortal, showSearch, renderItem, onEsc, overrides } = this.props;
     const { highlightedItem, foundItems: items } = overrides || this;
 
     return (

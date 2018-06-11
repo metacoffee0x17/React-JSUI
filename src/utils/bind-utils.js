@@ -4,3 +4,8 @@ export const bindStateToField = (stateInstance, fieldName) => {
     value: stateInstance[fieldName]
   };
 };
+
+export const bindStringToInput = str => ({
+  onChange: e => str.setValue(e.target.value),
+  value: str.value
+});

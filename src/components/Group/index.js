@@ -19,13 +19,13 @@ class Group extends Component {
   collapsed = Boolean.create();
 
   render() {
-    const { group, collapsed, onClick, store } = this.props;
+    const { group, hideIfEmpty, collapsed, onClick, store } = this.props;
     const hasProjects = group.projects.length > 0;
     const showProjects = hasProjects && collapsed === false && this.collapsed.value === false;
+    const hide = hideIfEmpty && !hasProjects;
 
     return (
-      <S.Group spaceAll={10} collapsed={collapsed} onClick={onClick}>
-
+      <S.Group hide={hide} spaceAll={10} collapsed={collapsed} onClick={onClick}>
         <A.Horizontal centerV spaceBetween>
           <A.Horizontal spaceAll={10}>
             {hasProjects && (

@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react';
 
 //components
 import ProjectCard from './index';
-import { PROJECT_TYPES } from 'config/enums';
+import { PROJECT_TAGS } from 'config/enums';
 import { variants } from 'storybook-helpers/variants';
 
 import { Variants } from 'storybook-helpers/variants';
@@ -25,12 +25,12 @@ const getProject = ({
   name = 'Awesome project',
   ready = true,
   origin = true,
-  type = PROJECT_TYPES.REACT_NATIVE
+  type = PROJECT_TAGS.REACT_NATIVE
 } = {}) => ({
   name: text('Name', name),
   ready: boolean('Ready', ready),
   origin: boolean('Is on git', origin),
-  type: select('Type', PROJECT_TYPES, type)
+  type: select('Type', PROJECT_TAGS, type)
 });
 
 stories.add('default project card', () => <ProjectCard project={getProject()} />);

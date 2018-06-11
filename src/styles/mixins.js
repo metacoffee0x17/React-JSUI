@@ -8,7 +8,8 @@ export const size = (w, h = w, important) => ({
 export const iconSize = (w, h = w) => size(w, h, true);
 
 export const noSelect = {
-  userSelect: 'none'
+  userSelect: 'none',
+  cursor: 'default'
 };
 
 export const fixedHeight = height => ({

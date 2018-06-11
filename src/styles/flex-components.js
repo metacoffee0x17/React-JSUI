@@ -6,7 +6,22 @@ const margin = {
   vertical: 'marginBottom'
 };
 
-export const common = direction => p => ({ ...(p.spaceBetween && flex.spaceBetween), ...(p.wrap && flex.wrap), ...(p.spaceAround && flex.spaceAround), ...(p.justifyEnd && flex.justifyEnd), ...(p.flex && { flex: p.flex }), ...(p.spaceFirst && { '& :first-child': { [margin[direction]]: p.spaceFirst } }), ...(p.spaceAll && { '& > *': { [margin[direction]]: p.spaceAll, ...(p.spaceBottom && { marginBottom: p.spaceAll }) }, '& > *:last-child': { [margin[direction]]: 0, marginBottom: 0 } }), ...(p.styles && p.styles) });
+export const common = direction => p => ({
+  ...(p.spaceBetween && flex.spaceBetween),
+  ...(p.wrap && flex.wrap),
+  ...(p.spaceAround && flex.spaceAround),
+  ...(p.justifyEnd && flex.justifyEnd),
+  ...(p.flex && { flex: p.flex }),
+  ...(p.spaceFirst && { '& :first-child': { [margin[direction]]: p.spaceFirst } }),
+  ...(p.spaceAll && {
+    '& > *': { [margin[direction]]: p.spaceAll, ...(p.spaceBottom && { marginBottom: p.spaceAll }) },
+    '& > *:last-child': { [margin[direction]]: 0, marginBottom: 0 }
+  }),
+  ...(p.noShrink && {
+    flexShrink: 0
+  }),
+  ...(p.styles && p.styles)
+});
 
 export const Horizontal = emotion.div(
   ({ center, centerV, centerH }) => ({

@@ -9,14 +9,21 @@ export default types
     editor: 'code',
     projectsPath: types.optional(types.string, homepath),
     indexFiles: types.optional(types.boolean, false),
-    highlightProjectsWithoutRepo: types.optional(types.boolean, false)
+    highlightProjectsWithoutRepo: types.optional(types.boolean, false),
+    showHomeSidebar: types.optional(types.boolean, true)
   })
   .actions(self => ({
     changeEditor: editor => {
       self.editor = editor;
     },
+    setShowHomeSidebar: value => {
+      self.showHomeSidebar = value;
+    },
     changePath: projectsPath => {
       self.projectsPath = projectsPath;
+    },
+    toggleHomeSidebar: () => {
+      self.showHomeSidebar = !self.showHomeSidebar;
     },
     setIndexFiles: value => {
       self.indexFiles = value;

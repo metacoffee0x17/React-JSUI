@@ -14,6 +14,8 @@ export const getHttpsGitURL = url => {
   return url;
 };
 
+export const includesLowercase = (a, b) => a.toLowerCase().includes(b.toLowerCase());
+
 export const getLastFromString = (str, separator) => {
   const splitted = str.split(separator);
   return splitted[splitted.length - 1];

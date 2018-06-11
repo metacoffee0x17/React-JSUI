@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react';
 
 //components
 import Group from './index';
-import { PROJECT_TYPES } from 'config/enums';
+import { PROJECT_TAGS } from 'config/enums';
 
 const stories = storiesOf('Group', module);
 
@@ -27,7 +27,7 @@ const getGroup = ({
     name: text('Name', name),
     projects: array('Project list', projects, ',').map(name => ({
       name,
-      type: PROJECT_TYPES.REACT_NATIVE
+      type: PROJECT_TAGS.REACT_NATIVE
     }))
   },
   collapsed: boolean('Collapsed', collapsed)
