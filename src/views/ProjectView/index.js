@@ -27,6 +27,7 @@ import IconWithTip from 'components/IconWithTip';
 import Dialog from 'components/Dialog';
 import ListOfBlocks from 'components/ListOfBlocks';
 import InstallDependencyForm from 'components/InstallDependencyForm';
+import GitBranch from 'components/GitBranch';
 
 //external components
 import { Tooltip } from 'react-tippy';
@@ -114,6 +115,9 @@ class ProjectView extends Component {
             {project.origin && <Tooltip title={project.origin} position="bottom">
                 <A.SmallButton onClick={project.goToOrigin}>git</A.SmallButton>
               </Tooltip>}
+            {project.gitBranch &&
+              <GitBranch branchName={project.gitBranch} />
+            }
           </A.Horizontal>
         </Header>
 
