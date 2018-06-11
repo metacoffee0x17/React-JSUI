@@ -109,6 +109,10 @@
     "mac": {
       "icon": "icons/icon.icns"
     },
+    "win": {
+      "target": "nsis",
+      "icon": "icons/icon.png"
+    },
     "extraMetadata": {
       "main": "build/electron.js"
     },
