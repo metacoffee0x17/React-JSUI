@@ -141,7 +141,7 @@ class ProjectView extends Component {
                   {/* Dependencies */}
                   <Horizontal spaceAll={10} flex={1}>
                     {/* Dependencies list */}
-                    <Vertical>
+                    <Vertical flex={1}>
                       <Horizontal centerV css={{ minHeight: 30 }} wrap spaceAll={spaceAll}>
                         <S.Section.Title> Dependencies </S.Section.Title>
                         <Tooltip title="Add a dependency">
@@ -160,7 +160,7 @@ class ProjectView extends Component {
 
                     {/* Dev dependencies list */}
 
-                    <Vertical>
+                    <Vertical flex={1}>
                       <Horizontal centerV css={{ minHeight: 30 }} wrap spaceAll={spaceAll}>
                         <S.Section.Title> Dev dependencies </S.Section.Title>
                         <Tooltip title="Add a dev dependency">
