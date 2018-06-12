@@ -17,6 +17,13 @@ export default types
       setActive: pid => {
         self.selectedProcess = self.list.find(p => p.id === pid);
       },
+      killActiveProcesses: () => {
+        self.activeForPage.forEach(process => {
+          process.stop();
+          self.list = [];
+          self.selectedProcess = null;
+        });
+      },
       closeProcess: process => {
         process.stop();
         self.list = self.list.filter(p => p.id !== process.id);

@@ -103,6 +103,7 @@ class Processes extends Component {
           onClearOutput={selectedProcess.clearOutput}
           onRestart={selectedProcess.restart}
           onStop={selectedProcess.stop}
+          onKill={processes.killActiveProcesses}
           onMinimize={toggleMinimize}
           minimized={minimized}
         />

@@ -67,7 +67,7 @@ class Project extends Component {
                 icon={faEdit}
                 onClick={() => store.renameProject(project.id, project.name)}
               />
-              {project.startScriptName && <A.ActionIcon tip="Start" icon={faPlay} onClick={project.start} />}
+              {project.startScriptName && <A.ActionIcon tip="Start" icon={faPlay} onClick={project.navigateThenStart} />}
               {/* <A.ActionIcon
                 tip="Reinstall dependencies"
                 icon={faRecycle}

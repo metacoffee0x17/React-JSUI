@@ -25,7 +25,7 @@ class GroupView extends Component {
           <A.Horizontal spaceAll={15}>
             <S.Name>{group.name}</S.Name>
             <IconWithTip
-              onClick={store.startAllInCurrentGroup}
+              onClick={() => store.startAllInCurrentGroup()}
               tip="Start all projects in group"
               icon={faPlay}
             />

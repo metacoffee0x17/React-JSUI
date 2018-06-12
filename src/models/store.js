@@ -20,7 +20,6 @@ import Group from './Group';
 import Project from './Project';
 import Process from './Process';
 import File from './File';
-import Workspace from './Workspace';
 import Actions from './actions';
 import Processes from './Processes';
 import Boolean from './Boolean';
@@ -42,7 +41,6 @@ export default types
     //data
     groups: types.optional(types.array(Group), []),
     projects: types.optional(types.array(Project), []),
-    workspaces: types.optional(types.array(Workspace), []),
 
     //other
     firstLoad: true,

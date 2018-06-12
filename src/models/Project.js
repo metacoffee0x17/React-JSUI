@@ -4,6 +4,7 @@ import ipcc from 'ipcc/renderer';
 import { prompt, confirmDelete } from 'config/swal';
 import { toast } from 'config/swal';
 import axios from 'axios';
+import routes from 'config/routes';
 
 //utils
 import get from 'lodash/get';
@@ -238,6 +239,11 @@ export default types
         );*!/
       },*/
       start: () => self.runScript(self.startScriptName || 'start'),
+      navigateThenStart: () => {
+        const store = getRoot(self);
+        store.router.openPage(routes.project, { id: self.id });
+        return self.start;
+      },
       goToOrigin: () => {
         const shell = window.require('electron').shell;
         shell.openExternal(self.origin);

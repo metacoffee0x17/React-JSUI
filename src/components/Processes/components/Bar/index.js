@@ -6,7 +6,8 @@ import {
   faCaretUp,
   faSpinner,
   faStop,
-  faSync
+  faSync,
+  faSkull
 } from '@fortawesome/fontawesome-free-solid/index';
 
 //styles
@@ -52,7 +53,8 @@ class Bar extends Component {
       onClearOutput,
       onRestart,
       onStop,
-      onMinimize
+      onMinimize,
+      onKill
     } = this.props;
 
     return (
@@ -68,9 +70,10 @@ class Bar extends Component {
         </Horizontal>
 
         <S.Icons spaceAll={15}>
-          <S.TerminalIcon tip="Clear" onClick={onClearOutput} icon={faAlignCenter} />
-          {running && <S.TerminalIcon icon={faStop} onClick={onStop} />}
-          <S.TerminalIcon tip="Restart" icon={faSync} onClick={onRestart} />
+          <S.TerminalIcon tip="Clear output" onClick={onClearOutput} icon={faAlignCenter} />
+          {running && <S.TerminalIcon tip="Stop current" icon={faStop} onClick={onStop} />}
+          <S.TerminalIcon tip="Restart current" icon={faSync} onClick={onRestart} />
+          <S.TerminalIcon tip="Kill all" icon={faSkull} onClick={onKill} />
         </S.Icons>
       </S.Bar>
     );
