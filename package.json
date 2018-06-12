@@ -1,6 +1,10 @@
 {
   "name": "jsui",
-  "author": "kitze",
+  "author": {
+    "name": "kitze",
+    "email": "kristijan.mkd@gmail.com",
+    "url": "https://kitze.io/"
+  },
   "description": "A powerful UI toolkit for managing JavaScript apps",
   "repository": "https://github.com/kitze/jsui",
   "version": "0.0.14",
@@ -111,6 +115,13 @@
     },
     "win": {
       "target": "nsis",
+      "icon": "icons/icon.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "icon": "icons/icon.png"
     },
     "extraMetadata": {

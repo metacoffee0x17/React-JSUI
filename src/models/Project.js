@@ -84,7 +84,8 @@ export default types
         }
       },
       openDir: () => {
-        spawn('open', [self.path]);
+        const shell = window.require('electron').shell;
+        shell.openExternal(self.path);
       },
       build: () => {
         self.runScript('build');
