@@ -242,7 +242,7 @@ export default types
       navigateThenStart: () => {
         const store = getRoot(self);
         store.router.openPage(routes.project, { id: self.id });
-        return self.start;
+        self.start();
       },
       goToOrigin: () => {
         const shell = window.require('electron').shell;

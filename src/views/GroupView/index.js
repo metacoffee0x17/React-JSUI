@@ -45,7 +45,7 @@ class GroupView extends Component {
                     {project.packageJson &&
                       project.packageJson.scripts &&
                       Object.entries(project.packageJson.scripts).map(([name, script]) => (
-                        <Tooltip title={script}>
+                        <Tooltip delay={500} title={script}>
                           <S.Button onClick={() => project.runScript(name)}>{name}</S.Button>
                         </Tooltip>
                       ))}
