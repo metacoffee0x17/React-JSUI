@@ -23,7 +23,7 @@ class GroupView extends Component {
       <S.GroupView>
         <Header>
           <A.Horizontal spaceAll={15}>
-            <S.Name>{group.name}</S.Name>
+            <S.Name onClick={() => store.renameGroup(group.name, group.id)}>{group.name}</S.Name>
             <IconWithTip
               onClick={() => store.startAllInCurrentGroup()}
               tip="Start all projects in group"
@@ -33,25 +33,27 @@ class GroupView extends Component {
         </Header>
 
         <A.Padding>
-          <S.Projects>
-            {group.projects &&
-              group.projects.map(project => (
-                <div>
+          {group.projects && (
+            <A.Horizontal wrap>
+              {group.projects.map(project => (
+                <S.Project>
                   <A.Link onClick={() => router.openPage(routes.project, { id: project.id })}>
                     {project.name}
                   </A.Link>
                   <A.Space size={3} />
-                  <A.Horizontal wrap spaceBottom spaceAll={10}>
-                    {Object.entries(project.packageJson.scripts).map(([name, script]) => (
-                      <Tooltip title={script}>
-                        <A.Button onClick={() => project.runScript(name)}>{name}</A.Button>
-                      </Tooltip>
-                    ))}
+                  <A.Horizontal spaceBottom wrap spaceAll={15}>
+                    {project.packageJson &&
+                      project.packageJson.scripts &&
+                      Object.entries(project.packageJson.scripts).map(([name, script]) => (
+                        <Tooltip title={script}>
+                          <S.Button onClick={() => project.runScript(name)}>{name}</S.Button>
+                        </Tooltip>
+                      ))}
                   </A.Horizontal>
-                  <A.Space size={3} />
-                </div>
+                </S.Project>
               ))}
-          </S.Projects>
+            </A.Horizontal>
+          )}
         </A.Padding>
       </S.GroupView>
     );
