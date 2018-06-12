@@ -1,6 +1,6 @@
 import emotion from 'react-emotion';
 import flex from 'styles/flex';
-import { fixedHeight, fixedWidth, whiteish } from 'styles/mixins';
+import { fixedHeight, fixedWidth, noSelect, whiteish } from 'styles/mixins';
 import IconWithTip from 'components/IconWithTip';
 
 import { Horizontal as $Horizontal, Vertical as $Vertical } from 'styles/flex-components';
@@ -93,6 +93,24 @@ export const Block = {
     fontWeight: 100
   })
 };
+
+export const Link = emotion.div(
+  {
+    display: 'inline-block',
+    fontWeight: 'bold',
+    ...noSelect,
+    transition: 'all 100ms linear',
+    borderBottom: '1px solid rgba(0,0,0,0)',
+    cursor: 'pointer'
+  },
+  ({ disable }) => ({
+    ...(!disable && {
+      '&:hover': {
+        borderBottom: '1px solid white'
+      }
+    })
+  })
+);
 
 export const TextInput = emotion.input({
   outline: 'none',

@@ -82,7 +82,6 @@ class ProjectView extends Component {
       onMove: project.moveDependency
     };
 
-    const hasProcesses = project.processes.list.length > 0;
     const spaceAll = spaceUnit * 3;
 
     const mappedItems = project.allItems.map(({ path, ...rest }) => ({
@@ -93,9 +92,18 @@ class ProjectView extends Component {
     let shouldOpenSearch = searchOpened.value && mappedItems && mappedItems.length > 0;
     let hasGenerators = project.generatorList && project.generatorList.length > 0;
 
-    return <S.ProjectView>
-        <Header renderRight={<A.Horizontal spaceAll={15}>
-              {hasGenerators && <IconWithTip tip="Generate with plop" icon={faCogs} onClick={this.generatorsDialogOpen.setTrue} />}
+    return (
+      <S.ProjectView>
+        <Header
+          renderRight={
+            <A.Horizontal spaceAll={15}>
+              {hasGenerators && (
+                <IconWithTip
+                  tip="Generate with plop"
+                  icon={faCogs}
+                  onClick={this.generatorsDialogOpen.setTrue}
+                />
+              )}
               <IconWithTip tip="Apply plugin" icon={faPlug} onClick={this.pluginDialogOpen.setTrue} />
               <IconWithTip tip="Open in Finder" icon={faFolder} onClick={project.openDir} />
               <IconWithTip tip="Edit code" icon={faCode} onClick={project.edit} />
@@ -107,26 +115,30 @@ class ProjectView extends Component {
               />
               <IconWithTip tip="Delete dependencies" icon={faTrash} onClick={project.deleteDependencies} />
               <IconWithTip tip="Install dependencies" icon={faPlug} onClick={project.installDependencies} />*/}
-            </A.Horizontal>}>
+            </A.Horizontal>
+          }
+        >
           <A.Horizontal spaceAll={8}>
             <S.Title>
               {project.name} {project.packageJson && project.packageJson.version}
             </S.Title>
-            {project.origin && <Tooltip title={project.origin} position="bottom">
+            {project.origin && (
+              <Tooltip title={project.origin} position="bottom">
                 <A.SmallButton onClick={project.goToOrigin}>git</A.SmallButton>
-              </Tooltip>}
-            {project.gitBranch &&
-              <GitBranch branchName={project.gitBranch} />
-            }
+              </Tooltip>
+            )}
+            {project.gitBranch && <GitBranch branchName={project.gitBranch} />}
           </A.Horizontal>
         </Header>
 
         <A.Horizontal flex={1}>
           {project.contents && <ProjectTree contents={project.contents} />}
-          <S.Mid hasProcesses={hasProcesses}>
+          <S.Mid hasProcesses={false}>
             <S.Right>
-              {project.ready && <React.Fragment>
-                  {hasScripts && <React.Fragment>
+              {project.ready && (
+                <React.Fragment>
+                  {hasScripts && (
+                    <React.Fragment>
                       <S.Section.Title> Scripts </S.Section.Title>
                       <A.Space size={3} />
                       <Horizontal wrap spaceBottom spaceAll={spaceAll}>
@@ -136,7 +148,8 @@ class ProjectView extends Component {
                           </Tooltip>
                         ))}
                       </Horizontal>
-                    </React.Fragment>}
+                    </React.Fragment>
+                  )}
 
                   {/* Dependencies */}
                   <Horizontal spaceAll={10} flex={1}>
@@ -151,11 +164,11 @@ class ProjectView extends Component {
                         </Tooltip>
                       </Horizontal>
                       {get(project, 'packageJson.dependencies') && (
-                        <DependenciesList 
-                          {...dependenciesListProps} 
+                        <DependenciesList
+                          {...dependenciesListProps}
                           list={project.packageJson.dependencies}
-                        />)
-                      }
+                        />
+                      )}
                     </Vertical>
 
                     {/* Dev dependencies list */}
@@ -169,43 +182,74 @@ class ProjectView extends Component {
                           </A.SmallButton>
                         </Tooltip>
                       </Horizontal>
-                      {get(project, 'packageJson.devDependencies') && <DependenciesList {...dependenciesListProps} isDev={true} list={project.packageJson.devDependencies} />}
+                      {get(project, 'packageJson.devDependencies') && (
+                        <DependenciesList
+                          {...dependenciesListProps}
+                          isDev={true}
+                          list={project.packageJson.devDependencies}
+                        />
+                      )}
                     </Vertical>
                   </Horizontal>
-                </React.Fragment>}
+                </React.Fragment>
+              )}
             </S.Right>
           </S.Mid>
 
-          {shouldOpenSearch && <PopupSelector closeOnChoose={true} renderItem={item => <FileEntry item={item} />} showSearch={true} items={mappedItems} onChoose={entry => store.setOpenedFile(entry.id)} onEsc={this.searchOpened.setFalse} />}
+          {shouldOpenSearch && (
+            <PopupSelector
+              closeOnChoose={true}
+              renderItem={item => <FileEntry item={item} />}
+              showSearch={true}
+              items={mappedItems}
+              onChoose={entry => store.setOpenedFile(entry.id)}
+              onEsc={this.searchOpened.setFalse}
+            />
+          )}
 
-          {hasProcesses && <Processes processes={project.processes} />}
-
-          {this.pluginDialogOpen.value === true && <Dialog onClose={this.pluginDialogOpen.setFalse} onEsc={this.pluginDialogOpen.setFalse}>
+          {this.pluginDialogOpen.value === true && (
+            <Dialog onClose={this.pluginDialogOpen.setFalse} onEsc={this.pluginDialogOpen.setFalse}>
               <A.Padding>
-                <ListOfBlocks list={plugins} onPick={plugin => {
+                <ListOfBlocks
+                  list={plugins}
+                  onPick={plugin => {
                     project.applyPlugin(plugin);
                     this.pluginDialogOpen.setFalse();
-                  }} />
+                  }}
+                />
               </A.Padding>
-            </Dialog>}
+            </Dialog>
+          )}
 
-          {this.generatorsDialogOpen.value === true && <Dialog onClose={this.generatorsDialogOpen.setFalse} onEsc={this.generatorsDialogOpen.setFalse}>
+          {this.generatorsDialogOpen.value === true && (
+            <Dialog onClose={this.generatorsDialogOpen.setFalse} onEsc={this.generatorsDialogOpen.setFalse}>
               <A.Padding>
-                <ListOfBlocks list={project.generatorList} onPick={generator => {
+                <ListOfBlocks
+                  list={project.generatorList}
+                  onPick={generator => {
                     project.generate(generator.name);
                     this.generatorsDialogOpen.setFalse();
-                  }} />
+                  }}
+                />
               </A.Padding>
-            </Dialog>}
+            </Dialog>
+          )}
 
-          {this.dependenciesDialogOpen.hasValue && <Dialog onClose={this.dependenciesDialogOpen.clear}>
-              <InstallDependencyForm isDev={this.dependenciesDialogOpen.value === 'dev'} onCancel={this.dependenciesDialogOpen.clear} onSubmit={formValues => {
+          {this.dependenciesDialogOpen.hasValue && (
+            <Dialog onClose={this.dependenciesDialogOpen.clear}>
+              <InstallDependencyForm
+                isDev={this.dependenciesDialogOpen.value === 'dev'}
+                onCancel={this.dependenciesDialogOpen.clear}
+                onSubmit={formValues => {
                   project.installDependency(formValues);
                   this.dependenciesDialogOpen.clear();
-                }} />
-            </Dialog>}
+                }}
+              />
+            </Dialog>
+          )}
         </A.Horizontal>
-      </S.ProjectView>;
+      </S.ProjectView>
+    );
   }
 }
 

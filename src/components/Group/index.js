@@ -4,7 +4,14 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import Boolean from 'models/Boolean';
 
-import { faEdit, faTrash, faMinusSquare, faPlusSquare, faPlus } from '@fortawesome/fontawesome-free-solid';
+import {
+  faEdit,
+  faPlay,
+  faTrash,
+  faMinusSquare,
+  faPlusSquare,
+  faPlus
+} from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -12,6 +19,7 @@ import * as A from 'styles/shared-components';
 
 //components
 import ProjectCard from 'components/ProjectCard';
+import routes from 'config/routes';
 
 @inject('store')
 @observer
@@ -37,7 +45,15 @@ class Group extends Component {
                 tip="Collapse group"
               />
             )}
-            <S.Name>{group.name}</S.Name>
+            <A.Link disable={collapsed} onClick={() => store.router.openPage(routes.group, { id: group.id })}>
+              {group.name}
+            </A.Link>
+            <A.ActionIcon
+              delay={700}
+              onClick={() => store.startAllInCurrentGroup(group.id)}
+              icon={faPlay}
+              tip="Start all projects in group"
+            />
           </A.Horizontal>
 
           {!collapsed && (

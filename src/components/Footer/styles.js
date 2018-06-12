@@ -2,13 +2,12 @@ import emotion from 'react-emotion';
 import flex from 'styles/flex';
 import { colors } from 'styles/colors';
 
-export const Header = emotion.div({
+export const Footer = emotion.div({
   ...flex.horizontal,
   ...flex.centerHorizontalV,
-  ...flex.spaceBetween,
-  width: '100%',
-  minHeight: 50,
+  height: 25,
   backgroundColor: colors.purple5,
   padding: 15,
+  fontSize: 14,
   color: 'white'
 });

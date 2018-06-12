@@ -4,5 +4,6 @@ export const colors = {
   purple3: '#415999',
   purple4: '#2a407d',
   blue: '#0bbcf6',
-  red: '#883d3d'
+  red: '#883d3d',
+  purple5: '#2b2e3c'
 };

@@ -4,6 +4,8 @@ import { toJS } from 'mobx';
 import { PROCESS_STATUS } from 'config/enums';
 import { remote } from 'electron';
 
+import Project from './Project';
+
 //native
 const childProcess = remote.require('child_process');
 const readline = remote.require('readline');
@@ -11,6 +13,7 @@ const readline = remote.require('readline');
 export default types
   .model('Process', {
     id: types.optional(types.identifier(), () => uuid.v4()),
+    project: types.maybe(types.reference(types.late(() => Project))),
     output: '',
     running: false,
     code: types.maybe(types.number),
@@ -27,8 +30,12 @@ export default types
     return {
       stop: () => {
         self.running = false;
-        process.kill(-proc.pid);
-        resolve(-1);
+        try {
+          process.kill(-proc.pid);
+          resolve(-1);
+        } catch (err) {
+          console.error(err);
+        }
       },
       onOutput: data => {
         let newOutput = self.output + '\n' + data.toString();

@@ -8,6 +8,8 @@ import * as S from './styles';
 //components
 import Home from 'views/Home';
 import Dialogs from 'components/Dialogs';
+import Processes from 'components/Processes';
+
 import { executeShortcut } from 'config/shortcuts';
 
 @inject('store')
@@ -19,13 +21,19 @@ class App extends Component {
 
   render() {
     const { store } = this.props;
-    const { router } = store;
+    const { router, processes } = store;
     const showHomePage = !router.page || router.page === 'home';
 
     return (
       <S.App>
         {showHomePage ? <Home /> : router.extra ? router.extra.component : null}
         <Dialogs />
+        {/*<Footer />*/}
+        {store.processes.hasProcesses && (
+          <Processes
+            processes={processes}
+          />
+        )}
       </S.App>
     );
   }

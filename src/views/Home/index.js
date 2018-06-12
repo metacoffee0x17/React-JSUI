@@ -88,8 +88,6 @@ class Home extends Component {
             </A.Mid>
           </A.Horizontal>
         )}
-
-        {store.processes.hasProcesses && <Processes processes={store.processes} />}
       </S.Home>
     );
   }

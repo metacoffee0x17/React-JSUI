@@ -20,6 +20,5 @@ const actions = {
 };
 
 export const executeShortcut = (shortcut, store) => {
-  console.log('excecuting', shortcut);
   actions[shortcut](store);
 };

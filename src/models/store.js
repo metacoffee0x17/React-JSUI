@@ -1,5 +1,9 @@
 import { flow, getRoot, types } from 'mobx-state-tree';
-import get from 'lodash/get';
+import ipcc from 'ipcc/renderer';
+
+//config
+import { PACKAGE_REGISTRY_URL } from 'config/urls';
+import { IMPORT_WORKSPACE_TYPES, PROJECT_PRIVACY, PROJECT_REPO } from 'config/enums';
 
 //swal
 import Swal from 'sweetalert2';
@@ -7,29 +11,26 @@ import { toast } from 'config/swal';
 import { confirmDelete, prompt } from 'config/swal';
 
 //utils
-import { compact, uniqBy, pick, countBy, groupBy, orderBy } from 'lodash';
+import { compact, uniqBy, pick, countBy, groupBy, orderBy, get } from 'lodash';
+import { createModel, whatever } from 'utils/mst-utils';
+import { getLastFromString, includesLowercase } from 'utils/string-utils';
 
 //models
 import Group from './Group';
 import Project from './Project';
 import Process from './Process';
 import File from './File';
+import Workspace from './Workspace';
 import Actions from './actions';
+import Processes from './Processes';
+import Boolean from './Boolean';
+import ProjectFilters from 'models/ProjectFilters';
 
 //stores
 import SettingsView from 'models/views/settings-view';
 import HomeView from 'models/views/home-view';
-
 import { RouterStore } from 'rttr';
-//electron
-import ipcc from 'ipcc/renderer';
-import Processes from 'models/Processes';
-import Boolean from 'models/Boolean';
-import { createModel, whatever } from 'utils/mst-utils';
-import { PACKAGE_REGISTRY_URL } from 'config/urls';
-import { IMPORT_WORKSPACE_TYPES, PROJECT_PRIVACY, PROJECT_REPO } from 'config/enums';
-import { getLastFromString, includesLowercase } from 'utils/string-utils';
-import ProjectFilters from 'models/ProjectFilters';
+import routes from 'config/routes';
 
 //native
 const fkill = window.require('electron').remote.require('fkill');
@@ -38,9 +39,13 @@ const path = window.require('path');
 
 export default types
   .model('Store', {
-    firstLoad: true,
+    //data
     groups: types.optional(types.array(Group), []),
     projects: types.optional(types.array(Project), []),
+    workspaces: types.optional(types.array(Workspace), []),
+
+    //other
+    firstLoad: true,
     router: types.optional(RouterStore, {}),
     openedFile: types.maybe(File),
     settings: types.optional(SettingsView, {}),
@@ -322,6 +327,12 @@ export default types
       goToDependencyPage: dependencyName => {
         const shell = window.require('electron').shell;
         shell.openExternal(`${PACKAGE_REGISTRY_URL}${dependencyName}`);
+      },
+      startAllInCurrentGroup: id => {
+        if (id) {
+          self.router.openPage(routes.group, { id });
+        }
+        self.currentGroup.projects.forEach(project => project.start());
       }
     };
   })
@@ -389,15 +400,27 @@ export default types
       return [...projectsFromGroups, ...self.projects];
     },
     get currentProject() {
-      if (self.router.page === 'project') {
+      if (self.router.page === routes.project.id) {
         return self.projects.find(project => project.id === self.router.params.id);
+      }
+    },
+    get currentGroup() {
+      if (self.router.page === routes.group.id) {
+        let group = self.groups.find(groups => groups.id === self.router.params.id);
+        const projects = self.projects.filter(project => project.group && project.group.id === group.id);
+
+        return {
+          ...group,
+          projects: projects || []
+        };
       }
     },
     get canMoveProject() {
       return self.groups.length > 1;
     },
     get groupsWithProjects() {
-      const grouped = groupBy(self.filteredProjects, p => (p.group ? p.group.id : 'other'));
+      const groupedProjects = groupBy(self.filteredProjects, p => (p.group ? p.group.id : 'other'));
+
       return compact(
         [...self.filteredGroups].map(group => {
           if (!group) {
@@ -405,7 +428,7 @@ export default types
           }
           return {
             ...group,
-            projects: grouped[group.id] || []
+            projects: groupedProjects[group.id] || []
           };
         })
       );

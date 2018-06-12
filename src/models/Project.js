@@ -3,7 +3,6 @@ import { types, getRoot, flow } from 'mobx-state-tree';
 import ipcc from 'ipcc/renderer';
 import { prompt, confirmDelete } from 'config/swal';
 import { toast } from 'config/swal';
-import routes from 'config/routes';
 import axios from 'axios';
 
 //utils
@@ -17,10 +16,9 @@ import gitBranch from 'utils/git-branch';
 // import nodePlop from 'node-plop';
 
 //models
-import Process from './Process';
 import Tab from './Tab';
 import Group from './Group';
-import Processes from './Processes';
+import Process from './Process';
 
 //native
 import getFoldersAsObjects from 'utils/file-utils/get-folders-as-objects';
@@ -53,7 +51,6 @@ export default types
     gitBranch: types.frozen,
     contents: types.frozen,
     allItems: types.optional(types.frozen, []),
-    processes: types.optional(Processes, Processes.create()),
     tabs: types.optional(types.array(Tab), []),
     ready: true
   })
@@ -130,12 +127,7 @@ export default types
         const pkgPath = path.join(self.path, 'package.json');
         fs.writeFileSync(pkgPath, JSON.stringify(newPackageJson, null, 2));
       }),
-      runScript: (scriptName, extraArgs = []) => {
-        const createdProcess = Process.create();
-        const prom = createdProcess.attach('yarn', [scriptName, ...extraArgs], self.path);
-        self.processes.add(createdProcess);
-        return prom;
-      },
+
       generate: flow(function*(generatorName) {
         const { value: name } = yield prompt('Name');
         if (name) {
@@ -220,13 +212,17 @@ export default types
 
         self.showPluginSuccess(plugin.name);
       }),
+      runScript: (scriptName, extraArgs = []) => {
+        return self.addProcess('yarn', [scriptName, ...extraArgs]);
+      },
       addProcess: async (cli, args) => {
-        const proc = Process.create();
-        const prom = proc.attach(cli, args, self.path);
-        self.processes.add(proc);
-        prom.then(() => {
-          self.readProjectInfo();
+        const store = getRoot(self);
+        const proc = Process.create({
+          project: self
         });
+        const prom = proc.attach(cli, args, self.path);
+        store.processes.add(proc);
+        prom.then(self.readProjectInfo);
         return prom;
       },
       /*deleteDependencies: () => {
@@ -241,11 +237,7 @@ export default types
           self.path
         );*!/
       },*/
-      start: () => {
-        const store = getRoot(self);
-        store.router.openPage(routes.project, { id: self.id });
-        return self.runScript(self.startScriptName || 'start');
-      },
+      start: () => self.runScript(self.startScriptName || 'start'),
       goToOrigin: () => {
         const shell = window.require('electron').shell;
         shell.openExternal(self.origin);

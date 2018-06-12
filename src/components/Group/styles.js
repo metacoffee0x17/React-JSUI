@@ -51,8 +51,3 @@ export const ProjectList = emotion.div(
   })
 );
 
-export const Name = emotion.div({
-  fontWeight: 'bold',
-  marginBottom: 15,
-  ...noSelect
-});

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Home from 'views/Home';
-import Settings from 'views/Settings';
 import ProjectView from 'views/ProjectView';
+import GroupView from 'views/GroupView';
 
 const routes = {
   home: {
@@ -17,6 +17,13 @@ const routes = {
     path: '/project/:id',
     extra: {
       component: <ProjectView />
+    }
+  },
+  group: {
+    id: 'group',
+    path: '/group/:id',
+    extra: {
+      component: <GroupView />
     }
   }
 };

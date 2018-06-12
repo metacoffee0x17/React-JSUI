@@ -45,9 +45,7 @@ class Processes extends Component {
     }
   };
 
-  onResize = (event, { element, size }) => {
-    this.setHeight(size.height);
-  };
+  onResize = (event, { element, size }) => this.setHeight(size.height);
 
   @action
   onMouseDown = e => {
@@ -66,7 +64,6 @@ class Processes extends Component {
     if (this.dragging) {
       let distance = e.clientY - this.startY;
       let newHeight = this.originalHeight - distance;
-      console.log('newHeight', newHeight);
       if (newHeight < this.maxHeight && newHeight >= this.minHeight) {
         this.height = newHeight;
       }
@@ -83,7 +80,7 @@ class Processes extends Component {
 
   render() {
     const { processes, overrides } = this.props;
-    const { list, setActive, selectedProcess } = processes;
+    const { activeForPage, setActive, selectedProcess } = processes;
     const { minimized, toggleMinimize } = overrides || this;
     const { height } = this;
 
@@ -110,7 +107,7 @@ class Processes extends Component {
           minimized={minimized}
         />
         <Tabs rightSide={rightSide} onSelect={tab => setActive(tab.value)} value={selectedProcess.id}>
-          {list.map((process, index) => (
+          {activeForPage.map((process, index) => (
             <Tab
               key={process.id}
               value={process.id}

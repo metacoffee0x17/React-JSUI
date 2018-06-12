@@ -9,6 +9,7 @@ class Terminal extends Component {
   render() {
     const { process } = this.props;
     const chunkedOutput = process.chunkedOutput.toJSON();
+
     return (
       <S.Terminal>
         <AutoSizer>
