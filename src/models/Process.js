@@ -20,14 +20,14 @@ export default types
     chunkedOutput: types.optional(types.array(types.string), [])
   })
   .actions(self => {
-    let process;
+    let proc;
     let resolve;
     let extra;
 
     return {
       stop: () => {
         self.running = false;
-        process.kill();
+        process.kill(-proc.pid);
         resolve(-1);
       },
       onOutput: data => {
@@ -56,31 +56,32 @@ export default types
         });
 
         try {
-          process = childProcess.spawn(self.command, toJS(self.argz), {
+          proc = childProcess.spawn(self.command, toJS(self.argz), {
             cwd: self.path,
             shell: true,
+            detached: true,
             ...extra
           });
 
           readline
             .createInterface({
-              input: process.stdout,
+              input: proc.stdout,
               terminal: true
             })
             .on('line', self.onOutput);
 
           readline
             .createInterface({
-              input: process.stderr,
+              input: proc.stderr,
               terminal: true
             })
             .on('line', self.onOutput);
 
           // process.stdout.on('data', self.onOutput);
-          process.on('exit', self.onExit);
-          process.on('error', self.onError);
-          process.on('message', self.onMessage);
-          process.on('close', self.onClose);
+          proc.on('exit', self.onExit);
+          proc.on('error', self.onError);
+          proc.on('message', self.onMessage);
+          proc.on('close', self.onClose);
         } catch (err) {
           console.log(`error starting process`, err);
         }
