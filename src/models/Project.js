@@ -29,7 +29,7 @@ import { createNotification } from 'utils/notification-utils';
 //native
 const fs = window.require('fs');
 const path = window.require('path');
-const { remote } = window.require('electron');
+const { remote, shell } = window.require('electron');
 const { spawn } = window.require('child_process');
 const parseGitConfig = remote.require('parse-git-config');
 const which = remote.require('which');
@@ -46,6 +46,8 @@ export default types
     id: types.optional(types.identifier(), () => uuid.v4()),
     group: types.maybe(types.reference(Group)),
     generatorList: types.optional(types.array(Generator), []),
+    isWebBased: false,
+    webUrl: '',
     name: '',
     path: '',
     type: '',
@@ -261,7 +263,11 @@ export default types
         prom.then(self.readProjectInfo);
         return prom;
       },
-      start: () => self.runScript(self.startScriptName || 'start'),
+      start: () => {
+        if (!self.isWebBased) {
+          self.runScript(self.startScriptName || 'start');
+        }
+      },
       navigateThenStart: () => {
         const store = getRoot(self);
         store.router.openPage(routes.project, { id: self.id });
@@ -270,8 +276,10 @@ export default types
         }, 250);
       },
       goToOrigin: () => {
-        const shell = window.require('electron').shell;
         shell.openExternal(self.origin);
+      },
+      openWebUrl: () => {
+        shell.openExternal(self.webUrl);
       },
       previewFile: () => {
         const store = getRoot(self);
@@ -302,6 +310,9 @@ export default types
         const result = yield axios.get('https://api.github.com/repos/kitze/jsui');
         console.log('result, result', result);
       }),
+      setProjectType: () => {
+        self.type = getProjectType(self.packageJson, self.isWebBased, self.webUrl);
+      },
       readProjectInfo: () => {
         const packageJsonPath = path.join(self.path, 'package.json');
 
@@ -316,7 +327,7 @@ export default types
 
         try {
           self.packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-          self.type = getProjectType(self.packageJson);
+          self.setProjectType();
           self.startScriptName = ['start', 'dev', 'develop'].find(s => self.packageJson.scripts[s]);
 
           //origin
@@ -340,7 +351,11 @@ export default types
         }
       },
       afterCreate() {
-        self.readProjectInfo();
+        if (self.isWebBased) {
+          self.setProjectType();
+        } else {
+          self.readProjectInfo();
+        }
       }
     };
   });

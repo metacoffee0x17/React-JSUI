@@ -2,7 +2,14 @@ import React, { Component, Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
 
 //icons
-import { faObjectGroup, faFolderOpen, faBoxOpen, faPlus, faCogs } from '@fortawesome/fontawesome-free-solid';
+import {
+  faObjectGroup,
+  faGlobe,
+  faFolderOpen,
+  faBoxOpen,
+  faPlus,
+  faCogs
+} from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -12,7 +19,6 @@ import * as A from 'styles/shared-components';
 import Group from 'components/Group';
 import Header from 'components/Header';
 import IconWithTip from 'components/IconWithTip';
-import Processes from 'components/Processes';
 
 import keydown from 'react-keydown';
 import FilterProjectsSidebar from 'components/FilterProjectsSidebar';
@@ -43,6 +49,11 @@ class Home extends Component {
           {!showWelcomeScreen && (
             <Fragment>
               <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
+              <IconWithTip
+                onClick={store.importingWebUrl.setTrue}
+                icon={faGlobe}
+                tip="Import a web project"
+              />
               <IconWithTip
                 onClick={store.openCodeWorkspace}
                 icon={faBoxOpen}

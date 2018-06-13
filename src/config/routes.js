@@ -3,6 +3,7 @@ import React from 'react';
 import Home from 'views/Home';
 import ProjectView from 'views/ProjectView';
 import GroupView from 'views/GroupView';
+import WebProjectView from 'views/WebProjectView';
 
 const routes = {
   home: {
@@ -17,6 +18,13 @@ const routes = {
     path: '/project/:id',
     extra: {
       component: <ProjectView />
+    }
+  },
+  webProject: {
+    id: 'web-project',
+    path: '/web-project/:id',
+    extra: {
+      component: <WebProjectView />
     }
   },
   group: {

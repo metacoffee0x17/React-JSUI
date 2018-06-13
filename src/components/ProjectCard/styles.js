@@ -12,7 +12,7 @@ export const ProjectCard = emotion.div(
     display: 'flex',
     border: '1px solid rgba(255, 255, 255, 0.5)',
     borderRadius: 3,
-    minWidth: 150,
+    minWidth: 200,
     minHeight: 100,
     padding: 15,
     marginBottom: 15,

@@ -91,6 +91,12 @@ export const scriptsActions = store => {
   }));
 };
 
+export const webProjectActions = store => [
+  {
+    name: 'Open in browser',
+    command: () => store.currentProject.openWebUrl()
+  }
+];
 export const projectActions = store => [
   {
     name: 'Delete node_modules folder',
@@ -111,7 +117,7 @@ export const projectActions = store => [
   {
     name: 'Open in code editor',
     command: store.currentProject.edit
-  },
+  }
   /*{
     name: 'Install a dependency',
     command: () => {}
@@ -156,6 +162,7 @@ export const getActionsForPopup = store => {
   const { router } = store;
 
   const isInProject = router.page === routes.project.id;
+  const isInWebProject = router.page === routes.webProject.id;
 
   const enabledActionGroups = [
     defaultActions,
@@ -164,9 +171,11 @@ export const getActionsForPopup = store => {
     layoutActions,
     organizeActions,
     pluginsActions,
-    isInProject && projectActions,
     scriptsActions,
-    terminalActions
+    terminalActions,
+    //depending on page
+    isInProject && projectActions,
+    isInWebProject && webProjectActions
   ];
 
   const allActions = compact(flatten(enabledActionGroups.map(a => a && a(store))));

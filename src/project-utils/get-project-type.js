@@ -3,7 +3,24 @@ import { PROJECT_TAGS } from 'config/enums';
 const hasModule = (entries, mod) => entries.find(([name]) => name === mod);
 const hasModuleThatContains = (entries, mod) => entries.find(([name]) => name.includes(mod));
 
-export const getProjectType = packageJson => {
+const webProjectToTagMap = {
+  'gist.github.com': 'Gist',
+  'codepen.io': 'Codepen',
+  'jsfiddle.net': 'JSFiddle',
+  'codesandbox.io': 'CodeSandbox',
+  'repl.it': 'Repl.it',
+  'jsbin.com': 'JS Bin',
+  'snack.expo.io': 'Snack'
+};
+
+export const getProjectType = (packageJson, isWebBased, webUrl) => {
+  console.log('packageJson', packageJson);
+
+  if (isWebBased) {
+    const found = Object.entries(webProjectToTagMap).find(([value]) => webUrl.includes(value));
+    return found ? found[1] : PROJECT_TAGS.UNKNOWN;
+  }
+
   if (!packageJson) {
     return PROJECT_TAGS.UNKNOWN;
   }

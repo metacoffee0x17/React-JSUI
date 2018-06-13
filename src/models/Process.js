@@ -69,6 +69,7 @@ export default types
       },
       restart: () => {
         self.output = '';
+        self.chunkedOutput = [];
         self.stop();
         setTimeout(() => {
           self.start();

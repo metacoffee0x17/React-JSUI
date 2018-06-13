@@ -26,7 +26,9 @@ export const importStore = ElectronStore => {
 export const exportStore = store => {
   return {
     settings: store.settings,
-    projects: store.projects.map(project => pick(project, ['name', 'path', 'id', 'group'])),
+    projects: store.projects.map(project =>
+      pick(project, ['name', 'path', 'id', 'group', 'isWebBased', 'webUrl'])
+    ),
     groups: store.groups.map(groups => pick(groups, ['name', 'id']))
   };
 };

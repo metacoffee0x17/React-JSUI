@@ -17,9 +17,8 @@ import {
   faEdit,
   faCode,
   faEye,
-  faRecycle,
+  faGlobe,
   faTrash,
-  faPlug,
   faArrowsAlt
 } from '@fortawesome/fontawesome-free-solid';
 
@@ -38,15 +37,15 @@ class Project extends Component {
         type: 'warning'
       });
     }
-    router.openPage(routes.project, { id: project.id });
+    router.openPage(project.isWebBased ? routes.webProject : routes.project, { id: project.id });
   };
 
   render() {
     const { project, store, showMove, horizontal } = this.props;
     const { settings } = store;
-    const { type, ready } = project;
+    const { type, ready, isWebBased } = project;
     const hasProjectType = type && type !== PROJECT_TAGS.UNKNOWN;
-    const markRed = settings.highlightProjectsWithoutRepo && !project.origin;
+    const markRed = settings.highlightProjectsWithoutRepo && !project.origin && !isWebBased;
 
     return (
       <S.ProjectCard horizontal={horizontal} markRed={markRed}>
@@ -56,25 +55,25 @@ class Project extends Component {
         </Vertical>
 
         <Horizontal css={{ marginTop: 10 }} spaceAll={15}>
-          <A.ActionIcon tip="Open in Finder" icon={faFolder} onClick={project.openDir} />
-          <A.ActionIcon tip="Edit" icon={faCode} onClick={project.edit} />
+          {!isWebBased && <A.ActionIcon tip="Open in Finder" icon={faFolder} onClick={project.openDir} />}
+          {!isWebBased && <A.ActionIcon tip="Edit" icon={faCode} onClick={project.edit} />}
+
+          {isWebBased && (
+            <A.ActionIcon tip={`Open ${project.webUrl}`} icon={faGlobe} onClick={project.openWebUrl} />
+          )}
 
           {ready && (
             <React.Fragment>
-              <A.ActionIcon tip="package.json" icon={faEye} onClick={project.previewFile} />
+              {!isWebBased && <A.ActionIcon tip="package.json" icon={faEye} onClick={project.previewFile} />}
               <A.ActionIcon
                 tip="Rename"
                 icon={faEdit}
                 onClick={() => store.renameProject(project.id, project.name)}
               />
-              {project.startScriptName && <A.ActionIcon tip="Start" icon={faPlay} onClick={project.navigateThenStart} />}
-              {/* <A.ActionIcon
-                tip="Reinstall dependencies"
-                icon={faRecycle}
-                onClick={project.reinstallDependencies}
-              />
-              <A.ActionIcon tip="Delete dependencies" icon={faTrash} onClick={project.deleteDependencies} />
-              <A.ActionIcon tip="Install dependencies" icon={faPlug} onClick={project.installDependencies} />*/}
+              {!isWebBased &&
+                project.startScriptName && (
+                  <A.ActionIcon tip="Start" icon={faPlay} onClick={project.navigateThenStart} />
+                )}
               {project.origin && (
                 <A.ActionIcon tip={project.origin} icon={faExternalLinkAlt} onClick={project.goToOrigin} />
               )}

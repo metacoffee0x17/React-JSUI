@@ -57,6 +57,7 @@ export default types
     //booleans
     settingsOpened: createModel(Boolean),
     searchOpened: createModel(Boolean),
+    importingWebUrl: createModel(Boolean),
     actionsOpened: createModel(Boolean),
     cssConverterDialogOpen: createModel(Boolean),
     babelReplDialogOpen: createModel(Boolean),
@@ -65,6 +66,15 @@ export default types
   })
   .actions(self => {
     return {
+      importWebProject: flow(function*({ name, url }) {
+        self.importingWebUrl.setFalse();
+        const newProject = Project.create({
+          name,
+          webUrl: url,
+          isWebBased: true
+        });
+        self.projects.push(newProject);
+      }),
       killProcess: async () => {
         const { value: port } = await prompt('Kill port', 'Port');
         if (port) {
@@ -403,7 +413,7 @@ export default types
       return [...projectsFromGroups, ...self.projects];
     },
     get currentProject() {
-      if (self.router.page === routes.project.id) {
+      if (self.router.page === routes.project.id || self.router.page === routes.webProject.id) {
         return self.projects.find(project => project.id === self.router.params.id);
       }
     },

@@ -3,7 +3,6 @@ import { observer, inject } from 'mobx-react';
 import generators from 'generators';
 import routes from 'config/routes';
 import { getActionsForPopup } from 'models/actions';
-import map from 'lodash/map';
 
 //styles
 import * as S from './styles';
@@ -19,6 +18,7 @@ import Settings from 'views/Settings';
 import ListOfBlocks from 'components/ListOfBlocks';
 import CliGenerator from 'components/CliGenerator';
 import ImportWorkspace from 'components/ImportWorkspace';
+import ImportWebUrl from 'components/ImportWebUrl';
 
 @inject('store')
 @observer
@@ -28,7 +28,7 @@ class Dialogs extends Component {
     const { projects, settingsOpened } = store;
     const { searchOpened, actions, cssConverterDialogOpen, babelReplDialogOpen } = store;
 
-    const mappedItems = projects.map(({ name, id, path }) => ({ name, id, path }));
+    const mappedItems = projects.map(({ name, id, path, isWebBased }) => ({ name, id, path, isWebBased }));
 
     return (
       <S.Dialogs>
@@ -60,7 +60,11 @@ class Dialogs extends Component {
             showSearch={true}
             closeOnChoose={true}
             items={mappedItems}
-            onChoose={project => store.router.openPage(routes.project, { id: project.id })}
+            onChoose={project =>
+              store.router.openPage(project.isWebBased ? routes.webProject : routes.project, {
+                id: project.id
+              })
+            }
             onEsc={searchOpened.setFalse}
           />
         )}
@@ -118,12 +122,18 @@ class Dialogs extends Component {
         )}
 
         {!!store.importingWorkspace && (
-          <Dialog key="import-workspace" onClose={store.generateDialogOpen.setFalse}>
+          <Dialog key="import-workspace" onClose={store.cancelImportingWorkspace}>
             <ImportWorkspace
               onCancel={store.cancelImportingWorkspace}
               onSubmit={store.importWorkspace}
               workspace={store.importingWorkspace}
             />
+          </Dialog>
+        )}
+
+        {store.importingWebUrl.value === true && (
+          <Dialog key="import-workspace" onClose={store.importingWebUrl.setFalse}>
+            <ImportWebUrl onCancel={store.importingWebUrl.setFalse} onSubmit={store.importWebProject} />
           </Dialog>
         )}
       </S.Dialogs>

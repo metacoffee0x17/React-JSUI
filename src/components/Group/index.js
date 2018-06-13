@@ -32,6 +32,7 @@ class Group extends Component {
     const showProjects = hasProjects && collapsed === false && this.collapsed.value === false;
     const hide = hideIfEmpty && !hasProjects;
     const showCollapse = hasProjects && !collapsed && !horizontal;
+    const showPlayButton = !group.projects.every(project => project.isWebBased);
 
     return (
       <S.Group hide={hide} horizontal={horizontal} spaceAll={10} collapsed={collapsed} onClick={onClick}>
@@ -48,12 +49,14 @@ class Group extends Component {
             <A.Link disable={collapsed} onClick={() => store.router.openPage(routes.group, { id: group.id })}>
               {group.name}
             </A.Link>
-            <A.ActionIcon
-              delay={700}
-              onClick={() => store.navigateToGroupAndStartAll(group.id)}
-              icon={faPlay}
-              tip="Start all projects in group"
-            />
+            {showPlayButton && (
+              <A.ActionIcon
+                delay={700}
+                onClick={() => store.navigateToGroupAndStartAll(group.id)}
+                icon={faPlay}
+                tip="Start all projects in group"
+              />
+            )}
           </A.Horizontal>
 
           {!collapsed && (
