@@ -34,6 +34,7 @@ module.exports = function override(config, env) {
       resolveApp('node_modules/path-key'),
       resolveApp('node_modules/p-finally'),
       resolveApp('node_modules/default-shell'),
+      resolveApp('node_modules/pify'),
 
     );
   }
