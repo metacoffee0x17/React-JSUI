@@ -27,11 +27,10 @@ class CheckMultipleList extends Component {
         {list.map((item, index) => {
           return (
             <Fragment>
-              <A.Horizontal centerV key={item.value} onClick={() => this.click(item)}>
+              <A.Horizontal centerV key={item.value} onClick={() => this.check(item)}>
                 <ToggleIcon
                   inactive={!item.checked}
                   active={item.checked}
-                  onClick={() => this.check(item)}
                   onIcon={faCheckSquare}
                   offIcon={faSquare}
                 />
