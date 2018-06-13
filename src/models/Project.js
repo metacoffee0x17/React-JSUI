@@ -5,7 +5,7 @@ import { prompt, confirmDelete } from 'config/swal';
 import { toast } from 'config/swal';
 import axios from 'axios';
 import routes from 'config/routes';
-
+import pify from 'pify';
 //utils
 import get from 'lodash/get';
 import omitBy from 'lodash/omitBy';
@@ -24,14 +24,17 @@ import Process from './Process';
 //native
 import getFoldersAsObjects from 'utils/file-utils/get-folders-as-objects';
 import getAllItems from 'utils/file-utils/get-all-items';
+import { createNotification } from 'utils/notification-utils';
 
 //native
 const fs = window.require('fs');
 const path = window.require('path');
+const { remote } = window.require('electron');
 const { spawn } = window.require('child_process');
-const parseGitConfig = window.require('electron').remote.require('parse-git-config');
-const which = window.require('electron').remote.require('which');
-const nodePlop = window.require('electron').remote.require('node-plop');
+const parseGitConfig = remote.require('parse-git-config');
+const which = remote.require('which');
+const nodePlop = remote.require('node-plop');
+const rimraf = remote.require('rimraf');
 
 const Generator = types.model({
   name: types.string,
@@ -82,12 +85,40 @@ export default types
         }
       },
       openDir: () => {
-        const shell = window.require('electron').shell;
-        shell.openExternal(self.path);
+        if (process.platform === 'darwin') {
+          spawn('open', [self.path]);
+        } else if (process.platform === 'win32') {
+          spawn('explorer', [self.path]);
+        }
       },
       build: () => {
         self.runScript('build');
       },
+      deleteNodeModulesFolder: async (showToast = false) => {
+        let nodeModulesPath = path.join(self.path, 'node_modules');
+        const promise = pify(rimraf)(nodeModulesPath);
+        if (showToast) {
+          toast({
+            title: 'Successfully deleted the node_modules folder!',
+            type: 'success'
+          });
+        }
+        return promise;
+      },
+      installNodeModules: flow(function*() {
+        yield self.runScript('install');
+        createNotification('Done', `Dependencies for ${self.name} are installed.`);
+      }),
+      reinstallDependencies: flow(function*() {
+        const confirmed = yield confirmDelete(
+          'Are you sure?',
+          `This will remove the node_modules folder and reinstall the dependencies again.`
+        );
+        if (confirmed) {
+          yield self.deleteNodeModulesFolder(false);
+          self.installNodeModules();
+        }
+      }),
       installDependency: flow(function*(formValues) {
         if (!formValues) {
           return null;

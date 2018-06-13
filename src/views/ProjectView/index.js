@@ -1,12 +1,21 @@
 //region: imports
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
 import { reaction } from 'mobx';
 import keydown from 'react-keydown';
 import { remote } from 'electron';
 
 //icons
-import { faCode, faFolder, faPlug, faCogs } from '@fortawesome/fontawesome-free-solid/index';
+import {
+  faCode,
+  faMagic,
+  faBoxes,
+  faTrashAlt,
+  faSyncAlt,
+  faFolder,
+  faPlug,
+  faCogs
+} from '@fortawesome/fontawesome-free-solid/index';
 
 //utils
 import get from 'lodash/get';
@@ -19,7 +28,6 @@ import { spaceUnit } from 'styles/shared-components';
 
 //components
 import DependenciesList from 'components/DependenciesList';
-import Processes from 'components/Processes';
 import ProjectTree from 'components/ProjectTree';
 import PopupSelector from 'components/PopupSelector';
 import Header from 'components/Header';
@@ -89,112 +97,133 @@ class ProjectView extends Component {
       ...rest
     }));
 
-    let shouldOpenSearch = searchOpened.value && mappedItems && mappedItems.length > 0;
-    let hasGenerators = project.generatorList && project.generatorList.length > 0;
+    const shouldOpenSearch = searchOpened.value && mappedItems && mappedItems.length > 0;
+    const hasGenerators = project.generatorList && project.generatorList.length > 0;
+    const showFiles = project.contents && store.settings.indexFiles;
 
     return (
       <S.ProjectView>
-        <Header
-          renderRight={
-            <A.Horizontal spaceAll={15}>
-              {hasGenerators && (
-                <IconWithTip
-                  tip="Generate with plop"
-                  icon={faCogs}
-                  onClick={this.generatorsDialogOpen.setTrue}
-                />
-              )}
-              <IconWithTip tip="Apply plugin" icon={faPlug} onClick={this.pluginDialogOpen.setTrue} />
-              <IconWithTip tip="Open in Finder" icon={faFolder} onClick={project.openDir} />
-              <IconWithTip tip="Edit code" icon={faCode} onClick={project.edit} />
-
-              {/*          <IconWithTip
-                tip="Reinstall dependencies"
-                icon={faRecycle}
-                onClick={project.reinstallDependencies}
-              />
-              <IconWithTip tip="Delete dependencies" icon={faTrash} onClick={project.deleteDependencies} />
-              <IconWithTip tip="Install dependencies" icon={faPlug} onClick={project.installDependencies} />*/}
-            </A.Horizontal>
-          }
-        >
+        <Header>
           <A.Horizontal spaceAll={8}>
-            <S.Title>
-              {project.name} {project.packageJson && project.packageJson.version}
-            </S.Title>
-            {project.origin && (
-              <Tooltip title={project.origin} position="bottom">
-                <A.SmallButton onClick={project.goToOrigin}>git</A.SmallButton>
-              </Tooltip>
-            )}
-            {project.gitBranch && <GitBranch branchName={project.gitBranch} />}
+            <S.Title>{project.name}</S.Title>
           </A.Horizontal>
         </Header>
 
         <A.Horizontal flex={1}>
-          {project.contents && <ProjectTree contents={project.contents} />}
-          <S.Mid hasProcesses={false}>
-            <S.Right>
-              {project.ready && (
-                <React.Fragment>
-                  {hasScripts && (
-                    <React.Fragment>
-                      <S.Section.Title> Scripts </S.Section.Title>
-                      <A.Space size={3} />
-                      <Horizontal wrap spaceBottom spaceAll={spaceAll}>
-                        {Object.entries(project.packageJson.scripts).map(([name, script]) => (
-                          <Tooltip title={script}>
-                            <A.Button onClick={() => project.runScript(name)}>{name}</A.Button>
+          {showFiles && <ProjectTree contents={project.contents} />}
+          <A.Vertical flex={1}>
+            <S.InfoStrip centerHorizontalV spaceBetween>
+              <A.Horizontal centerV spaceAll={10}>
+                <div>Version: {project.packageJson && project.packageJson.version}</div>
+
+                {(project.origin || project.gitBranch) && (
+                  <Fragment>
+                    <A.VerticalSeparator />
+                    {project.origin && (
+                      <Tooltip title={project.origin} position="bottom">
+                        <A.SmallButton onClick={project.goToOrigin}>git</A.SmallButton>
+                      </Tooltip>
+                    )}
+                    {project.gitBranch && <GitBranch branchName={project.gitBranch} />}
+                  </Fragment>
+                )}
+              </A.Horizontal>
+
+              <A.Horizontal spaceAll={15}>
+                <IconWithTip tip="Install dependencies" icon={faBoxes} onClick={project.installNodeModules} />
+
+                <IconWithTip
+                  tip="Delete all node_modules"
+                  icon={faTrashAlt}
+                  onClick={project.deleteNodeModulesFolder}
+                />
+
+                <IconWithTip
+                  tip="Reinstall dependencies"
+                  icon={faSyncAlt}
+                  onClick={project.reinstallDependencies}
+                />
+
+                <A.VerticalSeparator />
+
+                {hasGenerators && (
+                  <IconWithTip
+                    tip="Generate with plop"
+                    icon={faCogs}
+                    onClick={this.generatorsDialogOpen.setTrue}
+                  />
+                )}
+                <IconWithTip tip="Apply plugin" icon={faMagic} onClick={this.pluginDialogOpen.setTrue} />
+
+                <A.VerticalSeparator />
+
+                <IconWithTip tip="Open in Finder" icon={faFolder} onClick={project.openDir} />
+                <IconWithTip tip="Edit code" icon={faCode} onClick={project.edit} />
+              </A.Horizontal>
+            </S.InfoStrip>
+            <S.Mid hasProcesses={false}>
+              <S.Right>
+                {project.ready && (
+                  <React.Fragment>
+                    {hasScripts && (
+                      <React.Fragment>
+                        <S.Section.Title> Scripts </S.Section.Title>
+                        <A.Space size={3} />
+                        <Horizontal wrap spaceBottom spaceAll={spaceAll}>
+                          {Object.entries(project.packageJson.scripts).map(([name, script]) => (
+                            <Tooltip title={script}>
+                              <A.Button onClick={() => project.runScript(name)}>{name}</A.Button>
+                            </Tooltip>
+                          ))}
+                        </Horizontal>
+                      </React.Fragment>
+                    )}
+
+                    {/* Dependencies */}
+                    <Horizontal spaceAll={10} flex={1}>
+                      {/* Dependencies list */}
+                      <Vertical flex={1}>
+                        <Horizontal centerV css={{ minHeight: 30 }} wrap spaceAll={spaceAll}>
+                          <S.Section.Title> Dependencies </S.Section.Title>
+                          <Tooltip title="Add a dependency">
+                            <A.SmallButton onClick={() => this.dependenciesDialogOpen.setValue('open')}>
+                              add
+                            </A.SmallButton>
                           </Tooltip>
-                        ))}
-                      </Horizontal>
-                    </React.Fragment>
-                  )}
+                        </Horizontal>
+                        {get(project, 'packageJson.dependencies') && (
+                          <DependenciesList
+                            {...dependenciesListProps}
+                            list={project.packageJson.dependencies}
+                          />
+                        )}
+                      </Vertical>
 
-                  {/* Dependencies */}
-                  <Horizontal spaceAll={10} flex={1}>
-                    {/* Dependencies list */}
-                    <Vertical flex={1}>
-                      <Horizontal centerV css={{ minHeight: 30 }} wrap spaceAll={spaceAll}>
-                        <S.Section.Title> Dependencies </S.Section.Title>
-                        <Tooltip title="Add a dependency">
-                          <A.SmallButton onClick={() => this.dependenciesDialogOpen.setValue('open')}>
-                            add
-                          </A.SmallButton>
-                        </Tooltip>
-                      </Horizontal>
-                      {get(project, 'packageJson.dependencies') && (
-                        <DependenciesList
-                          {...dependenciesListProps}
-                          list={project.packageJson.dependencies}
-                        />
-                      )}
-                    </Vertical>
+                      {/* Dev dependencies list */}
 
-                    {/* Dev dependencies list */}
-
-                    <Vertical flex={1}>
-                      <Horizontal centerV css={{ minHeight: 30 }} wrap spaceAll={spaceAll}>
-                        <S.Section.Title> Dev dependencies </S.Section.Title>
-                        <Tooltip title="Add a dev dependency">
-                          <A.SmallButton onClick={() => this.dependenciesDialogOpen.setValue('dev')}>
-                            add
-                          </A.SmallButton>
-                        </Tooltip>
-                      </Horizontal>
-                      {get(project, 'packageJson.devDependencies') && (
-                        <DependenciesList
-                          {...dependenciesListProps}
-                          isDev={true}
-                          list={project.packageJson.devDependencies}
-                        />
-                      )}
-                    </Vertical>
-                  </Horizontal>
-                </React.Fragment>
-              )}
-            </S.Right>
-          </S.Mid>
+                      <Vertical flex={1}>
+                        <Horizontal centerV css={{ minHeight: 30 }} wrap spaceAll={spaceAll}>
+                          <S.Section.Title> Dev dependencies </S.Section.Title>
+                          <Tooltip title="Add a dev dependency">
+                            <A.SmallButton onClick={() => this.dependenciesDialogOpen.setValue('dev')}>
+                              add
+                            </A.SmallButton>
+                          </Tooltip>
+                        </Horizontal>
+                        {get(project, 'packageJson.devDependencies') && (
+                          <DependenciesList
+                            {...dependenciesListProps}
+                            isDev={true}
+                            list={project.packageJson.devDependencies}
+                          />
+                        )}
+                      </Vertical>
+                    </Horizontal>
+                  </React.Fragment>
+                )}
+              </S.Right>
+            </S.Mid>
+          </A.Vertical>
 
           {shouldOpenSearch && (
             <PopupSelector

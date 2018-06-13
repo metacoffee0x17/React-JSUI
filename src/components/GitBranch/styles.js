@@ -4,7 +4,6 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import flex from 'styles/flex';
 
 export const Branch = emotion.div({
-  margin: '0 10px',
   fontSize: 14,
   ...flex.horizontal,
   ...flex.centerHorizontalV

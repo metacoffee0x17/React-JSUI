@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import truncate from 'lodash/truncate';
 import { faCodeBranch } from '@fortawesome/fontawesome-free-solid';
 
-import IconWithTip from 'components/IconWithTip';
-
 import * as S from './styles';
 
 class GitBranch extends Component {

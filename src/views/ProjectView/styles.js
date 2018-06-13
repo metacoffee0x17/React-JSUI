@@ -15,6 +15,13 @@ export const Right = emotion.div({
   ...flex.vertical
 });
 
+export const InfoStrip = emotion(A.Horizontal)({
+  padding: 15,
+  backgroundColor: '#465065',
+  color: 'white',
+  fontSize: 14
+});
+
 export const ProjectView = emotion.div({
   color: 'rgba(0,0,0,0.5)',
   ...flex.vertical,
