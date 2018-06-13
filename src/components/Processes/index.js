@@ -15,6 +15,10 @@ import ProcessTab from './components/ProcessTab';
 
 import { action, observable } from 'mobx';
 
+import keydown from 'react-keydown';
+
+const keyCombinations = ['left', 'right', '1', '2', '3', '4', '5', '6', '7', '8', '9'].map(k => `cmd+${k}`)
+
 @observer
 class Processes extends Component {
   parentRef = React.createRef();
@@ -77,6 +81,16 @@ class Processes extends Component {
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
   };
+
+  @keydown(['ctrl+c'])
+  stopActive() {
+    this.props.processes.stopActive();
+  }
+
+  @keydown(keyCombinations)
+  cmdKeyPressed(e){
+    this.props.processes.handleKey(e);
+  }
 
   render() {
     const { processes, overrides } = this.props;

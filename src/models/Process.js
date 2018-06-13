@@ -65,6 +65,7 @@ export default types
       },
       clearOutput: () => {
         self.output = '';
+        self.chunkedOutput = [];
       },
       restart: () => {
         self.output = '';

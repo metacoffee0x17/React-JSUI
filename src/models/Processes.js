@@ -1,5 +1,7 @@
 import { types, getRoot } from 'mobx-state-tree';
 import { reaction } from 'mobx';
+import { Keys } from 'react-keydown';
+import { cycleValueAround } from 'utils';
 
 //models
 import Process from './Process';
@@ -14,6 +16,34 @@ export default types
     let cancelReaction;
 
     return {
+      handleKey: e => {
+        const currentProcessIndex = self.activeForPage.findIndex(p => p.id === self.selectedProcess.id);
+        const processNumber = self.activeForPage.length;
+        switch (e.keyCode) {
+          case Keys.left: {
+            const nextProcessIndex = cycleValueAround(currentProcessIndex, -1, processNumber);
+            self.setActive(self.activeForPage[nextProcessIndex].id);
+            break;
+          }
+          case Keys.right: {
+            const nextProcessIndex = cycleValueAround(currentProcessIndex, 1, processNumber);
+            self.setActive(self.activeForPage[nextProcessIndex].id);
+            break;
+          }
+          default: {
+            //navigate by numbers from 1 to 9
+            const found = self.activeForPage[parseInt(e.key) - 1];
+            if (found) {
+              self.setActive(found.id);
+            }
+          }
+        }
+      },
+      stopActive: () => {
+        if (self.selectedProcess && self.selectedProcess.running) {
+          self.selectedProcess.stop();
+        }
+      },
       setActive: pid => {
         self.selectedProcess = self.list.find(p => p.id === pid);
       },
@@ -36,7 +66,7 @@ export default types
         self.list.push(process);
         self.selectedProcess = process;
       },
-      findActive: id => self.activeForPage.find(p => p.id === id),
+      findInActiveProcesses: id => self.activeForPage.find(p => p.id === id),
       findInList: id => self.list.find(p => p.id === id),
       afterCreate() {
         /*
@@ -48,7 +78,7 @@ export default types
           activeForPage => {
             if (activeForPage.length !== self.activeForPage) {
               let processIsFound = self.findInList(self.selectedProcess.id);
-              let processIsFoundOnpage = self.findActive(self.selectedProcess.id);
+              let processIsFoundOnpage = self.findInActiveProcesses(self.selectedProcess.id);
               if (processIsFound && !processIsFoundOnpage) {
                 self.setActive(self.activeForPage[0].id);
               }
