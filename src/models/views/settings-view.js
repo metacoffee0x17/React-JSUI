@@ -11,7 +11,8 @@ export default types
     indexFiles: types.optional(types.boolean, false),
     highlightProjectsWithoutRepo: types.optional(types.boolean, false),
     showHomeSidebar: types.optional(types.boolean, true),
-    horizontalLayout: types.optional(types.boolean, false)
+    horizontalLayout: types.optional(types.boolean, false),
+    automaticallyReleasePorts: types.optional(types.boolean, true)
   })
   .actions(self => ({
     changeEditor: editor => {
@@ -25,6 +26,9 @@ export default types
     },
     toggleHorizontalLayout: () => {
       self.horizontalLayout = !self.horizontalLayout;
+    },
+    setAutomaticallReleasePorts: value => {
+      self.automaticallyReleasePorts = value;
     },
     changePath: projectsPath => {
       self.projectsPath = projectsPath;

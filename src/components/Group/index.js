@@ -50,7 +50,7 @@ class Group extends Component {
             </A.Link>
             <A.ActionIcon
               delay={700}
-              onClick={() => store.startAllInCurrentGroup(group.id)}
+              onClick={() => store.navigateToGroupAndStartAll(group.id)}
               icon={faPlay}
               tip="Start all projects in group"
             />

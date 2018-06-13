@@ -218,9 +218,13 @@ export default types
       },
       addProcess: async (cli, args) => {
         const store = getRoot(self);
+
         const proc = Process.create({
           project: self
         });
+
+        proc.attachStore(store);
+
         const prom = proc.attach(cli, args, self.path);
         store.processes.add(proc);
         prom.then(self.readProjectInfo);
@@ -242,7 +246,9 @@ export default types
       navigateThenStart: () => {
         const store = getRoot(self);
         store.router.openPage(routes.project, { id: self.id });
-        self.start();
+        setTimeout(() => {
+          self.start();
+        }, 250);
       },
       goToOrigin: () => {
         const shell = window.require('electron').shell;

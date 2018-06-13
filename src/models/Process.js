@@ -1,14 +1,17 @@
-import { types } from 'mobx-state-tree';
+import { types, getRoot } from 'mobx-state-tree';
 import uuid from 'uuid';
 import { toJS } from 'mobx';
 import { PROCESS_STATUS } from 'config/enums';
 import { remote } from 'electron';
+import { toast } from 'config/swal';
 
 import Project from './Project';
+import { getProblemPort } from 'utils/regex-utils';
 
 //native
 const childProcess = remote.require('child_process');
 const readline = remote.require('readline');
+const fkill = remote.require('fkill');
 
 export default types
   .model('Process', {
@@ -26,8 +29,12 @@ export default types
     let proc;
     let resolve;
     let extra;
+    let store;
 
     return {
+      attachStore: storeInstance => {
+        store = storeInstance;
+      },
       stop: () => {
         self.running = false;
         try {
@@ -38,9 +45,23 @@ export default types
         }
       },
       onOutput: data => {
+        let dataString = data.toString().trim();
+        let problematicPort = getProblemPort(dataString);
+        if (problematicPort) {
+          if (store && store.settings && store.settings.automaticallyReleasePorts) {
+            toast({
+              title: `The port ${problematicPort} was automatically released!`,
+              type: 'success'
+            });
+            fkill(`:${problematicPort}`).then(() => {
+              self.restart();
+            });
+          }
+        }
+
         let newOutput = self.output + '\n' + data.toString();
         self.output = newOutput.trim();
-        self.chunkedOutput.push(data.toString().trim());
+        self.chunkedOutput.push(dataString);
       },
       clearOutput: () => {
         self.output = '';
@@ -54,13 +75,6 @@ export default types
       },
       start: () => {
         self.running = true;
-
-        console.log('extra is', extra);
-
-        console.log('starting', self.command, toJS(self.argz), {
-          cwd: self.path,
-          ...extra
-        });
 
         try {
           proc = childProcess.spawn(self.command, toJS(self.argz), {

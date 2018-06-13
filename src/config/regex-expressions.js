@@ -1,0 +1,1 @@
+export const portRegex = /(port|Port|EADDRINUSE).*(\d{4})/;

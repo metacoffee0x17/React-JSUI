@@ -326,11 +326,16 @@ export default types
         const shell = window.require('electron').shell;
         shell.openExternal(`${PACKAGE_REGISTRY_URL}${dependencyName}`);
       },
-      startAllInCurrentGroup: id => {
+      startAllInCurrentGroup: () => {
+        self.currentGroup.projects.forEach(project => project.start());
+      },
+      navigateToGroupAndStartAll: id => {
         if (id) {
           self.router.openPage(routes.group, { id });
         }
-        self.currentGroup.projects.forEach(project => project.start());
+        setTimeout(() => {
+          self.startAllInCurrentGroup();
+        }, 250);
       }
     };
   })

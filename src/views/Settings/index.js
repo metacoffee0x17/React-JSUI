@@ -57,6 +57,13 @@ class Settings extends Component {
 
           <A.Horizontal centerV>
             <S.Switch
+              {...bindSwitchToMST(settings.automaticallyReleasePorts, settings.setAutomaticallReleasePorts)}
+            />
+            <S.Option.Title>Automatically release ports when they're blocked</S.Option.Title>
+          </A.Horizontal>
+
+          <A.Horizontal centerV>
+            <S.Switch
               checked={settings.indexFiles}
               value={settings.indexFiles}
               onChange={(e, checked) => {
