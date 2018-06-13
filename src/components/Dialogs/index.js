@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import generators from 'generators';
 import routes from 'config/routes';
-import { actionsList } from 'models/actions';
+import { getActionsForPopup } from 'models/actions';
 import map from 'lodash/map';
 
 //styles
@@ -29,7 +29,6 @@ class Dialogs extends Component {
     const { searchOpened, actions, cssConverterDialogOpen, babelReplDialogOpen } = store;
 
     const mappedItems = projects.map(({ name, id, path }) => ({ name, id, path }));
-    const mappedActions = map(actionsList, ({ name, command }) => ({ name, command, id: name }));
 
     return (
       <S.Dialogs>
@@ -43,7 +42,7 @@ class Dialogs extends Component {
             )}
             showSearch={true}
             closeOnChoose={true}
-            items={mappedActions}
+            items={getActionsForPopup(store)}
             onChoose={action => actions.runAction(action.command)}
             onEsc={actions.opened.setFalse}
           />

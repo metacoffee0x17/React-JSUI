@@ -133,7 +133,7 @@ class ProjectView extends Component {
                 <IconWithTip tip="Install dependencies" icon={faBoxes} onClick={project.installNodeModules} />
 
                 <IconWithTip
-                  tip="Delete all node_modules"
+                  tip="Delete node_modules folder"
                   icon={faTrashAlt}
                   onClick={project.deleteNodeModulesFolder}
                 />

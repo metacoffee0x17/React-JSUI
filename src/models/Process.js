@@ -50,11 +50,11 @@ export default types
         if (problematicPort) {
           if (store && store.settings && store.settings.automaticallyReleasePorts) {
             fkill(`:${problematicPort}`).then(() => {
+              self.restart();
               toast({
                 title: `The port ${problematicPort} was automatically released!`,
                 type: 'success'
               });
-              self.restart();
             });
           }
         }

@@ -261,18 +261,6 @@ export default types
         prom.then(self.readProjectInfo);
         return prom;
       },
-      /*deleteDependencies: () => {
-        exec(bashCommands.deleteDependencies, { cwd: self.path });
-      },
-      installDependencies: () => {
-        exec(bashCommands.installDependencies, { cwd: self.path });
-      },
-      reinstallDependencies: () => {
-        /!* execMultiple(
-          [bashCommands.deleteDependencies, bashCommands.installDependencies],
-          self.path
-        );*!/
-      },*/
       start: () => self.runScript(self.startScriptName || 'start'),
       navigateThenStart: () => {
         const store = getRoot(self);
