@@ -49,11 +49,11 @@ export default types
         let problematicPort = getProblemPort(dataString);
         if (problematicPort) {
           if (store && store.settings && store.settings.automaticallyReleasePorts) {
-            toast({
-              title: `The port ${problematicPort} was automatically released!`,
-              type: 'success'
-            });
             fkill(`:${problematicPort}`).then(() => {
+              toast({
+                title: `The port ${problematicPort} was automatically released!`,
+                type: 'success'
+              });
               self.restart();
             });
           }
