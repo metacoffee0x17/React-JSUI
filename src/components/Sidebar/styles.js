@@ -8,5 +8,6 @@ export const Sidebar = emotion.div({
   height: '100vh',
   color: 'white',
   padding: 15,
-  overflowY: 'scroll'
+  overflowY: 'scroll',
+  overflowX: 'hidden',
 });
