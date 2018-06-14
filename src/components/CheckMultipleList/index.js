@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { faCheckSquare, faSquare } from '@fortawesome/fontawesome-free-solid';
 
 //styles
@@ -24,9 +24,9 @@ class CheckMultipleList extends Component {
 
     return (
       <S.CheckMultipleList>
-        {list.map((item, index) => {
+        {list.map(item => {
           return (
-            <S.CheckMultipleListItem key={item.value} onClick={() => this.check(item)}>
+            <S.Item key={item.value} onClick={() => this.check(item)}>
               <A.Horizontal centerV>
                 <ToggleIcon
                   inactive={!item.checked}
@@ -37,7 +37,7 @@ class CheckMultipleList extends Component {
                 <A.Space size={1.5} />
                 <S.Name>{item.label}</S.Name>
               </A.Horizontal>
-            </S.CheckMultipleListItem>
+            </S.Item>
           );
         })}
       </S.CheckMultipleList>

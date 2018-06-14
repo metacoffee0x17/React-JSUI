@@ -3,7 +3,8 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import flex from 'styles/flex';
 
-export const Dialogs = emotion.div({});
+export const
+  Dialogs = emotion.div({});
 
 export const Editor = emotion(CodeMirror)({
   ...flex.vertical,
