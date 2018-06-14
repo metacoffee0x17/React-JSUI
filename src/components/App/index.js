@@ -16,7 +16,9 @@ import { executeShortcut } from 'config/shortcuts';
 @observer
 class App extends Component {
   componentDidMount() {
-    ipcc.answerMain('execute-shortcut', shortcut => executeShortcut(shortcut, this.props.store));
+    const { store } = this.props;
+    ipcc.answerMain('execute-shortcut', shortcut => executeShortcut(shortcut, store));
+    ipcc.answerMain('set-focused', focus => store.focused.setValue(focus));
   }
 
   render() {
@@ -29,11 +31,7 @@ class App extends Component {
         {showHomePage ? <Home /> : router.extra ? router.extra.component : null}
         <Dialogs />
         {/*<Footer />*/}
-        {store.processes.hasProcesses && (
-          <Processes
-            processes={processes}
-          />
-        )}
+        {store.processes.hasProcesses && <Processes processes={processes} />}
       </S.App>
     );
   }
