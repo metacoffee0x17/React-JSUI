@@ -19,6 +19,7 @@ import ListOfBlocks from 'components/ListOfBlocks';
 import CliGenerator from 'components/CliGenerator';
 import ImportWorkspace from 'components/ImportWorkspace';
 import ImportWebUrl from 'components/ImportWebUrl';
+import ImportGithubUrl from 'components/ImportGithubUrl';
 
 @inject('store')
 @observer
@@ -132,8 +133,14 @@ class Dialogs extends Component {
         )}
 
         {store.importingWebUrl.value === true && (
-          <Dialog key="import-workspace" onClose={store.importingWebUrl.setFalse}>
+          <Dialog key="import-web-url" onClose={store.importingWebUrl.setFalse}>
             <ImportWebUrl onCancel={store.importingWebUrl.setFalse} onSubmit={store.importWebProject} />
+          </Dialog>
+        )}
+
+        {store.importingGithubUrl.value === true && (
+          <Dialog key="import-github-url" onClose={store.importingGithubUrl.setFalse}>
+            <ImportGithubUrl onCancel={store.importingGithubUrl.setFalse} onSubmit={store.importGithubUrl} />
           </Dialog>
         )}
       </S.Dialogs>

@@ -11,6 +11,8 @@ import {
   faCogs
 } from '@fortawesome/fontawesome-free-solid';
 
+import { faGithub } from '@fortawesome/fontawesome-free-brands';
+
 //styles
 import * as S from './styles';
 import * as A from 'styles/shared-components';
@@ -48,12 +50,7 @@ class Home extends Component {
         <Header>
           {!showWelcomeScreen && (
             <Fragment>
-              <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import project" />
-              <IconWithTip
-                onClick={store.importingWebUrl.setTrue}
-                icon={faGlobe}
-                tip="Import a web project"
-              />
+              <IconWithTip onClick={() => store.openFolder()} icon={faPlus} tip="Import local project" />
               <IconWithTip
                 onClick={store.openCodeWorkspace}
                 icon={faBoxOpen}
@@ -64,6 +61,18 @@ class Home extends Component {
                 icon={faFolderOpen}
                 tip="Bulk import projects from folder"
               />
+              <A.VerticalSeparator />
+              <IconWithTip
+                onClick={store.importingWebUrl.setTrue}
+                icon={faGlobe}
+                tip="Import a web project"
+              />
+              <IconWithTip
+                onClick={store.importingGithubUrl.setTrue}
+                icon={faGithub}
+                tip="Import a GitHub project"
+              />
+              <A.VerticalSeparator />
               <IconWithTip onClick={store.createGroup} icon={faObjectGroup} tip="Create a group" />
               <IconWithTip onClick={store.generateDialogOpen.setTrue} icon={faCogs} tip="Generate an app" />
             </Fragment>

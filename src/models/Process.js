@@ -114,7 +114,9 @@ export default types
         self.argz = argz;
         self.command = command;
         extra = extraOptions;
-        self.start();
+        try {
+          self.start();
+        } catch (err) {}
         return new Promise(res => {
           resolve = res;
         });

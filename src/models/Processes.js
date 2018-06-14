@@ -103,7 +103,7 @@ export default types
       const { router } = store;
 
       if (router.page === routes.project.id) {
-        return self.list.filter(p => p.project.id === router.params.id);
+        return self.list.filter(p => p.project && p.project.id === router.params.id);
       }
       if (router.page === routes.group.id) {
         return self.list.filter(process => {

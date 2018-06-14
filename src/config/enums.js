@@ -18,7 +18,7 @@ export const PROJECT_REPO = {
 
 export const PROJECT_PRIVACY = {
   PRIVATE: 'Private',
-  PUBLIC: 'Public',
+  PUBLIC: 'Public'
 };
 
 export const IMPORT_WORKSPACE_TYPES = {

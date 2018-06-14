@@ -17,7 +17,7 @@ export const DialogContent = emotion.div({
 
 export const VerticalSeparator = emotion.div({
   width: 1,
-  height: '100%',
+  height: 20,
   backgroundColor: whiteish(0.4)
 });
 

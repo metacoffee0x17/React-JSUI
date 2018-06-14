@@ -6,6 +6,7 @@ import { toast } from 'config/swal';
 import axios from 'axios';
 import routes from 'config/routes';
 import pify from 'pify';
+
 //utils
 import get from 'lodash/get';
 import omitBy from 'lodash/omitBy';
@@ -24,7 +25,6 @@ import Process from './Process';
 //native
 import getFoldersAsObjects from 'utils/file-utils/get-folders-as-objects';
 import getAllItems from 'utils/file-utils/get-all-items';
-import { createNotification } from 'utils/notification-utils';
 
 //native
 const fs = window.require('fs');
@@ -108,8 +108,9 @@ export default types
         return promise;
       },
       installNodeModules: flow(function*() {
+        const store = getRoot(self);
         yield self.runScript('install');
-        createNotification('Done', `Dependencies for ${self.name} are installed.`);
+        store.createNotification('Done', `Dependencies for ${self.name} are installed.`);
       }),
       reinstallDependencies: flow(function*() {
         const confirmed = yield confirmDelete(

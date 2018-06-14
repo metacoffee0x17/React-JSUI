@@ -1,5 +1,6 @@
 import { flow, getRoot, types } from 'mobx-state-tree';
 import ipcc from 'ipcc/renderer';
+import pify from 'pify';
 
 //config
 import { PACKAGE_REGISTRY_URL } from 'config/urls';
@@ -30,9 +31,12 @@ import SettingsView from 'models/views/settings-view';
 import HomeView from 'models/views/home-view';
 import { RouterStore } from 'rttr';
 import routes from 'config/routes';
+import { getSvnUrl } from 'utils/github-utils';
 
 //native
-const fkill = window.require('electron').remote.require('fkill');
+const { remote } = window.require('electron');
+const fkill = remote.require('fkill');
+const rimraf = remote.require('rimraf');
 const fs = window.require('fs');
 const path = window.require('path');
 
@@ -62,10 +66,27 @@ export default types
     cssConverterDialogOpen: createModel(Boolean),
     babelReplDialogOpen: createModel(Boolean),
     actions: createModel(Actions),
-    generateDialogOpen: createModel(Boolean)
+    generateDialogOpen: createModel(Boolean),
+    importingGithubUrl: createModel(Boolean),
+    focused: createModel(Boolean, { value: true })
   })
   .actions(self => {
     return {
+      createNotification: (title, body = title, options = { type: 'success' }, cb) => {
+        const { type } = options;
+        if (self.focused.value === true) {
+          if (!body) {
+            toast({ title: `${title} ${body}`, type });
+          }
+        } else {
+          let myNotification = new Notification(title, {
+            body
+          });
+          if (cb) {
+            myNotification.onclick = () => cb;
+          }
+        }
+      },
       importWebProject: flow(function*({ name, url }) {
         self.importingWebUrl.setFalse();
         const newProject = Project.create({
@@ -74,6 +95,67 @@ export default types
           isWebBased: true
         });
         self.projects.push(newProject);
+      }),
+      importGithubUrl: flow(function*(formValues) {
+        const { name, url, installDependencies, keepGit, isSpecificFolder } = formValues;
+
+        self.importingGithubUrl.setFalse();
+
+        const downloadPath = path.join(self.settings.projectsPath, name);
+
+        const newProject = Project.create({
+          name,
+          path: downloadPath,
+          ready: !installDependencies
+        });
+
+        self.projects.push(newProject);
+        self.router.openPage(routes.project, { id: newProject.id });
+
+        const newProcess = Process.create({
+          project: newProject
+        });
+
+        self.processes.add(newProcess);
+
+        if (isSpecificFolder) {
+          try {
+            const svnUrlOfDir = getSvnUrl(url);
+            yield newProcess.attach(`svn`, ['checkout', svnUrlOfDir, downloadPath]);
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          try {
+            yield newProcess.attach(`git`, ['clone', url, downloadPath]);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        self.createNotification('Done!', `The project ${name} has been cloned from GitHub!`, {
+          type: 'success'
+        });
+
+        if (!keepGit && !isSpecificFolder) {
+          yield pify(rimraf)(path.join(downloadPath, '.git'));
+        }
+
+        newProject.setReady(true);
+
+        if (installDependencies) {
+          if (!fs.existsSync(path.join(downloadPath, 'package.json'))) {
+            toast({
+              title: `No dependencies found for ${name}.`,
+              type: 'warning'
+            });
+          } else {
+            yield newProcess.attach(`yarn`, ['install'], downloadPath);
+            self.createNotification('Done!', `Dependencies for project ${name} have been installed!`, {
+              type: 'success'
+            });
+          }
+        }
       }),
       killProcess: async () => {
         const { value: port } = await prompt('Kill port', 'Port');
