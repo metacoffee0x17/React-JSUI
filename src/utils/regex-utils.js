@@ -1,5 +1,18 @@
 import { portRegex } from 'config/regex-expressions';
 
+export const getArrayOfRegexMatches = (string, regexExpression) => {
+  const results = [];
+  loopRegexMatches(string, regexExpression, res => results.push(res));
+  return results;
+};
+
+export const loopRegexMatches = (string, regexExpression, callback) => {
+  let match;
+  while ((match = regexExpression.exec(string)) !== null) {
+    callback(match);
+  }
+};
+
 export const getRegexMatches = (str, regex) => {
   var matches = [];
   var match;
@@ -22,6 +35,14 @@ export const getRegexMatches = (str, regex) => {
   }
 
   return matches;
+};
+
+export const getRegexResults = (string, regex) => {
+  const results = getRegexMatches(string, regex);
+  if (results.length === 0) {
+    return { result: false, matches: [] };
+  }
+  return { result: true, matches: results[0] };
 };
 
 export const getProblemPort = message => {

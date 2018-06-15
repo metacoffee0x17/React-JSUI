@@ -156,12 +156,6 @@ app.on('activate', function() {
   }
 });
 
-app.on('browser-window-blur', () => {
-  logger.log('blurred main window');
-  ipc.callRenderer(mainWindow, 'set-focused', false);
-});
+app.on('browser-window-blur', () => ipc.callRenderer(mainWindow, 'set-focused', false));
 
-app.on('browser-window-focus', () => {
-  logger.log('blurred window focused');
-  ipc.callRenderer(mainWindow, 'set-focused', true);
-});
+app.on('browser-window-focus', () => ipc.callRenderer(mainWindow, 'set-focused', true));

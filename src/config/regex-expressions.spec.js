@@ -1,5 +1,10 @@
-import { portRegex } from 'config/regex-expressions';
-import { getRegexMatches } from 'utils/regex-utils';
+import { crossEnvRegex, portRegex, runCommandRegex } from 'config/regex-expressions';
+import {
+  getArrayOfRegexMatches,
+  getRegexMatches,
+  getRegexResults,
+  loopRegexMatches
+} from 'utils/regex-utils';
 
 const portErrorExamples = [
   'Error: listen EADDRINUSE :::4000',
@@ -28,5 +33,40 @@ describe('regex-expressions', () => {
   test('wrong message', () => {
     const result = getRegexMatches('Port is already running at 8000', portRegex);
     console.log('result is', result);
-  })
+  });
+
+  test('npm script', () => {
+    const runExamples = ['npm run start', 'yarn deploy', 'yarn run build', 'yarn start', 'npm start'];
+    const scripts = ['start', 'deploy', 'build', 'start', 'start'];
+    const results = runExamples.map(example => {
+      const result = getRegexMatches(example, runCommandRegex);
+      return result[0][2] || result[0][4];
+    });
+    expect(results).toEqual(scripts);
+  });
+
+  test('cross env', () => {
+    const command =
+      'cross-env NODE_PATH=./ cross-env NODE_ENV=development cross-env DEBUG=build*,hermes*,shared:middlewares*,-hermes:resolvers cross-env DIR=hermes backpack';
+
+    const expectation = [
+      ['NODE_PATH', './'],
+      ['NODE_ENV', 'development'],
+      ['DEBUG', 'build*,hermes*,shared:middlewares*,-hermes:resolvers'],
+      ['DIR', 'hermes']
+    ];
+
+    const results = getArrayOfRegexMatches(command, crossEnvRegex);
+
+    results.forEach((e, index) => {
+      expect([e[1], e[2]]).toEqual(expectation[index]);
+    });
+  });
+
+  test('getRegexResults', () => {
+    // expect(getRegexResults('npm run start', runCommandRegex)).toEqual({
+    //   result: true,
+    //   matches: ['npm run start', 'npm run', 'start', undefined, undefined]
+    // });
+  });
 });

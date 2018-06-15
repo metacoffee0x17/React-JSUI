@@ -8,5 +8,5 @@ export const Folders = emotion.ul({
 });
 
 export const Description = emotion.div({
-  fontSize: 14
+  fontSize: 12
 });

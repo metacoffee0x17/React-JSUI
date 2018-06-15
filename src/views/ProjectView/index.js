@@ -36,6 +36,7 @@ import Dialog from 'components/Dialog';
 import ListOfBlocks from 'components/ListOfBlocks';
 import InstallDependencyForm from 'components/InstallDependencyForm';
 import GitBranch from 'components/GitBranch';
+import ScriptsList from 'components/ScriptsList';
 
 //external components
 import { Tooltip } from 'react-tippy';
@@ -167,14 +168,10 @@ class ProjectView extends Component {
                   <React.Fragment>
                     {hasScripts && (
                       <React.Fragment>
-                        <S.Section.Title> Scripts </S.Section.Title>
+                        {/*<S.Section.Title> Scripts </S.Section.Title>*/}
                         <A.Space size={3} />
                         <Horizontal wrap spaceBottom spaceAll={spaceAll}>
-                          {Object.entries(project.packageJson.scripts).map(([name, script]) => (
-                            <Tooltip title={script}>
-                              <A.Button onClick={() => project.runScript(name)}>{name}</A.Button>
-                            </Tooltip>
-                          ))}
+                          <ScriptsList packageJson={project.packageJson} />
                         </Horizontal>
                       </React.Fragment>
                     )}
