@@ -31,7 +31,7 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then CI=false yarn release -- --mac --win; fi
 
 deploy:
-  api_key: $GITHUB_API_KEY
+  api_key: $GH_TOKEN
   provider: releases
   file_glob: true
   file: "dist/*"
