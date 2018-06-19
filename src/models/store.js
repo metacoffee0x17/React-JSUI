@@ -24,7 +24,6 @@ import File from './File';
 import Actions from './actions';
 import Processes from './Processes';
 import Boolean from './Boolean';
-import String from './String';
 import ProjectFilters from 'models/ProjectFilters';
 
 //stores
@@ -233,12 +232,11 @@ export default types
         self.addingProjectToGroup = null;
       },
       addNewProject: project => {
-        if (self.groups.length === 0) {
-          self.groups.push({ id: 'other', name: 'Others', projects: [] });
-        }
-
         if (!project.group) {
           let othersGroup = self.groups.find(g => g.id === 'other');
+          if (self.groups.length === 0 || !othersGroup) {
+            self.groups.push({ id: 'other', name: 'Others', projects: [] });
+          }
           project.setGroup(othersGroup);
         }
 

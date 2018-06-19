@@ -7,7 +7,7 @@
   },
   "description": "A powerful UI toolkit for managing JavaScript apps",
   "repository": "https://github.com/kitze/jsui",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "license": "MIT",
   "private": false,
   "dependencies": {
@@ -150,7 +150,8 @@
     "storybook": "Start Storybook",
     "prebuild": "Clean up the dist and build folders",
     "plop": "Run plop generator",
-    "build-react-and-electron": "Build the React app and copy the Electron files to the build folder"
+    "build-react-and-electron": "Build the React app and copy the Electron files to the build folder",
+    "clean": "Clean the build and dist folders"
   },
   "scripts": {
     "react:start": "react-app-rewired start",

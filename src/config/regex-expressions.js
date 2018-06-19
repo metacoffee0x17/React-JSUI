@@ -5,7 +5,7 @@ export const crossEnvRegex = /cross-env ([^=]+)=([^ ]+)/g;
 export const rimRafRegex = /(rimraf|rm -rf|rm) ([^ ]+)/g;
 export const reactRegex = /(react-scripts|custom-react-scripts|react-app-rewired) ([^ ]+)/g;
 export const vueRegex = /(vue) ([^ ]+)/g;
-export const copyRegex = /cp (-r)? ([^ ]+) ([^ ]+)/g;
+export const copyRegex = /cp (-r)?([^ ]+) ([^ ]+)/g;
 export const changeDirRegex = /(cd) ([^ ]+)/g;
 export const nodeRegex = /(node) ([^ ]+)/g;
 export const jestRegex = /(jest) ([^ ]+)|jest/g;
