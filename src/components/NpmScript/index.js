@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { faCaretDown, faCaretUp } from '@fortawesome/fontawesome-free-solid';
+import { faTrash, faPenSquare } from '@fortawesome/fontawesome-free-solid';
 
 //styles
 import * as S from './styles';
@@ -8,49 +8,83 @@ import * as A from 'styles/shared-components';
 
 //components
 import ScriptDefinition from 'components/ScriptDefinition';
-import Boolean from 'models/Boolean';
 
-@observer
 @inject('scripts')
+@inject('store')
+@observer
 class NpmScript extends Component {
-  expanded = Boolean.create();
-
   hover = () => {
     const {
       scripts,
       script: { name }
     } = this.props;
-    console.log('scripts are', scripts);
+
     scripts.highlightedCommand.setValue(name);
   };
 
+  deleteScript = (e,name) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { store } = this.props;
+    store.currentProject.deleteScript(name);
+  };
+
+  editScript = (e,name) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { store } = this.props;
+    store.currentProject.editScript(name);
+  };
+
   render() {
-    const { scripts, script } = this.props;
+    const { scripts, script, store } = this.props;
     const { name, description, definition } = script;
+    const { settings, currentProject } = store;
+    const {
+      showScriptsCommands,
+      showScriptsDescriptions,
+      labelScriptsCommands,
+      verticalScriptsLayout
+    } = settings;
+    const onlyName = !showScriptsCommands && !showScriptsDescriptions;
 
     return (
-      <S.NpmScript onMouseEnter={this.hover} onMouseLeave={scripts.clear} key={name}>
-        <A.Horizontal spaceBetween>
+      <S.NpmScript
+        horizontal={verticalScriptsLayout}
+        onClick={() => currentProject.runScript(name)}
+        onlyName={onlyName}
+        onMouseEnter={this.hover}
+        onMouseLeave={scripts.clear}
+        key={name}
+      >
+        <A.Horizontal>
           <S.Name> {name} </S.Name>
-          <S.ToggleIcon
-            onClick={this.expanded.toggle}
-            active={this.expanded.value}
-            onIcon={faCaretUp}
-            offIcon={faCaretDown}
-          />
+          <S.Icons spaceAll={3}>
+            {/*<A.A*/}
+            {/*onClick={this.expanded.toggle}*/}
+            {/*active={this.expanded.value}*/}
+            {/*onIcon={faCaretUp}*/}
+            {/*offIcon={faCaretDown}*/}
+            {/*/>*/}
+            <S.ActionIcon onClick={(e) => this.deleteScript(e,name)} icon={faTrash} />
+            <S.ActionIcon onClick={(e) => this.editScript(e,name)} icon={faPenSquare} />
+          </S.Icons>
         </A.Horizontal>
-        <A.Space size={3} />
 
-        {description && (
+        {description &&
+          showScriptsDescriptions && (
+            <Fragment>
+              <A.Space size={2} />
+              <S.Description>{description}</S.Description>
+            </Fragment>
+          )}
+
+        {showScriptsCommands && (
           <Fragment>
-            <S.Description>{description}</S.Description>
-            <A.Space size={1} />
+            <A.Space size={2} />
+            <ScriptDefinition useLabels={labelScriptsCommands} definition={definition} />
           </Fragment>
         )}
-
-        <ScriptDefinition definition={definition} />
-
-        {this.expanded.value === true && <S.Definition>{definition}</S.Definition>}
       </S.NpmScript>
     );
   }

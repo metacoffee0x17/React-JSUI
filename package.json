@@ -138,19 +138,32 @@
       "provider": "github"
     }
   },
+  "scripts-info": {
+    "react:start": "Start the React app",
+    "react:build": "Build the React app",
+    "react:test": "Test the React app",
+    "react:eject": "Eject the React app",
+    "electron:copy": "Copy the Electron files to the build folder",
+    "electron:build": "Build and pack the Electron app",
+    "electron:start": "After the React app is started, wait for localhost:3000 and then start the Electron app",
+    "electron:release": "Build the React and Electron app and publish a new version to GitHub",
+    "storybook": "Start Storybook",
+    "prebuild": "Clean up the dist and build folders",
+    "plop": "Run plop generator",
+    "build-react-and-electron": "Build the React app and copy the Electron files to the build folder"
+  },
   "scripts": {
-    "react-start": "react-app-rewired start",
-    "react-build": "react-app-rewired build",
-    "react-test": "react-app-rewired test --env=jsdom",
-    "react-eject": "react-scripts eject",
-    "copy-electron": "cp -r ./electron/. ./build",
-    "prebuild": "rm -rf ./build && rm -rf ./dist",
-    "build-react-copy-electron": "yarn react-build && yarn copy-electron",
-    "build": "yarn build-react-copy-electron && yarn electron-pack",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron electron/electron.js\"",
-    "plop": "plop",
+    "react:start": "react-app-rewired start",
+    "react:build": "react-app-rewired build",
+    "react:test": "react-app-rewired test --env=jsdom",
+    "react:eject": "react-scripts eject",
+    "electron:copy": "cp -r ./electron/. ./build",
+    "electron:build": "yarn clean && yarn build-react-and-electron && yarn electron-builder",
+    "electron:start": "concurrently \"cross-env BROWSER=none yarn react:start\" \"wait-on http://localhost:3000 && electron electron/electron.js\"",
+    "electron:release": "yarn build-react-and-electron && electron-builder --publish=always",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "electron-pack": "electron-builder",
-    "release": "yarn build-react-copy-electron && electron-builder --publish=always"
+    "clean": "rm -rf ./build && rm -rf ./dist",
+    "plop": "plop",
+    "build-react-and-electron": "yarn react:build && yarn electron:copy"
   }
 }

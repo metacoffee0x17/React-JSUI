@@ -5,7 +5,7 @@ import * as S from './styles';
 import * as A from 'styles/shared-components';
 
 //components
-import NpmScript from 'components/NpmScript';
+import ScriptsList from 'components/ScriptsManager/components/ScriptsList';
 
 class ScriptsGroup extends Component {
   render() {
@@ -14,7 +14,7 @@ class ScriptsGroup extends Component {
       <S.ScriptsGroup>
         <S.Title>{name}</S.Title>
         <A.Space size={3} />
-        <S.ScriptsList>{group.map(script => <NpmScript script={script} />)}</S.ScriptsList>
+        <ScriptsList list={group} />
       </S.ScriptsGroup>
     );
   }

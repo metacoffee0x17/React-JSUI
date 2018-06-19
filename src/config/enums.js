@@ -9,6 +9,12 @@ export const PROJECT_TAGS = {
   GRAPHQL: 'GraphQL'
 };
 
+export const SETTINGS_TABS = {
+  HOME: 'home',
+  PROJECT_VIEW: 'project-view',
+  OTHER: 'other'
+};
+
 export const PROJECT_REPO = {
   GITHUB: 'GitHub',
   BITBUCKET: 'Bitbucket',

@@ -1,5 +1,6 @@
 import React from 'react';
 import emotion from 'react-emotion';
+import { Tooltip } from 'react-tippy';
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { whiteish } from 'styles/mixins';
@@ -23,4 +24,8 @@ export const Icon = emotion(FontAwesomeIcon)(
   })
 );
 
-export default ({ onIcon, offIcon, active, ...rest }) => <Icon {...rest} icon={active ? onIcon : offIcon} />;
+export default ({ onIcon, offIcon, tip, active, ...rest }) => (
+  <Tooltip title={tip}>
+    <Icon {...rest} icon={active ? onIcon : offIcon} />
+  </Tooltip>
+);

@@ -24,6 +24,7 @@ import File from './File';
 import Actions from './actions';
 import Processes from './Processes';
 import Boolean from './Boolean';
+import String from './String';
 import ProjectFilters from 'models/ProjectFilters';
 
 //stores

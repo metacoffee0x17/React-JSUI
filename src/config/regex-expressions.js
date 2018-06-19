@@ -3,11 +3,12 @@ export const githubCloneRegex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?($|
 export const runCommandRegex = /(yarn run|npm run|yarn) ([^ ]+)|yarn ((?!run)[^ ]+)|npm (start)$/;
 export const crossEnvRegex = /cross-env ([^=]+)=([^ ]+)/g;
 export const rimRafRegex = /(rimraf|rm -rf|rm) ([^ ]+)/g;
-export const reactRegex = /(react-scripts|custom-react-scripts|react-rewired) ([^ ]+)/g;
+export const reactRegex = /(react-scripts|custom-react-scripts|react-app-rewired) ([^ ]+)/g;
 export const vueRegex = /(vue) ([^ ]+)/g;
-export const copyRegex = /(cp|cp -r) ([^ ]+)/g;
+export const copyRegex = /cp (-r)? ([^ ]+) ([^ ]+)/g;
 export const changeDirRegex = /(cd) ([^ ]+)/g;
 export const nodeRegex = /(node) ([^ ]+)/g;
 export const jestRegex = /(jest) ([^ ]+)|jest/g;
 export const prettierRegex = /(prettier) ([^ ]+)/g;
 export const flowRegex = /(flow) ([^ ]+)|flow/g;
+export const concurrentlyRegex = /concurrently (\\"([^"]+\\)")/g;

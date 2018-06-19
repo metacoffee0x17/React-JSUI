@@ -1,8 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import { Tooltip } from 'react-tippy';
 
 import { faTrash, faCopy, faFolderOpen } from '@fortawesome/fontawesome-free-solid';
-import { faReact, faVuejs, faNodeJs } from '@fortawesome/fontawesome-free-brands';
+import { faReact, faVuejs, faNpm, faNodeJs } from '@fortawesome/fontawesome-free-brands';
 
 //styles
 import * as S from './styles';
@@ -23,13 +24,15 @@ import {
 } from 'config/regex-expressions';
 import CrossEnvMatches from 'components/ScriptCommand/components/CrossEnvMatches';
 
-const IconWithText = ({ styles, name, icon, children }) => (
+const IconWithText = ({ styles, name, full, icon, children }) => (
   <S.ScriptCommand styles={styles}>
-    <A.Horizontal centerV>
-      {icon ? <S.Icon icon={icon} /> : name}
-      <A.Space size={1} />
-      <div>{children}</div>
-    </A.Horizontal>
+    <Tooltip title={full} delay={300}>
+      <A.Horizontal centerV>
+        {icon ? <S.Icon icon={icon} /> : name}
+        <A.Space size={1} />
+        <div>{children}</div>
+      </A.Horizontal>
+    </Tooltip>
   </S.ScriptCommand>
 );
 
@@ -100,21 +103,31 @@ const simpleIconsMap = [
 const regexToIconMap = [
   {
     regex: runCommandRegex,
-    component: ({ matches, highlightedCommand }) => {
+    component: ({ matches, command, highlightedCommand }) => {
       const commandName = matches[2] || matches[4];
       const highlighted = highlightedCommand && commandName === highlightedCommand.value;
       return (
-        <S.ScriptCommand green highlighted={highlighted} onMouseEnter={this.hover} onMouseOut={this.unhover}>
-          {commandName}
+        <S.ScriptCommand
+          styles={{ backgroundColor: '#c93a3c' }}
+          highlighted={highlighted}
+          onMouseEnter={this.hover}
+          onMouseOut={this.unhover}
+        >
+          <Tooltip title={command}>
+            <A.Horizontal spaceAll={7} centerV>
+              <S.Icon icon={faNpm} />
+              <div>{commandName}</div>
+            </A.Horizontal>
+          </Tooltip>
         </S.ScriptCommand>
       );
     }
   },
   ...simpleIconsMap.map(({ regex, ...iconProps }) => ({
     regex,
-    component: ({ matches }) => {
+    component: ({ matches, command }) => {
       return (
-        <IconWithText name={matches[1]} {...iconProps}>
+        <IconWithText full={command} name={matches[1]} {...iconProps}>
           {matches[2]}
         </IconWithText>
       );
@@ -126,7 +139,12 @@ const regexToIconMap = [
 @observer
 class ScriptCommand extends Component {
   render() {
-    const { command, scripts } = this.props;
+    const { command, scripts, useLabels } = this.props;
+
+    if (!useLabels) {
+      return <S.ScriptCommand>{command}</S.ScriptCommand>;
+    }
+
     const { highlightedCommand } = scripts;
     const otherProps = { highlightedCommand };
 
@@ -136,7 +154,7 @@ class ScriptCommand extends Component {
     regexToIconMap.find(r => {
       const { result, matches } = getRegexResults(command, r.regex);
       if (result === true) {
-        component = r.component({ matches, ...otherProps });
+        component = r.component({ matches, command, ...otherProps });
         return true;
       }
     });

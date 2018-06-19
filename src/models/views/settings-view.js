@@ -12,36 +12,31 @@ export default types
     highlightProjectsWithoutRepo: types.optional(types.boolean, false),
     showHomeSidebar: types.optional(types.boolean, true),
     horizontalLayout: types.optional(types.boolean, false),
-    automaticallyReleasePorts: types.optional(types.boolean, true)
+    automaticallyReleasePorts: types.optional(types.boolean, true),
+    groupScriptsByPrefix: types.optional(types.boolean, true),
+    showScriptsDescriptions: types.optional(types.boolean, true),
+    showScriptsCommands: types.optional(types.boolean, true),
+    labelScriptsCommands: types.optional(types.boolean, true),
+    verticalScriptsLayout: types.optional(types.boolean, false),
   })
   .actions(self => ({
+    setSettingValue: (valueKey, value) => {
+      self[valueKey] = value;
+    },
     changeEditor: editor => {
       self.editor = editor;
-    },
-    setShowHomeSidebar: value => {
-      self.showHomeSidebar = value;
-    },
-    setHorizontalLayout: value => {
-      self.horizontalLayout = value;
-    },
-    toggleHorizontalLayout: () => {
-      self.horizontalLayout = !self.horizontalLayout;
-    },
-    setAutomaticallReleasePorts: value => {
-      self.automaticallyReleasePorts = value;
     },
     changePath: projectsPath => {
       self.projectsPath = projectsPath;
     },
+    //toggle
+    toggleHorizontalLayout: () => {
+      self.horizontalLayout = !self.horizontalLayout;
+    },
     toggleHomeSidebar: () => {
       self.showHomeSidebar = !self.showHomeSidebar;
     },
-    setIndexFiles: value => {
-      self.indexFiles = value;
-    },
-    setHighlightProjectsWithoutRepo: value => {
-      self.highlightProjectsWithoutRepo = value;
-    },
+    //hooks
     afterCreate() {
       if (isEmptyString(self.projectsPath)) {
         self.projectsPath = homepath;

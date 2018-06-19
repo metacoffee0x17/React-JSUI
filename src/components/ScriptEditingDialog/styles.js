@@ -1,7 +1,8 @@
 import emotion from 'react-emotion';
 import flex from 'styles/flex';
 
-export const Groups = emotion.div({
+export const ScriptEditingDialog = emotion.div({
   ...flex.vertical,
-  width: '100%'
+  flex: 1,
+  padding: 15
 });

@@ -2,6 +2,7 @@ import emotion, { css } from 'react-emotion';
 
 import { Switch as $Switch } from '@material-ui/core';
 import withProps from 'recompose/withProps';
+import flex from 'styles/flex';
 
 export const Switch = withProps({
   classes: {
@@ -14,11 +15,22 @@ export const Switch = withProps({
 })($Switch);
 
 export const Settings = emotion.div({
+  ...flex.vertical,
+  flex: 1,
   color: 'rgba(0,0,0,0.5)'
 });
 
+export const TabsWrap = emotion.div({
+  backgroundColor: '#45527b',
+  width: '100%',
+  color: 'white'
+});
+
 export const Content = emotion.div({
-  padding: 15
+  ...flex.vertical,
+  flex: 1,
+  padding: 15,
+  overflowY: 'auto'
 });
 
 export const Title = emotion.div({

@@ -15,3 +15,9 @@ export const bindSwitchToMST = (value, setValue) => ({
   value: value,
   onChange: (e, checked) => setValue(checked)
 });
+
+export const bindSettingToSwitch = (settings, key) => ({
+  checked: settings[key],
+  value: settings[key],
+  onChange: (e, checked) => settings.setSettingValue(key, checked)
+});

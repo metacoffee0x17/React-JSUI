@@ -3,7 +3,9 @@ import { inject, observer } from 'mobx-react';
 
 import * as S from './styles';
 import * as A from 'styles/shared-components';
-import { bindSwitchToMST } from 'utils/bind-utils';
+import { bindSettingToSwitch } from 'utils/bind-utils';
+
+const TabContainer = ({ children }) => <A.Vertical>{children}</A.Vertical>;
 
 @inject('store')
 @observer
@@ -12,73 +14,88 @@ class Settings extends Component {
     const { store, onSave } = this.props;
     const { settings } = store;
 
+    let spaceBetweenSections = 7;
+    let spaceBetweenOptions = 3;
+
     return (
       <S.Settings>
+        {/*<S.TabsWrap>
+          <Tabs
+            value={selectedTabSettings.value}
+            onChange={(e, value) => selectedTabSettings.setValue(value)}
+          >
+            <Tab value={SETTINGS_TABS.HOME} label="Home" />
+            <Tab value={SETTINGS_TABS.PROJECT_VIEW} label="Project view" />
+            <Tab value={SETTINGS_TABS.OTHER} label="Other" />
+          </Tabs>
+        </S.TabsWrap>*/}
+
         <S.Content>
-          <S.Title> Settings </S.Title>
+          <A.TopFlex styles={{ overflowY: 'scroll' }}>
+            <S.Title>Home</S.Title>
+            <TabContainer>
+              <A.Horizontal centerV>
+                <S.Switch {...bindSettingToSwitch(settings, 'highlightProjectsWithoutRepo')} />
+                <S.Option.Title>Highlight projects without a repo</S.Option.Title>
+              </A.Horizontal>
+              <A.Horizontal centerV>
+                <S.Switch {...bindSettingToSwitch(settings, 'showHomeSidebar')} />
+                <S.Option.Title>Show filters sidebar</S.Option.Title>
+              </A.Horizontal>
+              <A.Horizontal centerV>
+                <S.Switch {...bindSettingToSwitch(settings, 'horizontalLayout')} />
+                <S.Option.Title>Horizontal layout</S.Option.Title>
+              </A.Horizontal>
+            </TabContainer>
 
-          <S.Option.Title>Default projects path</S.Option.Title>
-          <A.TextInput
-            onChange={e => settings.changePath(e.target.value)}
-            value={settings.projectsPath}
-            type="text"
-          />
+            <A.Space size={spaceBetweenSections} />
 
-          <A.Space size={3} />
+            <S.Title>Project view</S.Title>
+            <TabContainer>
+              <A.Horizontal centerV>
+                <S.Switch {...bindSettingToSwitch(settings, 'indexFiles')} />
+                <S.Option.Title>List project files</S.Option.Title>
+              </A.Horizontal>
+              <S.Option.Description>It might slow down with bigger projects</S.Option.Description>
+              <A.Space size={spaceBetweenOptions} />
+            </TabContainer>
 
-          <S.Option.Title>Editor cli</S.Option.Title>
-          <A.TextInput
-            onChange={e => settings.changeEditor(e.target.value)}
-            value={settings.editor}
-            type="text"
-          />
+            <A.Space size={spaceBetweenSections} />
 
-          <A.Space size={3} />
+            <S.Title>Other</S.Title>
+            <TabContainer>
+              <S.Option.Title>Default projects path</S.Option.Title>
+              <A.TextInput
+                onChange={e => settings.changePath(e.target.value)}
+                value={settings.projectsPath}
+                type="text"
+              />
 
-          <A.Horizontal centerV>
-            <S.Switch
-              {...bindSwitchToMST(
-                settings.highlightProjectsWithoutRepo,
-                settings.setHighlightProjectsWithoutRepo
-              )}
-            />
-            <S.Option.Title>Highlight projects without a repo</S.Option.Title>
+              <A.Space size={spaceBetweenOptions} />
+
+              <S.Option.Title>Editor cli</S.Option.Title>
+              <A.TextInput
+                onChange={e => settings.changeEditor(e.target.value)}
+                value={settings.editor}
+                type="text"
+              />
+
+              <A.Space size={spaceBetweenOptions} />
+
+              <A.Horizontal centerV>
+                <S.Switch {...bindSettingToSwitch(settings, 'automaticallyReleasePorts')} />
+                <S.Option.Title>Automatically release ports when they're blocked</S.Option.Title>
+              </A.Horizontal>
+            </TabContainer>
+
+            <A.Space size={spaceBetweenSections} />
+          </A.TopFlex>
+
+          <A.Horizontal justifyEnd>
+            <A.Button disabled={!settings.valid} onClick={onSave}>
+              Save
+            </A.Button>
           </A.Horizontal>
-
-          <A.Horizontal centerV>
-            <S.Switch {...bindSwitchToMST(settings.showHomeSidebar, settings.setShowHomeSidebar)} />
-            <S.Option.Title>Show filters sidebar</S.Option.Title>
-          </A.Horizontal>
-
-          <A.Horizontal centerV>
-            <S.Switch {...bindSwitchToMST(settings.horizontalLayout, settings.setHorizontalLayout)} />
-            <S.Option.Title>Horizontal layout</S.Option.Title>
-          </A.Horizontal>
-
-          <A.Horizontal centerV>
-            <S.Switch
-              {...bindSwitchToMST(settings.automaticallyReleasePorts, settings.setAutomaticallReleasePorts)}
-            />
-            <S.Option.Title>Automatically release ports when they're blocked</S.Option.Title>
-          </A.Horizontal>
-
-          <A.Horizontal centerV>
-            <S.Switch
-              checked={settings.indexFiles}
-              value={settings.indexFiles}
-              onChange={(e, checked) => {
-                settings.setIndexFiles(checked);
-              }}
-            />
-            <S.Option.Title>List project files</S.Option.Title>
-          </A.Horizontal>
-          <S.Option.Description>It might slow down with bigger projects</S.Option.Description>
-
-          <A.Space size={3} />
-
-          <A.Button disabled={!settings.valid} onClick={onSave}>
-            Save
-          </A.Button>
         </S.Content>
       </S.Settings>
     );

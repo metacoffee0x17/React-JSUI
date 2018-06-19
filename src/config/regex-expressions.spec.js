@@ -1,4 +1,4 @@
-import { crossEnvRegex, portRegex, runCommandRegex } from 'config/regex-expressions';
+import { concurrentlyRegex, crossEnvRegex, portRegex, runCommandRegex } from 'config/regex-expressions';
 import {
   getArrayOfRegexMatches,
   getRegexMatches,
@@ -61,6 +61,11 @@ describe('regex-expressions', () => {
     results.forEach((e, index) => {
       expect([e[1], e[2]]).toEqual(expectation[index]);
     });
+  });
+
+  test('concurrently', () => {
+    const command = `concurrently \"cross-env BROWSER=none yarn react:start\" \"wait-on http://localhost:3000 && electron electron/electron.js\"`;
+    expect(getRegexResults(command, concurrentlyRegex)).toEqual([]);
   });
 
   test('getRegexResults', () => {

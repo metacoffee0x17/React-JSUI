@@ -15,7 +15,7 @@ export const common = direction => p => ({
   ...(p.spaceFirst && { '& :first-child': { [margin[direction]]: p.spaceFirst } }),
   ...(p.spaceAll && {
     '& > *': { [margin[direction]]: p.spaceAll, ...(p.spaceBottom && { marginBottom: p.spaceAll }) },
-    '& > *:last-child': { [margin[direction]]: 0, marginBottom: 0 }
+    '& > *:last-child': { [margin[direction]]: 0, ...(p.spaceBottom && { marginBottom: 0 }) }
   }),
   ...(p.noShrink && {
     flexShrink: 0

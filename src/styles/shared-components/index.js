@@ -119,6 +119,8 @@ export const Link = emotion.div(
   })
 );
 
+export const acceptStyles = ({ styles }) => styles;
+
 export const TextInput = emotion.input({
   outline: 'none',
   padding: '7px',
@@ -137,4 +139,4 @@ export const TextInput = emotion.input({
     backgroundColor: whiteish(0.17),
     border: `1px solid rgba(255, 255, 255, ${whiteish(0.2)})`
   }
-});
+}, acceptStyles);

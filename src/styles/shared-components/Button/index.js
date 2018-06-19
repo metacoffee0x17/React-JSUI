@@ -9,6 +9,8 @@ import { darken as darkenFn } from 'polished';
 
 const defaultShadowColor = '#08080854';
 
+export const acceptStyles = ({ styles }) => styles;
+
 const Button = emotion.button(
   {
     ...flex.horizontal,
@@ -65,7 +67,8 @@ const Button = emotion.button(
         cursor: 'pointer'
       })
     };
-  }
+  },
+  acceptStyles
 );
 
 const buttonTypes = {

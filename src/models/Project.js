@@ -12,7 +12,7 @@ import get from 'lodash/get';
 import omitBy from 'lodash/omitBy';
 import omit from 'lodash/omit';
 import { getProjectType } from 'project-utils/get-project-type';
-import { getHttpsGitURL } from 'utils/string-utils';
+import { getHttpsGitURL, isValidString } from 'utils/string-utils';
 import uuid from 'uuid';
 import gitBranch from 'utils/git-branch';
 // import nodePlop from 'node-plop';
@@ -25,6 +25,8 @@ import Process from './Process';
 //native
 import getFoldersAsObjects from 'utils/file-utils/get-folders-as-objects';
 import getAllItems from 'utils/file-utils/get-all-items';
+import { createModel } from 'utils/mst-utils';
+import Boolean from 'models/Boolean';
 
 //native
 const fs = window.require('fs');
@@ -51,14 +53,16 @@ export default types
     name: '',
     path: '',
     type: '',
+    allItems: types.optional(types.frozen, []),
+    tabs: types.optional(types.array(Tab), []),
+    ready: true,
+    editingScript: types.optional(types.string, ''),
+    addingScript: createModel(Boolean),
     //frozen
     packageJson: types.frozen,
     gitConfig: types.frozen,
     gitBranch: types.frozen,
-    contents: types.frozen,
-    allItems: types.optional(types.frozen, []),
-    tabs: types.optional(types.array(Tab), []),
-    ready: true
+    contents: types.frozen
   })
   .actions(self => {
     let plop;
@@ -100,10 +104,7 @@ export default types
         let nodeModulesPath = path.join(self.path, 'node_modules');
         const promise = pify(rimraf)(nodeModulesPath);
         if (showToast) {
-          toast({
-            title: 'Successfully deleted the node_modules folder!',
-            type: 'success'
-          });
+          toast({ title: 'Successfully deleted the node_modules folder!', type: 'success' });
         }
         return promise;
       },
@@ -146,6 +147,46 @@ export default types
       setGroup(group) {
         self.group = group;
       },
+      deleteScript: flow(function*(name) {
+        const confirm = yield confirmDelete();
+        if (confirm) {
+          const newPackageJson = { ...self.packageJson, scripts: omit(self.packageJson.scripts, name) };
+          self.updatePackageJson(newPackageJson);
+        }
+      }),
+      editScript: flow(function*(name) {
+        self.editingScript = name;
+      }),
+      updateScript: flow(function*(newCommand, name, description) {
+        let scriptsInfo = self.packageJson['scripts-info'];
+
+        let descriptionIsValid = isValidString(description);
+        let shouldModifyScriptsInfo = descriptionIsValid || (scriptsInfo && scriptsInfo[self.editingScript]);
+
+        const sameName = name === self.editingScript;
+
+        const newPackageJson = {
+          ...self.packageJson,
+          scripts: {
+            ...(sameName
+              ? self.packageJson.scripts
+              : omit(self.packageJson.scripts, [name, self.editingScript])),
+            [name]: newCommand
+          },
+          ...(shouldModifyScriptsInfo && {
+            'scripts-info': {
+              ...omit(scriptsInfo, [name, self.editingScript]),
+              ...(descriptionIsValid && { [name]: description })
+            }
+          })
+        };
+        self.updatePackageJson(newPackageJson);
+        self.editingScript = undefined;
+        self.addingScript.setFalse();
+      }),
+      clearEditingScript: () => {
+        self.editingScript = undefined;
+      },
       moveDependency: flow(function*(name, version, isDev) {
         const packageJson = self.packageJson;
         const keys = isDev ? ['devDependencies', 'dependencies'] : ['dependencies', 'devDependencies'];
@@ -153,16 +194,12 @@ export default types
         const newPackageJson = {
           ...packageJson,
           [moveFrom]: omit(packageJson[moveFrom], [name]),
-          [moveTo]: {
-            ...packageJson[moveTo],
-            [name]: version
-          }
+          [moveTo]: { ...packageJson[moveTo], [name]: version }
         };
         self.packageJson = newPackageJson;
         const pkgPath = path.join(self.path, 'package.json');
         fs.writeFileSync(pkgPath, JSON.stringify(newPackageJson, null, 2));
       }),
-
       generate: flow(function*(generatorName) {
         const { value: name } = yield prompt('Name');
         if (name) {
@@ -172,24 +209,20 @@ export default types
               actions: { name },
               projectPath: self.path
             });
-            toast({
-              title: `Successfully generated "${name}"!`,
-              type: 'success'
-            });
+            toast({ title: `Successfully generated "${name}"!`, type: 'success' });
             self.readContents();
           } catch (err) {
-            toast({
-              title: `Couldn't generate file. Please try again.`,
-              type: 'error'
-            });
+            toast({ title: `Couldn't generate file. Please try again.`, type: 'error' });
           }
         }
       }),
       showPluginSuccess(name) {
-        toast({
-          title: `The plugin "${name}" has been successfully applied!`,
-          type: 'success'
-        });
+        toast({ title: `The plugin "${name}" has been successfully applied!`, type: 'success' });
+      },
+      updatePackageJson: newPackageJson => {
+        const pkgPath = path.join(self.path, 'package.json');
+        fs.writeFileSync(pkgPath, JSON.stringify(newPackageJson, null, 2));
+        self.readProjectInfo();
       },
       applyPlugin: flow(function*(plugin) {
         if (plugin.actions) {
@@ -222,18 +255,11 @@ export default types
 
         const newPackageJson = {
           ...rest,
-          scripts: {
-            ...omitBy(scripts, removeScripts),
-            ...addScripts
-          },
+          scripts: { ...omitBy(scripts, removeScripts), ...addScripts },
           ...merge
         };
 
-        const pkgPath = path.join(self.path, 'package.json');
-
-        fs.writeFileSync(pkgPath, JSON.stringify(newPackageJson, null, 2));
-
-        self.readProjectInfo();
+        self.updatePackageJson(newPackageJson);
 
         if (removeDependencies.length > 0) {
           yield self.addProcess('yarn', ['remove', ...removeDependencies]);
@@ -253,9 +279,7 @@ export default types
       addProcess: async (cli, args) => {
         const store = getRoot(self);
 
-        const proc = Process.create({
-          project: self
-        });
+        const proc = Process.create({ project: self });
 
         proc.attachStore(store);
 
@@ -333,10 +357,7 @@ export default types
 
           //origin
           const gitConfigPath = path.join(self.path, '.git/config');
-          const gitConfig = parseGitConfig.sync({
-            cwd: 'foo',
-            path: gitConfigPath
-          });
+          const gitConfig = parseGitConfig.sync({ cwd: 'foo', path: gitConfigPath });
           const url = get(gitConfig, 'remote "origin".url') || '';
           const gitRepoURL = getHttpsGitURL(url);
           self.origin = gitRepoURL;

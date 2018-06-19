@@ -17,7 +17,8 @@ export const ScriptCommand = emotion.div(
     fontSize: 12,
     marginRight: 7,
     borderRadius: 4,
-    transition: 'all 100ms linear'
+    transition: 'all 100ms linear',
+    cursor: 'default'
   },
   ({ highlighted, hidden, styles }) => ({
     ...(highlighted && {
@@ -28,10 +29,10 @@ export const ScriptCommand = emotion.div(
       opacity: 0.3
     }),
     ...styles,
-    ...!styles && {
+    ...(!styles && {
       '&:hover': {
         backgroundColor: whiteish(0.15)
       }
-    }
+    })
   })
 );

@@ -13,12 +13,12 @@ import ScriptCommand from 'components/ScriptCommand';
 class ScriptDefinition extends Component {
 
   render() {
-    const { definition } = this.props;
+    const { definition, useLabels } = this.props;
     const splitted = definition.split('&&');
 
     return (
       <S.ScriptDefinition>
-        {splitted.map(s => <ScriptCommand command={s} />)}
+        {splitted.map(s => <ScriptCommand useLabels={useLabels} command={s} />)}
       </S.ScriptDefinition>
     );
   }

@@ -36,7 +36,6 @@ import Dialog from 'components/Dialog';
 import ListOfBlocks from 'components/ListOfBlocks';
 import InstallDependencyForm from 'components/InstallDependencyForm';
 import GitBranch from 'components/GitBranch';
-import ScriptsList from 'components/ScriptsList';
 
 //external components
 import { Tooltip } from 'react-tippy';
@@ -46,6 +45,7 @@ import FileEntry from './components/FileEntry';
 
 import Boolean from 'models/Boolean';
 import String from 'models/String';
+import ScriptsManager from 'components/ScriptsManager';
 
 const plugins = remote.require('./plugins/index');
 
@@ -166,15 +166,7 @@ class ProjectView extends Component {
               <S.Right>
                 {project.ready && (
                   <React.Fragment>
-                    {hasScripts && (
-                      <React.Fragment>
-                        {/*<S.Section.Title> Scripts </S.Section.Title>*/}
-                        <A.Space size={3} />
-                        <Horizontal wrap spaceBottom spaceAll={spaceAll}>
-                          <ScriptsList packageJson={project.packageJson} />
-                        </Horizontal>
-                      </React.Fragment>
-                    )}
+                    {hasScripts && <ScriptsManager packageJson={project.packageJson} />}
 
                     {/* Dependencies */}
                     <Horizontal spaceAll={10} flex={1}>
