@@ -74,9 +74,11 @@ class Project extends Component {
                 project.startScriptName && (
                   <A.ActionIcon tip="Start" icon={faPlay} onClick={project.navigateThenStart} />
                 )}
+
               {project.origin && (
-                <A.ActionIcon tip={project.origin} icon={faExternalLinkAlt} onClick={project.goToOrigin} />
+                <A.ActionIcon tip={project.origin} icon={project.gitIcon} onClick={project.goToOrigin} />
               )}
+
               <A.ActionIcon
                 icon={faTrash}
                 color="#ff9590"

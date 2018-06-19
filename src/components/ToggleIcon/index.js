@@ -2,6 +2,8 @@ import React from 'react';
 import emotion from 'react-emotion';
 import { Tooltip } from 'react-tippy';
 
+import ConditionalWrap from 'conditional-wrap';
+
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { whiteish } from 'styles/mixins';
 
@@ -25,7 +27,7 @@ export const Icon = emotion(FontAwesomeIcon)(
 );
 
 export default ({ onIcon, offIcon, tip, active, ...rest }) => (
-  <Tooltip title={tip}>
+  <ConditionalWrap condition={tip} wrap={children => <Tooltip title={tip}> {children}</Tooltip>}>
     <Icon {...rest} icon={active ? onIcon : offIcon} />
-  </Tooltip>
+  </ConditionalWrap>
 );

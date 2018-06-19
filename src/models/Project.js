@@ -7,10 +7,12 @@ import axios from 'axios';
 import routes from 'config/routes';
 import pify from 'pify';
 
+//icons
+import { faExternalLinkAlt } from '@fortawesome/fontawesome-free-solid';
+import { faGithub, faGitlab, faBitbucket } from '@fortawesome/fontawesome-free-brands';
+
 //utils
-import get from 'lodash/get';
-import omitBy from 'lodash/omitBy';
-import omit from 'lodash/omit';
+import { get, omitBy, omit, find } from 'lodash';
 import { getProjectType } from 'project-utils/get-project-type';
 import { getHttpsGitURL, isValidString } from 'utils/string-utils';
 import uuid from 'uuid';
@@ -339,6 +341,8 @@ export default types
         self.type = getProjectType(self.packageJson, self.isWebBased, self.webUrl);
       },
       readProjectInfo: () => {
+        console.log('read project info', self.name);
+
         const packageJsonPath = path.join(self.path, 'package.json');
 
         try {
@@ -360,6 +364,7 @@ export default types
           const gitConfig = parseGitConfig.sync({ cwd: 'foo', path: gitConfigPath });
           const url = get(gitConfig, 'remote "origin".url') || '';
           const gitRepoURL = getHttpsGitURL(url);
+          console.log('giturl', url, gitRepoURL);
           self.origin = gitRepoURL;
         } catch (err) {
           console.error(err);
@@ -380,4 +385,18 @@ export default types
         }
       }
     };
-  });
+  })
+  .views(self => ({
+    get gitIcon() {
+      const originToIconMap = {
+        gitlab: faGitlab,
+        github: faGithub,
+        bitbucket: faBitbucket
+      };
+
+      if (self.origin) {
+        const foundIcon = find(originToIconMap, (value, key) => self.origin.includes(key));
+        return foundIcon || faExternalLinkAlt;
+      }
+    }
+  }));
