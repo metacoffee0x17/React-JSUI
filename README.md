@@ -1,7 +1,7 @@
 # JSUI
 
-🛠 A tool for visually organizing, creating, and managing JavaScript projects.  
-It doesn't matter if it's frontend or a backend app, or what framework it's using. If it has a `package.json`, it belongs here.
+🛠 A tool for visually organizing, creating and managing JavaScript projects.  
+It doesn't matter if it's a frontend or a backend app or what framework it's using. If it has a `package.json`, it belongs here.
 
 ## [⬇️ Download latest version](https://github.com/kitze/JSUI/releases/latest)
 
@@ -32,7 +32,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 
 - Import existing projects
 - Manage and organize projects in groups
-- Collapse, rename, or delete groups
+- Collapse, rename or delete groups
 - Mark a project with a red border if it's not using Git yet
 
 ## Quick actions
@@ -40,7 +40,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 - Open the project in Finder
 - Open the project in your editor of choice (configurable in Settings)
 - Quick preview of package.json
-- Open the github/bitbucket/gitlab page for the project
+- Open the GitHub/Bitbucket/GitLab page for the project
 - Start the project
 - Remove the project from the dashboard
 
@@ -101,7 +101,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 
 ## Plugins
 
-- Plugins have the ability to install new dependencies, remove dependencies, modify scripts, remove, and add new files to a project
+- Plugins have the ability to install new dependencies, remove dependencies, modify scripts, remove and add new files to a project
 - Right now the following plugins are available: - **Storybook**: Installs storybook and adds the needed files to the project - **Plop**: Adds the `plop` generator to the project. It also adds a default `plop-templates` folder, a `plopfile.js`. - **Add .env**: Adds an `.env` file to the project. Soon this file will be editable through UI. - **Rewire**: Installs `react-app-rewired` and adds a default `config-overrides.js` file
 
 > Note: plugins will be separated from the repo soon so anyone can publish their own plugin
@@ -111,7 +111,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 ## Generate files
 
 - Automatically detect a `plopfile.js` and quickly generate files from existing templates.
-- If `plopfile.js` is not present, or your not familiar with [plop](https://github.com/amwmedia/plop) run the `Plop` plugin and it will generate the needed files for you
+- If `plopfile.js` is not present or you are not familiar with [plop](https://github.com/amwmedia/plop) run the `Plop` plugin and it will generate the needed files for you
 
 ![](https://i.imgur.com/nJQsQwE.gif)
 
@@ -121,7 +121,7 @@ It doesn't matter if it's frontend or a backend app, or what framework it's usin
 # clone repo
 git clone https://github.com/kitze/JSUI.git
 
-# install yarn (assuming you don't already have Yarn installed)
+# install yarn (assuming you don't  have Yarn already installed)
 npm install -g yarn
 
 # install dependencies
@@ -136,7 +136,7 @@ yarn build-react-copy-electron && electron-builder
 
 ## Contributors
 
-Thanks to everyone who contirbues to this project.
+Thanks to everyone who contributes to this project.
 <a href="https://github.com/kitze/jsui/graphs/contributors"><img src="https://opencollective.com/jsui/contributors.svg?width=890" /></a>
 
 ## Backers
