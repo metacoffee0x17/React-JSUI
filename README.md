@@ -117,6 +117,9 @@ It doesn't matter if it's a frontend or a backend app or what framework it's usi
 
 ## Environment / Build Setup:
 
+Do this if you want to run the latest code from `master` locally.  
+Otherwise please download the [latest stable version here](https://github.com/kitze/JSUI/releases).
+
 ```
 # clone repo
 git clone https://github.com/kitze/JSUI.git
@@ -128,10 +131,10 @@ npm install -g yarn
 yarn install #or npm install
 
 # start app in dev mode
-yarn electron:start #or npm run electron:start
+yarn start
 
 # build electron packages
-yarn build-react-copy-electron && electron-builder
+yarn build
 ```
 
 ## Contributors

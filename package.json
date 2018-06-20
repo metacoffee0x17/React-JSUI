@@ -146,6 +146,8 @@
     "electron:copy": "Copy the Electron files to the build folder",
     "electron:build": "Build and pack the Electron app",
     "electron:start": "After the React app is started, wait for localhost:3000 and then start the Electron app",
+    "start": "Shortcut for electron:start",
+    "build": "Shortcut for electron:build",
     "electron:release": "Build the React and Electron app and publish a new version to GitHub",
     "storybook": "Start Storybook",
     "prebuild": "Clean up the dist and build folders",
@@ -165,6 +167,8 @@
     "storybook": "start-storybook -p 9001 -c .storybook",
     "clean": "rm -rf ./build && rm -rf ./dist",
     "plop": "plop",
-    "build-react-and-electron": "yarn react:build && yarn electron:copy"
+    "build-react-and-electron": "yarn react:build && yarn electron:copy",
+    "start": "yarn electron:start",
+    "build": "yarn electron:build"
   }
 }
