@@ -27,8 +27,8 @@ install:
   - yarn install
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CI=false yarn release; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then CI=false yarn release -- --mac --win; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CI=false yarn electron:release; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then CI=false yarn electron:release -- --mac --win; fi
 
 deploy:
   api_key: $GH_TOKEN
