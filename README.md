@@ -128,7 +128,7 @@ npm install -g yarn
 yarn install #or npm install
 
 # start app in dev mode
-yarn start #or npm start
+yarn electron:start #or npm run electron:start
 
 # build electron packages
 yarn build-react-copy-electron && electron-builder
