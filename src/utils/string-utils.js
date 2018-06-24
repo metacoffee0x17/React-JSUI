@@ -10,7 +10,7 @@ export const getHttpsGitURL = url => {
     return url
       .replace(':', '/')
       .replace('git@', 'https://')
-      .replace('.git', '');
+      .replace(/.git([^.git]*)$/, '');
   }
   return url;
 };
