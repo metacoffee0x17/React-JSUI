@@ -72,6 +72,7 @@
     "rttr": "^1.0.0",
     "styles-debugger": "^1.0.0",
     "sweetalert2": "^7.19.1",
+    "transform-css-to-js": "^0.1.1",
     "update-electron-app": "^1.2.0",
     "uuid": "^3.2.1",
     "webpack": "^4.10.2",

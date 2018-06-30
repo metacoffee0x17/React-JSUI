@@ -1,7 +1,16 @@
-export default input =>
-  input
-    .replace(/-([a-z])/g, g => g[1].toUpperCase())
-    .replace(/: (.*?);/g, ": '$1',")
-    .replace(/\n *?(\w)/g, '\n$1')
-    .replace(/\n{2,}/g, '\n')
-    .replace(/'(-?\d+)px'/g, '$1');
+import cssToJS from 'transform-css-to-js';
+
+export default input => {
+  try {
+    return correctSpacing(cssToJS(input));
+  } catch (error) {
+    return error.toString();
+  }
+};
+
+const correctSpacing = target => {
+  return target
+    .replace(/{\n/, '{')
+    .replace(/,\n/gm, ',\n\n')
+    .replace(/^\s{6,}/gm, '    ');
+};
