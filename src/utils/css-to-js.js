@@ -4,7 +4,7 @@ export default input => {
   // in case of invalid input, output the error
   try {
     const jsString = cssToJS(input);
-    const formatted = correctSpacing(jsString);
+    const formatted = cleanOutput(jsString);
     return output(formatted);
   } catch (error) {
     return error.toString();
@@ -16,8 +16,8 @@ const output = input => {
   return input.replace(/\s/g, '') === '{}' ? '' : input;
 };
 
-const correctSpacing = target => {
-  // remove weird spacing and give separator lines
+const cleanOutput = target => {
+  // remove weird spacing, give separator lines and remove comments
   return target
     .replace(/^\s\s\/\/.*\n/gm, '')
     .replace(/{\n/, '{')
