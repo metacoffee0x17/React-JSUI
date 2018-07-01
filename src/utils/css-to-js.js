@@ -17,7 +17,7 @@ const output = input => {
 };
 
 const correctSpacing = target => {
-  // remove weird spacing and give separator lines
+  // remove weird spacing, give separator lines and remove comments
   return target
     .replace(/^\s\s\/\/.*\n/gm, '')
     .replace(/{\n/, '{')
