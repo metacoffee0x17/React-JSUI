@@ -9,6 +9,9 @@ export const CssToJsConverter = emotion.div({
 });
 
 export const Textarea = emotion.textarea({
+  fontFamily: 'monospace',
+  letterSpacing: '0.5px',
+  lineHeight: '1.4',
   height: '100%',
   flex: 1,
   border: `1px solid ${whiteish(0.1)}`,
@@ -18,7 +21,7 @@ export const Textarea = emotion.textarea({
   borderRadius: 3,
   padding: 7,
   transition: 'all 150ms linear',
-  '&::placeholder':{
+  '&::placeholder': {
     color: whiteish(0.5)
   },
   '&:focus': {
