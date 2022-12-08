@@ -1,12 +1,3 @@
-### 🙋‍♂️ Made by [@thekitze](https://twitter.com/thekitze)  
-
-### Other projects:
-- 💻 [Sizzy](https://sizzy.co) - The browser for developers and designers
-- 🏫 [React Academy](https://reactacademy.io) - Interactive React and GraphQL workshops
-- 💌 [Twizzle](https://twizzle.app) - A standalone app for Twitter DM & tweeting
-
---- 
-
 # JSUI
 
 🛠 A tool for visually organizing, creating and managing JavaScript projects. The framework and stack don't matter. If the project has a `package.json`, it belongs here.
